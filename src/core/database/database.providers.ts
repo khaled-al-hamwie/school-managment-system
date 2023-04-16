@@ -1,6 +1,7 @@
 import { DynamicModule } from "@nestjs/common";
 import { SequelizeModule, SequelizeModuleOptions } from "@nestjs/sequelize";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
+import Manager from "src/modules/managers/entities/manager.entity";
 import { DEVELOPMENT, PRODUCTION, TEST } from "../constants";
 import { databaseConfig } from "./database.config";
 
@@ -20,7 +21,7 @@ switch (process.env.NODE_ENV) {
 }
 export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
 	...config,
-	models: [Credential],
+	models: [Credential, Manager],
 	sync: {
 		force: true,
 	},
