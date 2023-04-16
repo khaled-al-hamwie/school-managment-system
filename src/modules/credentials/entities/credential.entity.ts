@@ -11,10 +11,10 @@ import {
 } from "../interfaces/credential.interface";
 
 @Table
-export class Credential extends Model<
-	CredentialAttributes,
-	CredentialCreationAttributes
-> {
+export class Credential
+	extends Model<CredentialAttributes, CredentialCreationAttributes>
+	implements CredentialCreationAttributes
+{
 	@PrimaryKey
 	@Column({
 		autoIncrement: true,
