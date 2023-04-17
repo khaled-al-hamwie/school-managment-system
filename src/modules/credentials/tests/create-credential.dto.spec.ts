@@ -11,6 +11,11 @@ describe("create credential dto", () => {
 			user_name: "thisisusernaem",
 		};
 	});
+	it("should pass", async () => {
+		const ofImportDto = plainToInstance(CreateCredentialDto, body);
+		const erros: ValidationError[] = await validate(ofImportDto);
+		expect(erros.length).toBe(0);
+	});
 	it("should not allow no email", async () => {
 		delete body["email"];
 		const ofImportDto = plainToInstance(CreateCredentialDto, body);
