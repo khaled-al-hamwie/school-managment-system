@@ -1,4 +1,4 @@
-import { IsNumber, IsPhoneNumber, IsPositive, Max } from "class-validator";
+import { IsNumber, IsPhoneNumber, IsPositive } from "class-validator";
 import NameValidator from "src/core/validators/name.validator";
 import { CreateCredentialDto } from "src/modules/credentials/dto/create-credential.dto";
 import { ManagerAttributes } from "../interfaces/manager.interface";
