@@ -1,6 +1,7 @@
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
+import Manager from "src/modules/managers/entities/manager.entity";
 import { CredentialsService } from "../credentials.service";
 import { CreateCredentialDto } from "../dto/create-credential.dto";
 import { Credential } from "../entities/credential.entity";
@@ -17,6 +18,7 @@ describe("CredentialsService", () => {
 			imports: [AppModule],
 		}).compile();
 		service = module.get<CredentialsService>(CredentialsService);
+		await Manager.destroy({ where: {} });
 		await Credential.destroy({ where: {} });
 	});
 
