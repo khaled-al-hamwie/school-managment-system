@@ -8,7 +8,9 @@ import {
 	Param,
 	Patch,
 	Post,
+	UseGuards,
 } from "@nestjs/common";
+import ManagerGuard from "src/core/guards/manager.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateManagerDto } from "./dto/create-manager.dto";
 import { UpdateManagerDto } from "./dto/update-manager.dto";
@@ -18,6 +20,7 @@ import { ManagersService } from "./managers.service";
 export class ManagersController {
 	constructor(private readonly managersService: ManagersService) {}
 
+	@UseGuards(ManagerGuard)
 	@Post()
 	create(@Body() createManagerDto: CreateManagerDto) {
 		return this.managersService.create(createManagerDto);

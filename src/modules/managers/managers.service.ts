@@ -11,6 +11,7 @@ import { CredentialsService } from "../credentials/credentials.service";
 import { CreateManagerDto } from "./dto/create-manager.dto";
 import { UpdateManagerDto } from "./dto/update-manager.dto";
 import Manager from "./entities/manager.entity";
+import { ManagerAttributes } from "./interfaces/manager.interface";
 
 @Injectable()
 export class ManagersService {
@@ -67,8 +68,8 @@ export class ManagersService {
 		return `This action returns all managers`;
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} manager`;
+	async findOne(id: ManagerAttributes["manager_id"]) {
+		return this.ManagerEntity.findByPk(id);
 	}
 
 	update(id: number, updateManagerDto: UpdateManagerDto) {
