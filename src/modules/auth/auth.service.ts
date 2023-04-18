@@ -1,26 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
+import { JwtAttributes } from "./interfaces/jwt.interface";
+import ManagerPayload from "./interfaces/manager.payload.interface";
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
-
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
+	constructor(
+		private configService: ConfigService,
+		private jwtService: JwtService
+	) {}
+	signToken(payload: ManagerPayload): JwtAttributes {
+		const option = {
+			secret: this.configService.get("JWTKEY"),
+			expiresIn: this.configService.get("TOKEN_EXPIRATION"),
+		};
+		return {
+			access_token: this.jwtService.sign(payload, option),
+		};
+	}
 }
