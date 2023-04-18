@@ -35,7 +35,7 @@ describe("CredentialsService", () => {
 	});
 	describe("create credentail", () => {
 		it("should create ", async () => {
-			await service.create(createCredentialDto);
+			const output = await service.create(createCredentialDto);
 			const cre = await Credential.findOne({
 				where: {
 					user_name: createCredentialDto.user_name,
@@ -44,6 +44,11 @@ describe("CredentialsService", () => {
 			});
 			expect(cre).not.toBeNull();
 			expect(cre.password).not.toBe(createCredentialDto.password);
+			expect(output).not.toBeNull();
+			expect("credential_id" in output).toBeTruthy();
+			expect("email" in output).toBeTruthy();
+			expect("password" in output).toBeTruthy();
+			expect("user_name" in output).toBeTruthy();
 		});
 		it("should throw when deplicate email ", async () => {
 			createCredentialDto.user_name = "testcre2";
@@ -74,6 +79,18 @@ describe("CredentialsService", () => {
 				},
 			});
 			expect(cre).toBeNull();
+		});
+	});
+
+	describe("remove credentail", () => {
+		it("should be removed", async () => {
+			createCredentialDto["email"] = "testcre2@gmail.com";
+			createCredentialDto["user_name"] = "testcre2";
+			const credentail = await service.create(createCredentialDto);
+			await service.remove(credentail.credential_id);
+			expect(
+				await Credential.findByPk(credentail.credential_id)
+			).toBeNull();
 		});
 	});
 });

@@ -9,6 +9,7 @@ import { Op } from "sequelize";
 import { CreateCredentialDto } from "./dto/create-credential.dto";
 import { UpdateCredentialDto } from "./dto/update-credential.dto";
 import { Credential } from "./entities/credential.entity";
+import { CredentialAttributes } from "./interfaces/credential.interface";
 
 @Injectable()
 export class CredentialsService {
@@ -72,7 +73,7 @@ export class CredentialsService {
 		return `This action updates a #${id} credential`;
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} credential`;
+	remove(id: CredentialAttributes["credential_id"]) {
+		return this.CredentailEntity.destroy({ where: { credential_id: id } });
 	}
 }
