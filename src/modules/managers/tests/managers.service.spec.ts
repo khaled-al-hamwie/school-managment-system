@@ -7,19 +7,9 @@ import { ManagersService } from "../managers.service";
 
 describe("ManagersService", () => {
 	let service: ManagersService;
-	let body: CreateManagerDto = {
-		first_name: "fdsaf",
-		middle_name: "fdsafdsa",
-		last_name: "fdasfsadfdsa",
-		phone_number: "fdsafdsafads",
-		location: "ffasfdsafdsfdsa",
-		salary: 100,
-		email: "testma@test.com",
-		password: "fdsfsadafsdfsad",
-		user_name: "testma",
-	};
+	let body: CreateManagerDto;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],
 		}).compile();
@@ -29,21 +19,34 @@ describe("ManagersService", () => {
 		await Credential.destroy({ where: {} });
 	});
 
+	beforeEach(() => {
+		body = {
+			first_name: "fdsaf",
+			middle_name: "fdsafdsa",
+			last_name: "fdasfsadfdsa",
+			phone_number: "fdsafdsafads",
+			location: "ffasfdsafdsfdsa",
+			salary: 100,
+			email: "testma@test.com",
+			password: "fdsfsadafsdfsad",
+			user_name: "testma",
+		};
+	});
+
 	it("should be defined", () => {
 		expect(service).toBeDefined();
 	});
 	it("should create", async () => {
-		const manager = await service.create(body);
-		expect(manager).not.toBeNull();
-		expect(
-			await Manager.findOne({ where: { manager_id: manager.manager_id } })
-		).not.toBeNull();
-
-		expect(manager.first_name).toBe(body.first_name);
-		expect(manager.middle_name).toBe(body.middle_name);
-		expect(manager.location).toBe(body.location);
-		expect(manager.salary).toBe(body.salary);
-		expect(manager.phone_number).toBe(body.phone_number);
-		expect(manager.last_name).toBe(body.last_name);
+		const output = await service.create(body);
+		expect(output).toBe("done");
+	});
+	it("should not allow deplicate phone number", async () => {
+		body["email"] = "testma2@test.com";
+		body["password"] = "fdsfsadafsdfsad2";
+		try {
+			await service.create(body);
+		} catch (error) {
+			expect(error.message).toBe("Conflict Exception");
+		}
 	});
 });

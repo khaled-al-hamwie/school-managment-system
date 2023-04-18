@@ -1,5 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { ValidationError } from "sequelize";
 import { CredentialsService } from "../credentials/credentials.service";
 import { CreateManagerDto } from "./dto/create-manager.dto";
 import { UpdateManagerDto } from "./dto/update-manager.dto";
@@ -17,16 +18,25 @@ export class ManagersService {
 			user_name: createManagerDto.user_name,
 			password: createManagerDto.password,
 		});
-		const manager = await this.ManagerEntity.create({
-			credential_id: credentail.credential_id,
-			first_name: createManagerDto.first_name,
-			middle_name: createManagerDto.middle_name,
-			last_name: createManagerDto.last_name,
-			location: createManagerDto.location,
-			phone_number: createManagerDto.phone_number,
-			salary: createManagerDto.salary,
-		});
-		return manager;
+		try {
+			await this.ManagerEntity.create({
+				credential_id: credentail.credential_id,
+				first_name: createManagerDto.first_name,
+				middle_name: createManagerDto.middle_name,
+				last_name: createManagerDto.last_name,
+				location: createManagerDto.location,
+				phone_number: createManagerDto.phone_number,
+				salary: createManagerDto.salary,
+			});
+			return "done";
+		} catch (error) {
+			if (error instanceof ValidationError) {
+				this.credentailsService.remove(credentail.credential_id);
+				throw new ConflictException([error.errors[0].message], {
+					description: "Forbidden",
+				});
+			}
+		}
 	}
 
 	findAll() {
