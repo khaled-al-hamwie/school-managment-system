@@ -1,11 +1,13 @@
 import {
 	ConflictException,
+	ForbiddenException,
 	Injectable,
 	InternalServerErrorException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { Op } from "sequelize";
+import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateCredentialDto } from "./dto/create-credential.dto";
 import { UpdateCredentialDto } from "./dto/update-credential.dto";
 import { Credential } from "./entities/credential.entity";
@@ -61,12 +63,20 @@ export class CredentialsService {
 		}
 	}
 
-	findAll() {
-		return `This action returns all credentials`;
-	}
-
-	findOne(id: number) {
-		return `This action returns a #${id} credential`;
+	async verify(body: CreateAuthDto) {
+		const credential = await this.CredentailEntity.findOne({
+			where: { user_name: body.user_name },
+		});
+		if (!credential)
+			throw new ForbiddenException("credentials don't match", {
+				description: "Forbidden",
+			});
+		let hashed = await compare(body.password, credential.password);
+		if (!hashed)
+			throw new ForbiddenException("credentials don't match", {
+				description: "Forbidden",
+			});
+		return credential;
 	}
 
 	update(id: number, updateCredentialDto: UpdateCredentialDto) {

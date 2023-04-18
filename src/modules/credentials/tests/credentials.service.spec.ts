@@ -1,4 +1,3 @@
-import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
 import Manager from "src/modules/managers/entities/manager.entity";
@@ -81,7 +80,41 @@ describe("CredentialsService", () => {
 			expect(cre).toBeNull();
 		});
 	});
-
+	describe("verify credentail", () => {
+		it("should be verify", async () => {
+			const output = await service.verify({
+				user_name: createCredentialDto.user_name,
+				password: createCredentialDto.password,
+			});
+			expect(output).not.toBeNull();
+			expect("credential_id" in output).toBeTruthy();
+			expect("email" in output).toBeTruthy();
+			expect("password" in output).toBeTruthy();
+			expect("user_name" in output).toBeTruthy();
+		});
+		it("should not verify wrong user_name", async () => {
+			createCredentialDto["user_name"] = "testcre3";
+			try {
+				const output = await service.verify({
+					user_name: createCredentialDto.user_name,
+					password: createCredentialDto.password,
+				});
+			} catch (error) {
+				expect(error.message).toBe("credentials don't match");
+			}
+		});
+		it("should be verify", async () => {
+			createCredentialDto["password"] = "testcre3";
+			try {
+				const output = await service.verify({
+					user_name: createCredentialDto.user_name,
+					password: createCredentialDto.password,
+				});
+			} catch (error) {
+				expect(error.message).toBe("credentials don't match");
+			}
+		});
+	});
 	describe("remove credentail", () => {
 		it("should be removed", async () => {
 			createCredentialDto["email"] = "testcre2@gmail.com";
