@@ -24,7 +24,7 @@ createDatabase(config.username, config.password, config.database);
 export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
 	...config,
 	models: [Credential, Manager],
-	sync: {
-		force: true,
-	},
+	// sync: {
+	// 	force: true,
+	// },
 });
