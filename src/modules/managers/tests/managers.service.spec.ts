@@ -49,4 +49,11 @@ describe("ManagersService", () => {
 			expect(error.message).toBe("Conflict Exception");
 		}
 	});
+	it("should login ", async () => {
+		const output = await service.login({
+			user_name: body.user_name,
+			password: body.password,
+		});
+		expect(output.access_token).not.toBeNull();
+	});
 });

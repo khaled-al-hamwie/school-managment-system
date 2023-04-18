@@ -1,6 +1,12 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+	ConflictException,
+	ForbiddenException,
+	Injectable,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { ValidationError } from "sequelize";
+import { AuthService } from "../auth/auth.service";
+import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
 import { CreateManagerDto } from "./dto/create-manager.dto";
 import { UpdateManagerDto } from "./dto/update-manager.dto";
@@ -10,7 +16,8 @@ import Manager from "./entities/manager.entity";
 export class ManagersService {
 	constructor(
 		@InjectModel(Manager) private readonly ManagerEntity: typeof Manager,
-		private readonly credentailsService: CredentialsService
+		private readonly credentailsService: CredentialsService,
+		private readonly authService: AuthService
 	) {}
 	async create(createManagerDto: CreateManagerDto) {
 		const credentail = await this.credentailsService.create({
@@ -38,7 +45,24 @@ export class ManagersService {
 			}
 		}
 	}
-
+	async login(body: CreateAuthDto) {
+		const credentail = await this.credentailsService.verify(body);
+		const manager = await this.ManagerEntity.findOne({
+			where: {
+				credential_id: credentail.credential_id,
+			},
+		});
+		if (!manager) {
+			throw new ForbiddenException("account don't exist", {
+				description: "Forbidden",
+			});
+		}
+		return this.authService.signToken({
+			credentail_id: credentail.credential_id,
+			manager_id: manager.manager_id,
+			user_name: credentail.user_name,
+		});
+	}
 	findAll() {
 		return `This action returns all managers`;
 	}

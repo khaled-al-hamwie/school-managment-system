@@ -1,34 +1,54 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ManagersService } from './managers.service';
-import { CreateManagerDto } from './dto/create-manager.dto';
-import { UpdateManagerDto } from './dto/update-manager.dto';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Param,
+	Patch,
+	Post,
+} from "@nestjs/common";
+import { CreateAuthDto } from "../auth/dto/create-auth.dto";
+import { CreateManagerDto } from "./dto/create-manager.dto";
+import { UpdateManagerDto } from "./dto/update-manager.dto";
+import { ManagersService } from "./managers.service";
 
-@Controller('managers')
+@Controller("managers")
 export class ManagersController {
-  constructor(private readonly managersService: ManagersService) {}
+	constructor(private readonly managersService: ManagersService) {}
 
-  @Post()
-  create(@Body() createManagerDto: CreateManagerDto) {
-    return this.managersService.create(createManagerDto);
-  }
+	@Post()
+	create(@Body() createManagerDto: CreateManagerDto) {
+		return this.managersService.create(createManagerDto);
+	}
 
-  @Get()
-  findAll() {
-    return this.managersService.findAll();
-  }
+	@Post("/login")
+	@HttpCode(HttpStatus.OK)
+	login(@Body() body: CreateAuthDto) {
+		return this.managersService.login(body);
+	}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.managersService.findOne(+id);
-  }
+	@Get()
+	findAll() {
+		return this.managersService.findAll();
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateManagerDto: UpdateManagerDto) {
-    return this.managersService.update(+id, updateManagerDto);
-  }
+	@Get(":id")
+	findOne(@Param("id") id: string) {
+		return this.managersService.findOne(+id);
+	}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.managersService.remove(+id);
-  }
+	@Patch(":id")
+	update(
+		@Param("id") id: string,
+		@Body() updateManagerDto: UpdateManagerDto
+	) {
+		return this.managersService.update(+id, updateManagerDto);
+	}
+
+	@Delete(":id")
+	remove(@Param("id") id: string) {
+		return this.managersService.remove(+id);
+	}
 }
