@@ -1,8 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
-import { Credential } from "src/modules/credentials/entities/credential.entity";
+import cleanCredential from "src/core/database/database.cleanCredentail";
 import { CreateManagerDto } from "../dto/create-manager.dto";
-import Manager from "../entities/manager.entity";
 import { ManagersService } from "../managers.service";
 
 describe("ManagersService", () => {
@@ -15,8 +14,7 @@ describe("ManagersService", () => {
 		}).compile();
 
 		service = module.get<ManagersService>(ManagersService);
-		await Manager.destroy({ where: {} });
-		await Credential.destroy({ where: {} });
+		await cleanCredential();
 	});
 
 	beforeEach(() => {

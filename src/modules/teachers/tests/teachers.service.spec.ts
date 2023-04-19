@@ -1,9 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
-import { Credential } from "src/modules/credentials/entities/credential.entity";
-import Manager from "src/modules/managers/entities/manager.entity";
+import cleanCredential from "src/core/database/database.cleanCredentail";
 import { CreateTeacherDto } from "../dto/create-teacher.dto";
-import Teacher from "../entities/teacher.entity";
 import { TeachersService } from "../teachers.service";
 
 describe("TeachersService", () => {
@@ -15,9 +13,7 @@ describe("TeachersService", () => {
 		}).compile();
 
 		service = module.get<TeachersService>(TeachersService);
-		await Manager.destroy({ where: {} });
-		await Teacher.destroy({ where: {} });
-		await Credential.destroy({ where: {} });
+		await cleanCredential();
 	});
 
 	beforeEach(() => {
