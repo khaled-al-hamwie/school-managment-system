@@ -5,10 +5,11 @@ import {
 	NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { ValidationError, WhereOptions } from "sequelize";
+import { Op, ValidationError, WhereOptions } from "sequelize";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
+import { Credential } from "../credentials/entities/credential.entity";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import Teacher from "./entities/teacher.entity";
@@ -68,11 +69,30 @@ export class TeachersService {
 		});
 	}
 
-	findAll() {
+	findAll(
+		{ first_name, last_name, middle_name, gender }: any,
+		offset: number = 0
+	) {
+		let whereOption: WhereOptions<TeacherAttributes> = {};
+		if (gender && (gender == "f" || gender == "m"))
+			whereOption["gender"] = gender;
+		if (first_name) whereOption["first_name"] = { [Op.regexp]: first_name };
+		if (last_name) whereOption["last_name"] = { [Op.regexp]: last_name };
+		if (middle_name)
+			whereOption["middle_name"] = { [Op.regexp]: middle_name };
+
+		console.info(whereOption);
 		return this.TeacherEntity.findAll({
 			where: {
-				first_name: "t",
+				[Op.and]: whereOption,
 			},
+			include: {
+				model: Credential,
+				attributes: { exclude: ["password"] },
+			},
+			offset,
+			limit: 5,
+			order: [["first_name", "ASC"]],
 		});
 	}
 

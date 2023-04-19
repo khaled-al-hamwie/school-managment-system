@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	HttpCode,
 	HttpStatus,
@@ -9,15 +8,14 @@ import {
 	ParseIntPipe,
 	Patch,
 	Post,
+	Query,
 	UseGuards,
 } from "@nestjs/common";
-import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
-import TeacherGuard from "src/core/guards/teacher.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
-import ManagerPayload from "../auth/interfaces/manager.payload.interface";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
+import { TeacherAttributes } from "./interfaces/teacher.interface";
 import { TeachersService } from "./teachers.service";
 
 @Controller("teachers")
@@ -38,8 +36,22 @@ export class TeachersController {
 
 	@UseGuards(ManagerGuard)
 	@Get()
-	findAll() {
-		return this.teachersService.findAll();
+	findAll(
+		@Query("first_name") first_name: TeacherAttributes["first_name"],
+		@Query("middle_name") middle_name: TeacherAttributes["middle_name"],
+		@Query("last_name") last_name: TeacherAttributes["last_name"],
+		@Query("gender") gender: TeacherAttributes["gender"],
+		@Query("page") page: number
+	) {
+		return this.teachersService.findAll(
+			{
+				first_name,
+				last_name,
+				middle_name,
+				gender,
+			},
+			page
+		);
 	}
 
 	@Get(":id")
