@@ -6,13 +6,16 @@ import {
 	HttpCode,
 	HttpStatus,
 	Param,
+	ParseIntPipe,
 	Patch,
 	Post,
 	UseGuards,
 } from "@nestjs/common";
+import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
 import TeacherGuard from "src/core/guards/teacher.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
+import ManagerPayload from "../auth/interfaces/manager.payload.interface";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import { TeachersService } from "./teachers.service";
@@ -43,17 +46,12 @@ export class TeachersController {
 		return "not done";
 	}
 
-	@UseGuards(TeacherGuard)
+	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(
-		@Param("id") id: string,
+		@Param("id", ParseIntPipe) teacher_id: string,
 		@Body() updateTeacherDto: UpdateTeacherDto
 	) {
-		return this.teachersService.update(+id, updateTeacherDto);
-	}
-
-	@Delete(":id")
-	remove(@Param("id") id: string) {
-		return this.teachersService.remove(+id);
+		return this.teachersService.update(+teacher_id, updateTeacherDto);
 	}
 }

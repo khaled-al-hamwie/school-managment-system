@@ -2,6 +2,7 @@ import {
 	ConflictException,
 	ForbiddenException,
 	Injectable,
+	NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { ValidationError, WhereOptions } from "sequelize";
@@ -78,8 +79,16 @@ export class TeachersService {
 		});
 	}
 
-	update(id: number, updateTeacherDto: UpdateTeacherDto) {
-		return `This action updates a #${id} teacher`;
+	async update(
+		teacher_id: TeacherAttributes["teacher_id"],
+		updateTeacherDto: UpdateTeacherDto
+	) {
+		const teacher = await this.TeacherEntity.update(updateTeacherDto, {
+			where: { teacher_id },
+		});
+		if (teacher[0] == 0)
+			throw new NotFoundException("teacher dosen't exists");
+		return "done";
 	}
 
 	remove(id: number) {

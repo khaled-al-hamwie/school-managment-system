@@ -39,6 +39,13 @@ describe("TeachersService", () => {
 		const output = await service.create(body);
 		expect(output).toBe("done");
 	});
+	it("should update", async () => {
+		const teacher = await service.findOne({ salary: 100 });
+		body["first_name"] = "khaled";
+		const output = await service.update(teacher.teacher_id, body);
+		expect(output).toBe("done");
+		expect(await service.findOne({ first_name: "khaled" })).not.toBeNull();
+	});
 	it("should not allow deplicate phone number", async () => {
 		body["email"] = "testma2@test.com";
 		body["password"] = "fdsfsadafsdfsad2";
