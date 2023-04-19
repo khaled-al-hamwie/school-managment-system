@@ -6,7 +6,7 @@ export interface TeacherAttributes {
 	first_name: string;
 	middle_name: string;
 	last_name: string;
-	birth_day: Date;
+	birth_day: Date | string;
 	gender: string;
 	nationality?: string;
 	phone_number: string;
