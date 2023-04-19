@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { JwtAttributes } from "./interfaces/jwt.interface";
 import ManagerPayload from "./interfaces/manager.payload.interface";
+import TeacherPayload from "./interfaces/teacher.payload.interface";
 
 @Injectable()
 export class AuthService {
@@ -10,7 +11,7 @@ export class AuthService {
 		private configService: ConfigService,
 		private jwtService: JwtService
 	) {}
-	signToken(payload: ManagerPayload): JwtAttributes {
+	signToken(payload: ManagerPayload | TeacherPayload): JwtAttributes {
 		const option = {
 			secret: this.configService.get("JWTKEY"),
 			expiresIn: this.configService.get("TOKEN_EXPIRATION"),
