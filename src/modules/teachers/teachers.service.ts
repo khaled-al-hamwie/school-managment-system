@@ -83,11 +83,14 @@ export class TeachersService {
 		teacher_id: TeacherAttributes["teacher_id"],
 		updateTeacherDto: UpdateTeacherDto
 	) {
-		const teacher = await this.TeacherEntity.update(updateTeacherDto, {
-			where: { teacher_id },
-		});
-		if (teacher[0] == 0)
-			throw new NotFoundException("teacher dosen't exists");
+		const teacher = await this.findOne({ teacher_id });
+		if (!teacher) throw new NotFoundException("teacher dosen't exists");
+		(await teacher.update(updateTeacherDto)).save();
+		if (updateTeacherDto.password)
+			this.credentailsService.update(
+				teacher.credential_id,
+				updateTeacherDto.password
+			);
 		return "done";
 	}
 
