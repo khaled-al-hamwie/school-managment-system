@@ -1,6 +1,6 @@
 import { Transform, TransformFnParams } from "class-transformer";
 import {
-	IsDate,
+	IsISO8601,
 	IsNumber,
 	IsOptional,
 	IsPhoneNumber,
@@ -21,8 +21,8 @@ export class CreateTeacherDto extends CreateManagerDto {
 	@NameValidator(3, 16)
 	last_name: TeacherAttributes["last_name"];
 
-	@IsDate()
-	birth_day: TeacherAttributes["birth_day"];
+	@IsISO8601()
+	birth_day: TeacherAttributes["birth_day"] | string;
 
 	@Transform(tolowerCaseTransform)
 	@NameValidator(1, 2)

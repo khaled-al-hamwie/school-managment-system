@@ -11,7 +11,7 @@ describe("create manager dto", () => {
 			middle_name: "test f",
 			last_name: "test f",
 			phone_number: "+963 944233644",
-			birth_day: new Date(),
+			birth_day: new Date().toISOString(),
 			gender: "F",
 			nationality: "Uk",
 			location: "damascus ,syria",
