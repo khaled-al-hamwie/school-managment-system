@@ -11,6 +11,7 @@ import { CredentialsService } from "../credentials/credentials.service";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import Teacher from "./entities/teacher.entity";
+import { TeacherAttributes } from "./interfaces/teacher.interface";
 
 @Injectable()
 export class TeachersService {
@@ -43,7 +44,7 @@ export class TeachersService {
 			if (error instanceof ValidationError) {
 				this.credentailsService.remove(credentail.credential_id);
 				throw new ConflictException([error.errors[0].message], {
-					description: "Forbidden",
+					description: "Conflict",
 				});
 			}
 		}
@@ -57,7 +58,7 @@ export class TeachersService {
 			},
 		});
 		if (!teacher) {
-			throw new ForbiddenException("account don't exist", {
+			throw new ForbiddenException("credentials don't match", {
 				description: "Forbidden",
 			});
 		}
@@ -72,8 +73,8 @@ export class TeachersService {
 		return `This action returns all teachers`;
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} teacher`;
+	async findOne(id: TeacherAttributes["teacher_id"]) {
+		return this.TeacherEntity.findByPk(id);
 	}
 
 	update(id: number, updateTeacherDto: UpdateTeacherDto) {

@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
-import { PassportModule } from "@nestjs/passport";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { AuthModule } from "../auth/auth.module";
 import ManagerStrategy from "../auth/strategies/manager.strategy";
+import TeacherStrategy from "../auth/strategies/teacher.strategy";
 import { CredentialsModule } from "../credentials/credentials.module";
 import { ManagersModule } from "../managers/managers.module";
 import Teacher from "./entities/teacher.entity";
@@ -17,7 +17,7 @@ import { TeachersService } from "./teachers.service";
 		ManagersModule,
 	],
 	controllers: [TeachersController],
-	providers: [TeachersService, ManagerStrategy],
+	providers: [TeachersService, ManagerStrategy, TeacherStrategy],
 	exports: [TeachersService],
 })
 export class TeachersModule {}
