@@ -4,7 +4,7 @@ import {
 	Injectable,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { ValidationError } from "sequelize";
+import { ValidationError, WhereOptions } from "sequelize";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
@@ -52,10 +52,8 @@ export class TeachersService {
 
 	async login(body: CreateAuthDto) {
 		const credentail = await this.credentailsService.verify(body);
-		const teacher = await this.TeacherEntity.findOne({
-			where: {
-				credential_id: credentail.credential_id,
-			},
+		const teacher = await this.findOne({
+			credential_id: credentail.credential_id,
 		});
 		if (!teacher) {
 			throw new ForbiddenException("credentials don't match", {
@@ -73,8 +71,11 @@ export class TeachersService {
 		return `This action returns all teachers`;
 	}
 
-	async findOne(id: TeacherAttributes["teacher_id"]) {
-		return this.TeacherEntity.findByPk(id);
+	async findOne(options: WhereOptions<TeacherAttributes>) {
+		return this.TeacherEntity.findOne({
+			where: options,
+			limit: 1,
+		});
 	}
 
 	update(id: number, updateTeacherDto: UpdateTeacherDto) {

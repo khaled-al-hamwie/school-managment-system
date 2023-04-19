@@ -23,7 +23,9 @@ export default class TeacherStrategy extends PassportStrategy(
 		if (!id) {
 			throw new UnauthorizedException();
 		}
-		const teacher = await this.teachersService.findOne(payload.teacher_id);
+		const teacher = await this.teachersService.findOne({
+			teacher_id: payload.teacher_id,
+		});
 		if (!teacher) {
 			throw new UnauthorizedException();
 		}

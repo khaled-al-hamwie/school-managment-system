@@ -11,6 +11,7 @@ import {
 	UseGuards,
 } from "@nestjs/common";
 import ManagerGuard from "src/core/guards/manager.guard";
+import TeacherGuard from "src/core/guards/teacher.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
@@ -39,9 +40,10 @@ export class TeachersController {
 
 	@Get(":id")
 	findOne(@Param("id") id: string) {
-		return this.teachersService.findOne(+id);
+		return "not done";
 	}
 
+	@UseGuards(TeacherGuard)
 	@Patch(":id")
 	update(
 		@Param("id") id: string,
