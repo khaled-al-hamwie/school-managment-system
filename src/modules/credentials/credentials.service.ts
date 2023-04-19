@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { compare, hash } from "bcryptjs";
-import { Op } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateCredentialDto } from "./dto/create-credential.dto";
 import { UpdateCredentialDto } from "./dto/update-credential.dto";
@@ -64,9 +64,7 @@ export class CredentialsService {
 	}
 
 	async verify(body: CreateAuthDto) {
-		const credential = await this.CredentailEntity.findOne({
-			where: { user_name: body.user_name },
-		});
+		const credential = await this.findOne({ user_name: body.user_name });
 		if (!credential)
 			throw new ForbiddenException("credentials don't match", {
 				description: "Forbidden",
@@ -79,11 +77,23 @@ export class CredentialsService {
 		return credential;
 	}
 
-	update(id: number, updateCredentialDto: UpdateCredentialDto) {
-		return `This action updates a #${id} credential`;
+	async findOne(options: WhereOptions<CredentialAttributes>) {
+		return this.CredentailEntity.findOne({
+			where: options,
+			limit: 1,
+		});
 	}
 
-	remove(id: CredentialAttributes["credential_id"]) {
-		return this.CredentailEntity.destroy({ where: { credential_id: id } });
+	async update(
+		credential_id: CredentialAttributes["credential_id"],
+		password: UpdateCredentialDto["password"]
+	) {
+		return (await this.findOne({ credential_id }))
+			.set("password", await hash(password, 12))
+			.save();
+	}
+
+	remove(credential_id: CredentialAttributes["credential_id"]) {
+		return this.CredentailEntity.destroy({ where: { credential_id } });
 	}
 }
