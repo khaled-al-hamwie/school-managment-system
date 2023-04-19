@@ -36,6 +36,7 @@ export class TeachersController {
 		return this.teachersService.login(body);
 	}
 
+	@UseGuards(ManagerGuard)
 	@Get()
 	findAll() {
 		return this.teachersService.findAll();

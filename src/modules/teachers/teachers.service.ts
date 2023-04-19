@@ -69,7 +69,11 @@ export class TeachersService {
 	}
 
 	findAll() {
-		return `This action returns all teachers`;
+		return this.TeacherEntity.findAll({
+			where: {
+				first_name: "t",
+			},
+		});
 	}
 
 	async findOne(options: WhereOptions<TeacherAttributes>) {
@@ -92,9 +96,5 @@ export class TeachersService {
 				updateTeacherDto.password
 			);
 		return "done";
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} teacher`;
 	}
 }
