@@ -1,7 +1,12 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+	ConflictException,
+	ForbiddenException,
+	Injectable,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { ValidationError } from "sequelize";
 import { AuthService } from "../auth/auth.service";
+import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
@@ -42,6 +47,25 @@ export class TeachersService {
 				});
 			}
 		}
+	}
+
+	async login(body: CreateAuthDto) {
+		const credentail = await this.credentailsService.verify(body);
+		const teacher = await this.TeacherEntity.findOne({
+			where: {
+				credential_id: credentail.credential_id,
+			},
+		});
+		if (!teacher) {
+			throw new ForbiddenException("account don't exist", {
+				description: "Forbidden",
+			});
+		}
+		return this.authService.signToken({
+			credentail_id: credentail.credential_id,
+			teacher_id: teacher.teacher_id,
+			user_name: credentail.user_name,
+		});
 	}
 
 	findAll() {

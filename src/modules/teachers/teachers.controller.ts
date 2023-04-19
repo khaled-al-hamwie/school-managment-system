@@ -3,12 +3,15 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
 	UseGuards,
 } from "@nestjs/common";
 import ManagerGuard from "src/core/guards/manager.guard";
+import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import { TeachersService } from "./teachers.service";
@@ -21,6 +24,12 @@ export class TeachersController {
 	@Post()
 	create(@Body() createTeacherDto: CreateTeacherDto) {
 		return this.teachersService.create(createTeacherDto);
+	}
+
+	@Post("/login")
+	@HttpCode(HttpStatus.OK)
+	login(@Body() body: CreateAuthDto) {
+		return this.teachersService.login(body);
 	}
 
 	@Get()
