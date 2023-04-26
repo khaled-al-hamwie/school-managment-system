@@ -1,10 +1,5 @@
-import {
-	ConflictException,
-	ForbiddenException,
-	Injectable,
-} from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { ValidationError } from "sequelize";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";

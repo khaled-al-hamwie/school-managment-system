@@ -97,7 +97,7 @@ describe("CredentialsService", () => {
 		it("should not verify wrong user_name", async () => {
 			createCredentialDto["user_name"] = "testcre3";
 			try {
-				const output = await service.verify({
+				await service.verify({
 					user_name: createCredentialDto.user_name,
 					password: createCredentialDto.password,
 				});
@@ -108,7 +108,7 @@ describe("CredentialsService", () => {
 		it("should not verify wrong password", async () => {
 			createCredentialDto["password"] = "testcre3";
 			try {
-				const output = await service.verify({
+				await service.verify({
 					user_name: createCredentialDto.user_name,
 					password: createCredentialDto.password,
 				});

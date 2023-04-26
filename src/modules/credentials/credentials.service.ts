@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { compare, hash } from "bcryptjs";
-import { Op, WhereOptions } from "sequelize";
+import { WhereOptions } from "sequelize";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateCredentialDto } from "./dto/create-credential.dto";
 import { UpdateCredentialDto } from "./dto/update-credential.dto";
