@@ -38,15 +38,6 @@ describe("ManagersService", () => {
 		const output = await service.create(body);
 		expect(output).toBe("done");
 	});
-	it("should not allow deplicate phone number", async () => {
-		body["email"] = "testma2@test.com";
-		body["password"] = "fdsfsadafsdfsad2";
-		try {
-			await service.create(body);
-		} catch (error) {
-			expect(error.message).toBe("Conflict Exception");
-		}
-	});
 	it("should login ", async () => {
 		const output = await service.login({
 			user_name: body.user_name,

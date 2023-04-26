@@ -26,25 +26,16 @@ export class ManagersService {
 			user_name: createManagerDto.user_name,
 			password: createManagerDto.password,
 		});
-		try {
-			await this.ManagerEntity.create({
-				credential_id: credentail.credential_id,
-				first_name: createManagerDto.first_name,
-				middle_name: createManagerDto.middle_name,
-				last_name: createManagerDto.last_name,
-				location: createManagerDto.location,
-				phone_number: createManagerDto.phone_number,
-				salary: createManagerDto.salary,
-			});
-			return "done";
-		} catch (error) {
-			if (error instanceof ValidationError) {
-				this.credentailsService.remove(credentail.credential_id);
-				throw new ConflictException([error.errors[0].message], {
-					description: "Forbidden",
-				});
-			}
-		}
+		await this.ManagerEntity.create({
+			credential_id: credentail.credential_id,
+			first_name: createManagerDto.first_name,
+			middle_name: createManagerDto.middle_name,
+			last_name: createManagerDto.last_name,
+			location: createManagerDto.location,
+			phone_number: createManagerDto.phone_number,
+			salary: createManagerDto.salary,
+		});
+		return "done";
 	}
 	async login(body: CreateAuthDto) {
 		const credentail = await this.credentailsService.verify(body);
