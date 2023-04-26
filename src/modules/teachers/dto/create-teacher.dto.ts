@@ -8,10 +8,10 @@ import {
 } from "class-validator";
 import tolowerCaseTransform from "src/core/transformers/tolowercase.transform";
 import NameValidator from "src/core/validators/name.validator";
-import { CreateManagerDto } from "src/modules/managers/dto/create-manager.dto";
+import { CreateCredentialDto } from "src/modules/credentials/dto/create-credential.dto";
 import { TeacherAttributes } from "../interfaces/teacher.interface";
 
-export class CreateTeacherDto extends CreateManagerDto {
+export class CreateTeacherDto extends CreateCredentialDto {
 	@NameValidator(3, 16)
 	first_name: TeacherAttributes["first_name"];
 
