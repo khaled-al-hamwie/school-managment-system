@@ -20,31 +20,12 @@ export class CredentialsService {
 		private readonly CredentailEntity: typeof Credential
 	) {}
 	async create(createCredentialDto: CreateCredentialDto) {
-		const deplicateCredentails = await this.CredentailEntity.findAll({
-			where: {
-				[Op.or]: [
-					{
-						email: createCredentialDto.email,
-					},
-					{
-						user_name: createCredentialDto.user_name,
-					},
-				],
-			},
-			limit: 2,
+		const deplicateCredentails = await this.findOne({
+			user_name: createCredentialDto.user_name,
 		});
-		if (deplicateCredentails.length > 0) {
-			const email: string = deplicateCredentails.filter(
-				(val) => val.email == createCredentialDto.email
-			)[0]?.email;
-			const user_name = deplicateCredentails.filter(
-				(val) => val.user_name == createCredentialDto.user_name
-			)[0]?.user_name;
+		if (deplicateCredentails) {
 			throw new ConflictException(
-				[
-					email ? "email can't be used" : null,
-					user_name ? "user_name can't be used" : null,
-				],
+				[{ user_name: "user_name can't be used" }],
 				{
 					description: "Forbidden",
 				}

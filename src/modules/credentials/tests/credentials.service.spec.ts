@@ -48,21 +48,6 @@ describe("CredentialsService", () => {
 			expect("password" in output).toBeTruthy();
 			expect("user_name" in output).toBeTruthy();
 		});
-		it("should throw when deplicate email ", async () => {
-			createCredentialDto.user_name = "testcre2";
-			try {
-				await service.create(createCredentialDto);
-			} catch (error) {
-				expect(error.message).toBe("Conflict Exception");
-			}
-			const cre = await Credential.findOne({
-				where: {
-					user_name: createCredentialDto.user_name,
-					email: createCredentialDto.email,
-				},
-			});
-			expect(cre).toBeNull();
-		});
 		it("should throw when deplicate user_name ", async () => {
 			createCredentialDto.email = "testcre2@gmail.com";
 			try {
