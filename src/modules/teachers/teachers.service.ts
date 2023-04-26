@@ -28,28 +28,19 @@ export class TeachersService {
 			user_name: createTeacherDto.user_name,
 			password: createTeacherDto.password,
 		});
-		try {
-			await this.TeacherEntity.create({
-				credential_id: credentail.credential_id,
-				first_name: createTeacherDto.first_name,
-				middle_name: createTeacherDto.middle_name,
-				last_name: createTeacherDto.last_name,
-				location: createTeacherDto.location,
-				phone_number: createTeacherDto.phone_number,
-				salary: createTeacherDto.salary,
-				birth_day: createTeacherDto.birth_day,
-				gender: createTeacherDto.gender,
-				nationality: createTeacherDto.nationality,
-			});
-			return "done";
-		} catch (error) {
-			if (error instanceof ValidationError) {
-				this.credentailsService.remove(credentail.credential_id);
-				throw new ConflictException([error.errors[0].message], {
-					description: "Conflict",
-				});
-			}
-		}
+		await this.TeacherEntity.create({
+			credential_id: credentail.credential_id,
+			first_name: createTeacherDto.first_name,
+			middle_name: createTeacherDto.middle_name,
+			last_name: createTeacherDto.last_name,
+			location: createTeacherDto.location,
+			phone_number: createTeacherDto.phone_number,
+			salary: createTeacherDto.salary,
+			birth_day: createTeacherDto.birth_day,
+			gender: createTeacherDto.gender,
+			nationality: createTeacherDto.nationality,
+		});
+		return "done";
 	}
 
 	async login(body: CreateAuthDto) {

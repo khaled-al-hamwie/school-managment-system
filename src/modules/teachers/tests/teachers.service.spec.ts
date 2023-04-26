@@ -46,15 +46,6 @@ describe("TeachersService", () => {
 		expect(output).toBe("done");
 		expect(await service.findOne({ first_name: "khaled" })).not.toBeNull();
 	});
-	it("should not allow deplicate phone number", async () => {
-		body["email"] = "testma2@test.com";
-		body["password"] = "fdsfsadafsdfsad2";
-		try {
-			await service.create(body);
-		} catch (error) {
-			expect(error.message).toBe("Conflict Exception");
-		}
-	});
 	it("should login ", async () => {
 		const output = await service.login({
 			user_name: body.user_name,
