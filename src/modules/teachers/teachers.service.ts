@@ -99,7 +99,7 @@ export class TeachersService {
 	) {
 		const teacher = await this.findOne({ teacher_id });
 		if (!teacher) throw new NotFoundException("teacher dosen't exists");
-		(await teacher.update(updateTeacherDto)).save();
+		teacher.update(updateTeacherDto).then((output) => output.save());
 		if (updateTeacherDto.password)
 			this.credentailsService.update(
 				teacher.credential_id,
