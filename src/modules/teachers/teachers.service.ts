@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, WhereOptions } from "sequelize";
+import removeCredentails from "src/core/transformers/removeCredentails.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
@@ -27,17 +28,10 @@ export class TeachersService {
 			user_name: createTeacherDto.user_name,
 			password: createTeacherDto.password,
 		});
-		await this.TeacherEntity.create({
+		removeCredentails(createTeacherDto);
+		this.TeacherEntity.create({
 			credential_id: credentail.credential_id,
-			first_name: createTeacherDto.first_name,
-			middle_name: createTeacherDto.middle_name,
-			last_name: createTeacherDto.last_name,
-			location: createTeacherDto.location,
-			phone_number: createTeacherDto.phone_number,
-			salary: createTeacherDto.salary,
-			birth_day: createTeacherDto.birth_day,
-			gender: createTeacherDto.gender,
-			nationality: createTeacherDto.nationality,
+			...createTeacherDto,
 		});
 		return "done";
 	}
@@ -71,7 +65,6 @@ export class TeachersService {
 		if (middle_name)
 			whereOption["middle_name"] = { [Op.regexp]: middle_name };
 
-		console.info(whereOption);
 		return this.TeacherEntity.findAll({
 			where: {
 				[Op.and]: whereOption,

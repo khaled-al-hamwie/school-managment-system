@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import removeCredentails from "src/core/transformers/removeCredentails.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
@@ -21,14 +22,10 @@ export class ManagersService {
 			user_name: createManagerDto.user_name,
 			password: createManagerDto.password,
 		});
-		await this.ManagerEntity.create({
+		removeCredentails(createManagerDto);
+		this.ManagerEntity.create({
 			credential_id: credentail.credential_id,
-			first_name: createManagerDto.first_name,
-			middle_name: createManagerDto.middle_name,
-			last_name: createManagerDto.last_name,
-			location: createManagerDto.location,
-			phone_number: createManagerDto.phone_number,
-			salary: createManagerDto.salary,
+			...createManagerDto,
 		});
 		return "done";
 	}
