@@ -2,6 +2,7 @@ import { DynamicModule } from "@nestjs/common";
 import { SequelizeModule, SequelizeModuleOptions } from "@nestjs/sequelize";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import Manager from "src/modules/managers/entities/manager.entity";
+import Student from "src/modules/students/entities/student.entity";
 import Teacher from "src/modules/teachers/entities/teacher.entity";
 import { DEVELOPMENT, PRODUCTION, TEST } from "../constants";
 import { databaseConfig } from "./database.config";
@@ -24,7 +25,7 @@ switch (process.env.NODE_ENV) {
 createDatabase(config.username, config.password, config.database);
 export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
 	...config,
-	models: [Credential, Manager, Teacher],
+	models: [Credential, Manager, Teacher, Student],
 	// sync: {
 	// 	force: true,
 	// },
