@@ -24,12 +24,9 @@ export class CredentialsService {
 			user_name: createCredentialDto.user_name,
 		});
 		if (deplicateCredentails) {
-			throw new ConflictException(
-				[{ user_name: "user_name can't be used" }],
-				{
-					description: "Forbidden",
-				}
-			);
+			throw new ConflictException(["user_name can't be used"], {
+				description: "Forbidden",
+			});
 		}
 		try {
 			const password = await hash(createCredentialDto.password, 12);

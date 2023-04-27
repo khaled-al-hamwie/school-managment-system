@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsISO8601, IsOptional, IsPhoneNumber } from "class-validator";
 import tolowerCaseTransform from "src/core/transformers/tolowercase.transform";
@@ -6,6 +7,12 @@ import { CreateCredentialDto } from "src/modules/credentials/dto/create-credenti
 import { StudentAttributes } from "../interfaces/student.interface";
 
 export class CreateStudentDto extends CreateCredentialDto {
+	@ApiProperty({
+		description: "The first name of the student",
+		type: String,
+		minimum: 3,
+		maximum: 16,
+	})
 	@NameValidator(3, 16)
 	first_name: StudentAttributes["first_name"];
 
