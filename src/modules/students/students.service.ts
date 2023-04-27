@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import {
+	ForbiddenException,
+	Injectable,
+	NotFoundException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { WhereOptions } from "sequelize";
 import removeCredentails from "src/core/transformers/removeCredentails.transform";
@@ -60,7 +64,18 @@ export class StudentsService {
 		});
 	}
 
-	update(id: number, updateStudentDto: UpdateStudentDto) {
-		return `This action updates a #${id} student`;
+	async update(
+		student_id: StudentAttributes["student_id"],
+		updateStudentDto: UpdateStudentDto
+	) {
+		const student = await this.findOne({ student_id });
+		if (!student) throw new NotFoundException("student dosen't exists");
+		student.update(updateStudentDto).then((output) => output.save());
+		if (updateStudentDto.password)
+			this.credentailsService.update(
+				student.credential_id,
+				updateStudentDto.password
+			);
+		return "done";
 	}
 }

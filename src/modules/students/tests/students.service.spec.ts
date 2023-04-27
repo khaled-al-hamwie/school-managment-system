@@ -44,16 +44,16 @@ describe("StudentsService", () => {
 		const output = await service.findOne({ father_name: "fdsafdsa" });
 		expect(output).not.toBeNull();
 	});
-	// it("should update", async () => {
-	// 	body["first_name"] = "khaled al ha";
-	// 	const output = await service.update(
-	// 		(
-	// 			await service.findOne({ father_name: "fdsafdsa" })
-	// 		).student_id,
-	// 		body
-	// 	);
-	// 	expect(output).toBe("done");
-	// });
+	it("should update", async () => {
+		body["first_name"] = "khaled al ha";
+		const output = await service.update(
+			(
+				await service.findOne({ father_name: "fdsafdsa" })
+			).student_id,
+			body
+		);
+		expect(output).toBe("done");
+	});
 	it("should login ", async () => {
 		const output = await service.login({
 			user_name: body.user_name,
