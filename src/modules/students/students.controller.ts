@@ -9,6 +9,7 @@ import {
 	ParseIntPipe,
 	Patch,
 	Post,
+	Query,
 	UseGuards,
 } from "@nestjs/common";
 import { User } from "src/core/decorators/user.decorator";
@@ -16,6 +17,7 @@ import ManagerGuard from "src/core/guards/manager.guard";
 import StudentGuard from "src/core/guards/student.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateStudentDto } from "./dto/create-student.dto";
+import { FindAllStudentDto } from "./dto/findAll-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
 import { StudentAttributes } from "./interfaces/student.interface";
 import { StudentsService } from "./students.service";
@@ -38,8 +40,8 @@ export class StudentsController {
 
 	@UseGuards(ManagerGuard)
 	@Get()
-	findAll() {
-		return this.studentsService.findAll();
+	findAll(@Query() query: FindAllStudentDto) {
+		return this.studentsService.findAll(query);
 	}
 
 	@UseGuards(StudentGuard)

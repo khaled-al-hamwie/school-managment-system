@@ -4,12 +4,13 @@ import {
 	NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { WhereOptions } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
 import removeCredentails from "src/core/transformers/removeCredentails.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
 import { CreateStudentDto } from "./dto/create-student.dto";
+import { FindAllStudentDto } from "./dto/findAll-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
 import Student from "./entities/student.entity";
 import { StudentAttributes } from "./interfaces/student.interface";
@@ -53,8 +54,17 @@ export class StudentsService {
 		});
 	}
 
-	findAll() {
-		return `This action returns all students`;
+	findAll(query: FindAllStudentDto) {
+		const whereOptions: WhereOptions<StudentAttributes> = {};
+		for (const key in query) {
+			if (Object.prototype.hasOwnProperty.call(query, key)) {
+				whereOptions[key] = { [Op.regexp]: query[key] };
+			}
+		}
+		return this.StudentEntity.findAll({
+			where: whereOptions,
+			attributes: { exclude: ["credential_id"] },
+		});
 	}
 
 	async findOne(options: WhereOptions<StudentAttributes>) {
