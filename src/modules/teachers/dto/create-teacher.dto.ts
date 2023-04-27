@@ -1,4 +1,4 @@
-import { Transform, TransformFnParams } from "class-transformer";
+import { Transform } from "class-transformer";
 import {
 	IsISO8601,
 	IsNumber,

@@ -20,4 +20,4 @@ import { TeachersService } from "./teachers.service";
 	providers: [TeachersService, ManagerStrategy, TeacherStrategy],
 	exports: [TeachersService],
 })
-export class TeachersModule {}
+export class TeachersModule { }

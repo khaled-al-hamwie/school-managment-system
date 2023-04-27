@@ -1,8 +1,10 @@
 import {
 	BelongsTo,
+	BelongsToMany,
 	Column,
 	DataType,
 	ForeignKey,
+	HasMany,
 	Model,
 	PrimaryKey,
 	Table,
@@ -12,12 +14,10 @@ import {
 	TeacherAttributes,
 	TeacherCreationAttributes,
 } from "../interfaces/teacher.interface";
-
 @Table
 export default class Teacher
 	extends Model<TeacherAttributes, TeacherCreationAttributes>
-	implements TeacherCreationAttributes
-{
+	implements TeacherCreationAttributes {
 	@PrimaryKey
 	@Column({
 		autoIncrement: true,
@@ -91,4 +91,9 @@ export default class Teacher
 
 	@BelongsTo(() => Credential)
 	credentail: Credential;
+
+	// @HasMany(() => Teach)
+	// teaches: Teach[];
+
 }
+
