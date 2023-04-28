@@ -22,7 +22,9 @@ export default class ManagerStrategy extends PassportStrategy(
 		if (!id) {
 			throw new UnauthorizedException();
 		}
-		const admin = await this.managersService.findOne(payload.manager_id);
+		const admin = await this.managersService.findOne({
+			manager_id: payload.manager_id,
+		});
 		if (!admin) {
 			throw new UnauthorizedException();
 		}
