@@ -11,6 +11,7 @@ import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
 import { Credential } from "../credentials/entities/credential.entity";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
+import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import Teacher from "./entities/teacher.entity";
 import { TeacherAttributes } from "./interfaces/teacher.interface";
@@ -53,22 +54,16 @@ export class TeachersService {
 		});
 	}
 
-	findAll(
-		{ first_name, last_name, middle_name, gender }: any,
-		offset: number = 0
-	) {
-		let whereOption: WhereOptions<TeacherAttributes> = {};
-		if (gender && (gender == "f" || gender == "m"))
-			whereOption["gender"] = gender;
-		if (first_name) whereOption["first_name"] = { [Op.regexp]: first_name };
-		if (last_name) whereOption["last_name"] = { [Op.regexp]: last_name };
-		if (middle_name)
-			whereOption["middle_name"] = { [Op.regexp]: middle_name };
-
+	findAll(query: FindAllTeacherDto, offset: number = 0) {
+		const whereOptions: WhereOptions<TeacherAttributes> = {};
+		for (const key in query) {
+			if (Object.prototype.hasOwnProperty.call(query, key)) {
+				whereOptions[key] = { [Op.regexp]: query[key] };
+			}
+		}
 		return this.TeacherEntity.findAll({
-			where: {
-				[Op.and]: whereOption,
-			},
+			where: whereOptions,
+			attributes: { exclude: ["credential_id"] },
 			include: {
 				model: Credential,
 				attributes: { exclude: ["password"] },
