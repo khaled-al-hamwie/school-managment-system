@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
 import cleanCredential from "src/core/database/database.cleanCredentail";
+import { setTimeout } from "timers/promises";
 import { CreateStudentDto } from "../dto/create-student.dto";
 import { StudentsService } from "../students.service";
 
@@ -41,6 +42,7 @@ describe("StudentsService", () => {
 		expect(output).toBe("done");
 	});
 	it("should find", async () => {
+		await setTimeout(1000);
 		const output = await service.findOne({ father_name: "fdsafdsa" });
 		expect(output).not.toBeNull();
 	});
