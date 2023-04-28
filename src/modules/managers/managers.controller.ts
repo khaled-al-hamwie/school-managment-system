@@ -5,15 +5,20 @@ import {
 	Get,
 	HttpCode,
 	HttpStatus,
+	NotFoundException,
 	Param,
+	ParseIntPipe,
 	Patch,
 	Post,
+	Query,
 	UseGuards,
 } from "@nestjs/common";
 import ManagerGuard from "src/core/guards/manager.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateManagerDto } from "./dto/create-manager.dto";
+import { FindAllManagerDto } from "./dto/findAll-manager.dto";
 import { UpdateManagerDto } from "./dto/update-manager.dto";
+import { ManagerAttributes } from "./interfaces/manager.interface";
 import { ManagersService } from "./managers.service";
 
 @Controller("managers")
@@ -33,25 +38,29 @@ export class ManagersController {
 	}
 
 	@Get()
-	findAll() {
-		return this.managersService.findAll();
+	findAll(
+		@Query() query: FindAllManagerDto,
+		@Query("page", ParseIntPipe) page: number
+	) {
+		return this.managersService.findAll(query, page);
 	}
 
+	@UseGuards(ManagerGuard)
 	@Get(":id")
-	findOne(@Param("id") id: string) {
-		return this.managersService.findOne(+id);
+	async findOne(
+		@Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"]
+	) {
+		const manager = await this.managersService.findOne({ manager_id });
+		if (!manager) throw new NotFoundException("teacher does'nt exists");
+		return manager;
 	}
 
+	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(
-		@Param("id") id: string,
+		@Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"],
 		@Body() updateManagerDto: UpdateManagerDto
 	) {
-		return this.managersService.update(+id, updateManagerDto);
-	}
-
-	@Delete(":id")
-	remove(@Param("id") id: string) {
-		return this.managersService.remove(+id);
+		return this.managersService.update(+manager_id, updateManagerDto);
 	}
 }

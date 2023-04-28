@@ -1,4 +1,4 @@
-import { IsEmail, Max, NotContains } from "class-validator";
+import { IsEmail, NotContains } from "class-validator";
 import NameValidator from "src/core/validators/name.validator";
 import { CredentialAttributes } from "../interfaces/credential.interface";
 

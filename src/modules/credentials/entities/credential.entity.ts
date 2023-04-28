@@ -1,9 +1,11 @@
 import {
 	Column,
+	CreatedAt,
 	DataType,
 	Model,
 	PrimaryKey,
 	Table,
+	UpdatedAt,
 } from "sequelize-typescript";
 import {
 	CredentialAttributes,
@@ -32,7 +34,6 @@ export class Credential
 	@Column({
 		type: DataType.STRING(500),
 		allowNull: false,
-		unique: true,
 	})
 	email: string;
 
@@ -41,4 +42,18 @@ export class Credential
 		allowNull: false,
 	})
 	password: string;
+
+	@CreatedAt
+	@Column({
+		allowNull: false,
+		defaultValue: new Date(),
+	})
+	created_at: Date;
+
+	@UpdatedAt
+	@Column({
+		allowNull: false,
+		defaultValue: new Date(),
+	})
+	updated_at: Date;
 }

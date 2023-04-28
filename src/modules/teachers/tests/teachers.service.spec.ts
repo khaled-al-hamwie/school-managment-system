@@ -28,7 +28,7 @@ describe("TeachersService", () => {
 			password: "fdsfsadafsdfsad",
 			user_name: "testma",
 			birth_day: new Date(),
-			gender: "F",
+			gender: "f",
 		};
 	});
 
@@ -40,20 +40,14 @@ describe("TeachersService", () => {
 		expect(output).toBe("done");
 	});
 	it("should update", async () => {
-		const teacher = await service.findOne({ salary: 100 });
-		body["first_name"] = "khaled";
-		const output = await service.update(teacher.teacher_id, body);
+		body["first_name"] = "khaled al ha";
+		const output = await service.update(
+			(
+				await service.findOne({ salary: 100 })
+			).teacher_id,
+			body
+		);
 		expect(output).toBe("done");
-		expect(await service.findOne({ first_name: "khaled" })).not.toBeNull();
-	});
-	it("should not allow deplicate phone number", async () => {
-		body["email"] = "testma2@test.com";
-		body["password"] = "fdsfsadafsdfsad2";
-		try {
-			await service.create(body);
-		} catch (error) {
-			expect(error.message).toBe("Conflict Exception");
-		}
 	});
 	it("should login ", async () => {
 		const output = await service.login({

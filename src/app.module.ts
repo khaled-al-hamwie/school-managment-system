@@ -5,6 +5,7 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { databaseProvider } from "./core/database/database.providers";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
+import { StudentsModule } from './modules/students/students.module';
 
 @Module({
 	imports: [
@@ -13,6 +14,7 @@ import { TeachersModule } from "./modules/teachers/teachers.module";
 		databaseProvider,
 		ManagersModule,
 		TeachersModule,
+		StudentsModule,
 	],
 	providers: [
 		{

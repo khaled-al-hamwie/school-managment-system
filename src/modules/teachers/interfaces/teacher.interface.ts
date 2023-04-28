@@ -1,4 +1,5 @@
 import { Optional } from "sequelize";
+import { Gender } from "src/core/types/gender.type";
 
 export interface TeacherAttributes {
 	teacher_id?: number;
@@ -7,7 +8,7 @@ export interface TeacherAttributes {
 	middle_name: string;
 	last_name: string;
 	birth_day: Date | string;
-	gender: string;
+	gender: Gender;
 	nationality?: string;
 	phone_number: string;
 	location: string;

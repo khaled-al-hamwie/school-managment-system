@@ -1,14 +1,17 @@
 import {
-	ConflictException,
 	ForbiddenException,
 	Injectable,
+	NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { ValidationError } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
+import removeCredentails from "src/core/transformers/removeCredentails.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
+import { Credential } from "../credentials/entities/credential.entity";
 import { CreateManagerDto } from "./dto/create-manager.dto";
+import { FindAllManagerDto } from "./dto/findAll-manager.dto";
 import { UpdateManagerDto } from "./dto/update-manager.dto";
 import Manager from "./entities/manager.entity";
 import { ManagerAttributes } from "./interfaces/manager.interface";
@@ -26,25 +29,12 @@ export class ManagersService {
 			user_name: createManagerDto.user_name,
 			password: createManagerDto.password,
 		});
-		try {
-			await this.ManagerEntity.create({
-				credential_id: credentail.credential_id,
-				first_name: createManagerDto.first_name,
-				middle_name: createManagerDto.middle_name,
-				last_name: createManagerDto.last_name,
-				location: createManagerDto.location,
-				phone_number: createManagerDto.phone_number,
-				salary: createManagerDto.salary,
-			});
-			return "done";
-		} catch (error) {
-			if (error instanceof ValidationError) {
-				this.credentailsService.remove(credentail.credential_id);
-				throw new ConflictException([error.errors[0].message], {
-					description: "Forbidden",
-				});
-			}
-		}
+		removeCredentails(createManagerDto);
+		this.ManagerEntity.create({
+			credential_id: credentail.credential_id,
+			...createManagerDto,
+		});
+		return "done";
 	}
 	async login(body: CreateAuthDto) {
 		const credentail = await this.credentailsService.verify(body);
@@ -64,19 +54,45 @@ export class ManagersService {
 			user_name: credentail.user_name,
 		});
 	}
-	findAll() {
-		return `This action returns all managers`;
+	findAll(query: FindAllManagerDto, offset: number = 0) {
+		const whereOptions: WhereOptions<ManagerAttributes> = {};
+		for (const key in query) {
+			if (Object.prototype.hasOwnProperty.call(query, key)) {
+				whereOptions[key] = { [Op.regexp]: query[key] };
+			}
+		}
+		return this.ManagerEntity.findAll({
+			where: whereOptions,
+			attributes: { exclude: ["credential_id"] },
+			include: {
+				model: Credential,
+				attributes: { exclude: ["password"] },
+			},
+			offset,
+			limit: 5,
+			order: [["first_name", "ASC"]],
+		});
 	}
 
-	async findOne(id: ManagerAttributes["manager_id"]) {
-		return this.ManagerEntity.findByPk(id);
+	async findOne(options: WhereOptions<ManagerAttributes>) {
+		return this.ManagerEntity.findOne({
+			where: options,
+			limit: 1,
+		});
 	}
 
-	update(id: number, updateManagerDto: UpdateManagerDto) {
-		return `This action updates a #${id} manager`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} manager`;
+	async update(
+		manager_id: ManagerAttributes["manager_id"],
+		updateManagerDto: UpdateManagerDto
+	) {
+		const manager = await this.findOne({ manager_id });
+		if (!manager) throw new NotFoundException("manager dosen't exists");
+		manager.update(updateManagerDto).then((output) => output.save());
+		if (updateManagerDto.password)
+			this.credentailsService.update(
+				manager.credential_id,
+				updateManagerDto.password
+			);
+		return "done";
 	}
 }

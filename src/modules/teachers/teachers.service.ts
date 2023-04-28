@@ -1,16 +1,17 @@
 import {
-	ConflictException,
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Op, ValidationError, WhereOptions } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
+import removeCredentails from "src/core/transformers/removeCredentails.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
 import { Credential } from "../credentials/entities/credential.entity";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
+import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import Teacher from "./entities/teacher.entity";
 import { TeacherAttributes } from "./interfaces/teacher.interface";
@@ -28,28 +29,12 @@ export class TeachersService {
 			user_name: createTeacherDto.user_name,
 			password: createTeacherDto.password,
 		});
-		try {
-			await this.TeacherEntity.create({
-				credential_id: credentail.credential_id,
-				first_name: createTeacherDto.first_name,
-				middle_name: createTeacherDto.middle_name,
-				last_name: createTeacherDto.last_name,
-				location: createTeacherDto.location,
-				phone_number: createTeacherDto.phone_number,
-				salary: createTeacherDto.salary,
-				birth_day: createTeacherDto.birth_day,
-				gender: createTeacherDto.gender,
-				nationality: createTeacherDto.nationality,
-			});
-			return "done";
-		} catch (error) {
-			if (error instanceof ValidationError) {
-				this.credentailsService.remove(credentail.credential_id);
-				throw new ConflictException([error.errors[0].message], {
-					description: "Conflict",
-				});
-			}
-		}
+		removeCredentails(createTeacherDto);
+		this.TeacherEntity.create({
+			credential_id: credentail.credential_id,
+			...createTeacherDto,
+		});
+		return "done";
 	}
 
 	async login(body: CreateAuthDto) {
@@ -69,23 +54,16 @@ export class TeachersService {
 		});
 	}
 
-	findAll(
-		{ first_name, last_name, middle_name, gender }: any,
-		offset: number = 0
-	) {
-		let whereOption: WhereOptions<TeacherAttributes> = {};
-		if (gender && (gender == "f" || gender == "m"))
-			whereOption["gender"] = gender;
-		if (first_name) whereOption["first_name"] = { [Op.regexp]: first_name };
-		if (last_name) whereOption["last_name"] = { [Op.regexp]: last_name };
-		if (middle_name)
-			whereOption["middle_name"] = { [Op.regexp]: middle_name };
-
-		console.info(whereOption);
+	findAll(query: FindAllTeacherDto, offset: number = 0) {
+		const whereOptions: WhereOptions<TeacherAttributes> = {};
+		for (const key in query) {
+			if (Object.prototype.hasOwnProperty.call(query, key)) {
+				whereOptions[key] = { [Op.regexp]: query[key] };
+			}
+		}
 		return this.TeacherEntity.findAll({
-			where: {
-				[Op.and]: whereOption,
-			},
+			where: whereOptions,
+			attributes: { exclude: ["credential_id"] },
 			include: {
 				model: Credential,
 				attributes: { exclude: ["password"] },
@@ -109,7 +87,7 @@ export class TeachersService {
 	) {
 		const teacher = await this.findOne({ teacher_id });
 		if (!teacher) throw new NotFoundException("teacher dosen't exists");
-		(await teacher.update(updateTeacherDto)).save();
+		teacher.update(updateTeacherDto).then((output) => output.save());
 		if (updateTeacherDto.password)
 			this.credentailsService.update(
 				teacher.credential_id,

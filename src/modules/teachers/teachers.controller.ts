@@ -4,6 +4,7 @@ import {
 	Get,
 	HttpCode,
 	HttpStatus,
+	NotFoundException,
 	Param,
 	ParseIntPipe,
 	Patch,
@@ -11,9 +12,12 @@ import {
 	Query,
 	UseGuards,
 } from "@nestjs/common";
+import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
+import TeacherGuard from "src/core/guards/teacher.guard";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
+import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import { TeacherAttributes } from "./interfaces/teacher.interface";
 import { TeachersService } from "./teachers.service";
@@ -37,26 +41,28 @@ export class TeachersController {
 	@UseGuards(ManagerGuard)
 	@Get()
 	findAll(
-		@Query("first_name") first_name: TeacherAttributes["first_name"],
-		@Query("middle_name") middle_name: TeacherAttributes["middle_name"],
-		@Query("last_name") last_name: TeacherAttributes["last_name"],
-		@Query("gender") gender: TeacherAttributes["gender"],
-		@Query("page") page: number
+		@Query() query: FindAllTeacherDto,
+		@Query("page", ParseIntPipe) page: number
 	) {
-		return this.teachersService.findAll(
-			{
-				first_name,
-				last_name,
-				middle_name,
-				gender,
-			},
-			page
-		);
+		return this.teachersService.findAll(query, page);
 	}
 
+	@UseGuards(TeacherGuard)
+	@Get("profile")
+	showProfile(
+		@User("teacher_id") teacher_id: TeacherAttributes["teacher_id"]
+	) {
+		return this.teachersService.findOne({ teacher_id });
+	}
+
+	@UseGuards(ManagerGuard)
 	@Get(":id")
-	findOne(@Param("id") id: string) {
-		return "not done";
+	async findOne(
+		@Param("id", ParseIntPipe) teacher_id: TeacherAttributes["teacher_id"]
+	) {
+		const teacher = await this.teachersService.findOne({ teacher_id });
+		if (!teacher) throw new NotFoundException("teacher does'nt exists");
+		return teacher;
 	}
 
 	@UseGuards(ManagerGuard)

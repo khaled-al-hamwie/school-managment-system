@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { compare, hash } from "bcryptjs";
-import { Op, WhereOptions } from "sequelize";
+import { WhereOptions } from "sequelize";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateCredentialDto } from "./dto/create-credential.dto";
 import { UpdateCredentialDto } from "./dto/update-credential.dto";
@@ -20,35 +20,13 @@ export class CredentialsService {
 		private readonly CredentailEntity: typeof Credential
 	) {}
 	async create(createCredentialDto: CreateCredentialDto) {
-		const deplicateCredentails = await this.CredentailEntity.findAll({
-			where: {
-				[Op.or]: [
-					{
-						email: createCredentialDto.email,
-					},
-					{
-						user_name: createCredentialDto.user_name,
-					},
-				],
-			},
-			limit: 2,
+		const deplicateCredentails = await this.findOne({
+			user_name: createCredentialDto.user_name,
 		});
-		if (deplicateCredentails.length > 0) {
-			const email: string = deplicateCredentails.filter(
-				(val) => val.email == createCredentialDto.email
-			)[0]?.email;
-			const user_name = deplicateCredentails.filter(
-				(val) => val.user_name == createCredentialDto.user_name
-			)[0]?.user_name;
-			throw new ConflictException(
-				[
-					email ? "email can't be used" : null,
-					user_name ? "user_name can't be used" : null,
-				],
-				{
-					description: "Forbidden",
-				}
-			);
+		if (deplicateCredentails) {
+			throw new ConflictException(["user_name can't be used"], {
+				description: "Forbidden",
+			});
 		}
 		try {
 			const password = await hash(createCredentialDto.password, 12);

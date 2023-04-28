@@ -54,7 +54,6 @@ export default class Manager
 	@Column({
 		type: DataType.STRING(20),
 		allowNull: false,
-		unique: true,
 	})
 	phone_number: string;
 
