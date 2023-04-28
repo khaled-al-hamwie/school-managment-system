@@ -1,29 +1,25 @@
 import { IsEnum, IsISO8601, IsOptional, IsString } from "class-validator";
 import { GenderEnum } from "src/core/enums/gender.enum";
-import { Gender } from "src/core/types/gender.type";
+import { StudentAttributes } from "../interfaces/student.interface";
 
 export class FindAllStudentDto {
 	@IsOptional()
 	@IsString()
-	first_name: string;
+	first_name: StudentAttributes["first_name"];
 
 	@IsOptional()
 	@IsString()
-	last_name: string;
+	last_name: StudentAttributes["last_name"];
 
 	@IsOptional()
 	@IsString()
-	father_name: string;
+	father_name: StudentAttributes["father_name"];
 
 	@IsOptional()
 	@IsString()
-	mother_name: string;
+	mother_name: StudentAttributes["mother_name"];
 
 	@IsOptional()
 	@IsEnum(GenderEnum)
-	gender: Gender;
-
-	@IsOptional()
-	@IsISO8601()
-	birth_day: string;
+	gender: StudentAttributes["gender"];
 }
