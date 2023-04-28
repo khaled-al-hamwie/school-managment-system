@@ -3,9 +3,10 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { databaseProvider } from "./core/database/database.providers";
+import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
+import { StudentsModule } from "./modules/students/students.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
-import { StudentsModule } from './modules/students/students.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { StudentsModule } from './modules/students/students.module';
 		ManagersModule,
 		TeachersModule,
 		StudentsModule,
+		ClassesModule,
 	],
 	providers: [
 		{
