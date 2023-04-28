@@ -14,7 +14,7 @@ describe("create student dto", () => {
 			mother_name: "test f",
 
 			birth_day: new Date().toISOString(),
-			gender: "F",
+			gender: "f",
 			nationality: "Uk",
 			location: "damascus ,syria",
 
@@ -98,6 +98,7 @@ describe("create student dto", () => {
 			const erros: ValidationError[] = await validate(ofImportDto);
 			expect(erros[0].property).toEqual(`${attr}`);
 			expect(erros[0].constraints).toEqual({
+				isEnum: `${attr} must be one of the following values: f, m`,
 				isString: `${attr} must be a string`,
 				isLength: `${attr} must be longer than or equal to 1 characters`,
 			});
@@ -108,6 +109,7 @@ describe("create student dto", () => {
 			const erros: ValidationError[] = await validate(ofImportDto);
 			expect(erros[0].property).toEqual(`${attr}`);
 			expect(erros[0].constraints).toEqual({
+				isEnum: `${attr} must be one of the following values: f, m`,
 				isLength: `${attr} must be longer than or equal to 1 characters`,
 			});
 		});
@@ -117,7 +119,17 @@ describe("create student dto", () => {
 			const erros: ValidationError[] = await validate(ofImportDto);
 			expect(erros[0].property).toEqual(`${attr}`);
 			expect(erros[0].constraints).toEqual({
+				isEnum: `${attr} must be one of the following values: f, m`,
 				isLength: `${attr} must be shorter than or equal to 2 characters`,
+			});
+		});
+		it(`should not wrong ${attr}`, async () => {
+			body[attr] = `a`;
+			const ofImportDto = plainToInstance(CreateStudentDto, body);
+			const erros: ValidationError[] = await validate(ofImportDto);
+			expect(erros[0].property).toEqual(`${attr}`);
+			expect(erros[0].constraints).toEqual({
+				isEnum: `${attr} must be one of the following values: f, m`,
 			});
 		});
 	});

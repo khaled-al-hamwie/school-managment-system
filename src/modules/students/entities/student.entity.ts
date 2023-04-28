@@ -7,6 +7,7 @@ import {
 	PrimaryKey,
 	Table,
 } from "sequelize-typescript";
+import { Gender } from "src/core/types/gender.type";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import {
 	StudentAttributes,
@@ -67,7 +68,7 @@ export default class Student
 		type: DataType.STRING(2),
 		allowNull: false,
 	})
-	gender: string;
+	gender: Gender;
 
 	@Column({
 		type: DataType.STRING(10),

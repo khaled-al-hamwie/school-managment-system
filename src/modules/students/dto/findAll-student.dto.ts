@@ -1,4 +1,6 @@
 import { IsEnum, IsISO8601, IsOptional, IsString } from "class-validator";
+import { GenderEnum } from "src/core/enums/gender.enum";
+import { Gender } from "src/core/types/gender.type";
 
 export class FindAllStudentDto {
 	@IsOptional()
@@ -18,8 +20,8 @@ export class FindAllStudentDto {
 	mother_name: string;
 
 	@IsOptional()
-	@IsEnum(["f", "m"])
-	gender: "f" | "m";
+	@IsEnum(GenderEnum)
+	gender: Gender;
 
 	@IsOptional()
 	@IsISO8601()

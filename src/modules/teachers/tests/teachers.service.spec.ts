@@ -28,7 +28,7 @@ describe("TeachersService", () => {
 			password: "fdsfsadafsdfsad",
 			user_name: "testma",
 			birth_day: new Date(),
-			gender: "F",
+			gender: "f",
 		};
 	});
 

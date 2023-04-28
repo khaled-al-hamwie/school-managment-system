@@ -1,11 +1,13 @@
 import { Transform } from "class-transformer";
 import {
+	IsEnum,
 	IsISO8601,
 	IsNumber,
 	IsOptional,
 	IsPhoneNumber,
 	IsPositive,
 } from "class-validator";
+import { GenderEnum } from "src/core/enums/gender.enum";
 import tolowerCaseTransform from "src/core/transformers/tolowercase.transform";
 import NameValidator from "src/core/validators/name.validator";
 import { CreateCredentialDto } from "src/modules/credentials/dto/create-credential.dto";
@@ -26,6 +28,7 @@ export class CreateTeacherDto extends CreateCredentialDto {
 
 	@Transform(tolowerCaseTransform)
 	@NameValidator(1, 2)
+	@IsEnum(GenderEnum)
 	gender: TeacherAttributes["gender"];
 
 	@IsOptional()
