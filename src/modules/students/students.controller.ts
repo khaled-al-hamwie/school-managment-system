@@ -40,8 +40,11 @@ export class StudentsController {
 
 	@UseGuards(ManagerGuard)
 	@Get()
-	findAll(@Query() query: FindAllStudentDto) {
-		return this.studentsService.findAll(query);
+	findAll(
+		@Query() query: FindAllStudentDto,
+		@Query("page", ParseIntPipe) page: number
+	) {
+		return this.studentsService.findAll(query, page);
 	}
 
 	@UseGuards(StudentGuard)

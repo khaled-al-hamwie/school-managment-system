@@ -9,6 +9,7 @@ import removeCredentails from "src/core/transformers/removeCredentails.transform
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
+import { Credential } from "../credentials/entities/credential.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { FindAllStudentDto } from "./dto/findAll-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
@@ -54,7 +55,7 @@ export class StudentsService {
 		});
 	}
 
-	findAll(query: FindAllStudentDto) {
+	findAll(query: FindAllStudentDto, offset: number = 0) {
 		const whereOptions: WhereOptions<StudentAttributes> = {};
 		for (const key in query) {
 			if (Object.prototype.hasOwnProperty.call(query, key)) {
@@ -64,6 +65,13 @@ export class StudentsService {
 		return this.StudentEntity.findAll({
 			where: whereOptions,
 			attributes: { exclude: ["credential_id"] },
+			include: {
+				model: Credential,
+				attributes: { exclude: ["password"] },
+			},
+			offset,
+			limit: 5,
+			order: [["first_name", "ASC"]],
 		});
 	}
 
