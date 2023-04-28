@@ -1,3 +1,4 @@
+import { Logger } from "@nestjs/common";
 import { createConnection } from "mysql2/promise";
 
 export default async function createDatabase(
@@ -6,6 +7,9 @@ export default async function createDatabase(
 	name: string
 ) {
 	await createConnection({ user: user_name, password }).then((connection) => {
+		new Logger("SequelizeQuery").verbose(
+			`CREATE DATABASE IF NOT EXISTS ${name};`
+		);
 		connection.query(`CREATE DATABASE IF NOT EXISTS ${name};`);
 	});
 }

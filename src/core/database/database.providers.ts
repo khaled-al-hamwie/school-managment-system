@@ -1,4 +1,4 @@
-import { DynamicModule } from "@nestjs/common";
+import { DynamicModule, Logger } from "@nestjs/common";
 import { SequelizeModule, SequelizeModuleOptions } from "@nestjs/sequelize";
 import { Class } from "src/modules/classes/entities/class.entity";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
@@ -41,7 +41,13 @@ export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
 		Teach,
 		Lecture,
 	],
+	// autoLoadModels: true,
+	// synchronize: true,
+	logging: (Entity) =>
+		new Logger("SequelizeQuery").verbose(
+			"\n" + Entity.split("Executing (default): ")[1]
+		),
 	// sync: {
-	// 	force: true,
+	// force: true,
 	// },
 });
