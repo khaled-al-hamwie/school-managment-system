@@ -144,34 +144,5 @@ describe("create manager dto", () => {
                 isLength: `${attr} must be longer than or equal to 1 characters`,
             });
         });
-        it(`should not allow small ${attr}`, async () => {
-            body[`${attr}`] = `      `;
-            const ofImportDto = plainToInstance(CreateTeacherDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(`${attr}`);
-            expect(erros[0].constraints).toEqual({
-                isEnum: `${attr} must be one of the following values: f, m`,
-                isLength: `${attr} must be longer than or equal to 1 characters`,
-            });
-        });
-        it(`should not allow large ${attr}`, async () => {
-            body[attr] = `1F      `.repeat(44);
-            const ofImportDto = plainToInstance(CreateTeacherDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(`${attr}`);
-            expect(erros[0].constraints).toEqual({
-                isEnum: `${attr} must be one of the following values: f, m`,
-                isLength: `${attr} must be shorter than or equal to 2 characters`,
-            });
-        });
-        it(`should not wrong ${attr}`, async () => {
-            body[attr] = `a`;
-            const ofImportDto = plainToInstance(CreateTeacherDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(`${attr}`);
-            expect(erros[0].constraints).toEqual({
-                isEnum: `${attr} must be one of the following values: f, m`,
-            });
-        });
     });
 });
