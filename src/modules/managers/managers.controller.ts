@@ -1,17 +1,16 @@
 import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	HttpCode,
-	HttpStatus,
-	NotFoundException,
-	Param,
-	ParseIntPipe,
-	Patch,
-	Post,
-	Query,
-	UseGuards,
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    NotFoundException,
+    Param,
+    ParseIntPipe,
+    Patch,
+    Post,
+    Query,
+    UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/guards/manager.guard";
@@ -26,49 +25,49 @@ import { ManagersService } from "./managers.service";
 @ApiTags(MANAGER_TAG, WEB_TAG)
 @Controller("managers")
 export class ManagersController {
-	constructor(private readonly managersService: ManagersService) {}
+    constructor(private readonly managersService: ManagersService) {}
 
-	@ApiBearerAuth("Authorization")
-	@UseGuards(ManagerGuard)
-	@Post()
-	create(@Body() createManagerDto: CreateManagerDto) {
-		return this.managersService.create(createManagerDto);
-	}
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Post()
+    create(@Body() createManagerDto: CreateManagerDto) {
+        return this.managersService.create(createManagerDto);
+    }
 
-	@Post("/login")
-	@HttpCode(HttpStatus.OK)
-	login(@Body() body: CreateAuthDto) {
-		return this.managersService.login(body);
-	}
+    @Post("/login")
+    @HttpCode(HttpStatus.OK)
+    login(@Body() body: CreateAuthDto) {
+        return this.managersService.login(body);
+    }
 
-	@ApiBearerAuth("Authorization")
-	@UseGuards(ManagerGuard)
-	@Get()
-	findAll(
-		@Query() query: FindAllManagerDto,
-		@Query("page", ParseIntPipe) page: number
-	) {
-		return this.managersService.findAll(query, page);
-	}
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Get()
+    findAll(
+        @Query() query: FindAllManagerDto,
+        @Query("page", ParseIntPipe) page: number
+    ) {
+        return this.managersService.findAll(query, page);
+    }
 
-	@ApiBearerAuth("Authorization")
-	@UseGuards(ManagerGuard)
-	@Get(":id")
-	async findOne(
-		@Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"]
-	) {
-		const manager = await this.managersService.findOne({ manager_id });
-		if (!manager) throw new NotFoundException("teacher does'nt exists");
-		return manager;
-	}
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Get(":id")
+    async findOne(
+        @Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"]
+    ) {
+        const manager = await this.managersService.findOne({ manager_id });
+        if (!manager) throw new NotFoundException("teacher does'nt exists");
+        return manager;
+    }
 
-	@ApiBearerAuth("Authorization")
-	@UseGuards(ManagerGuard)
-	@Patch(":id")
-	update(
-		@Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"],
-		@Body() updateManagerDto: UpdateManagerDto
-	) {
-		return this.managersService.update(+manager_id, updateManagerDto);
-	}
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Patch(":id")
+    update(
+        @Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"],
+        @Body() updateManagerDto: UpdateManagerDto
+    ) {
+        return this.managersService.update(+manager_id, updateManagerDto);
+    }
 }

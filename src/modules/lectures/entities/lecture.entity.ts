@@ -1,11 +1,24 @@
-import { LectureAttributes, LectureCreationAttributes } from "../interfaces/lecture.interface";
-import { BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import {
+    LectureAttributes,
+    LectureCreationAttributes,
+} from "../interfaces/lecture.interface";
+import {
+    BelongsTo,
+    Column,
+    DataType,
+    ForeignKey,
+    Model,
+    PrimaryKey,
+    Table,
+} from "sequelize-typescript";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
 
 @Table
-export class Lecture extends Model<LectureAttributes, LectureCreationAttributes>
-    implements LectureCreationAttributes {
+export class Lecture
+    extends Model<LectureAttributes, LectureCreationAttributes>
+    implements LectureCreationAttributes
+{
     @PrimaryKey
     @Column({
         autoIncrement: true,
@@ -44,5 +57,4 @@ export class Lecture extends Model<LectureAttributes, LectureCreationAttributes>
 
     @BelongsTo(() => Teach)
     teach: Teach;
-
 }

@@ -1,10 +1,23 @@
-import { SubjectAttributes, SubjectCreationAttributes } from "../interfaces/subject.interface";
-import { BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import {
+    SubjectAttributes,
+    SubjectCreationAttributes,
+} from "../interfaces/subject.interface";
+import {
+    BelongsTo,
+    Column,
+    DataType,
+    ForeignKey,
+    Model,
+    PrimaryKey,
+    Table,
+} from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
 
 @Table
-export class Subject extends Model<SubjectAttributes, SubjectCreationAttributes>
-    implements SubjectCreationAttributes {
+export class Subject
+    extends Model<SubjectAttributes, SubjectCreationAttributes>
+    implements SubjectCreationAttributes
+{
     @PrimaryKey
     @Column({
         autoIncrement: true,

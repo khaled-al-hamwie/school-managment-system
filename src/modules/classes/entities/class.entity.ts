@@ -1,10 +1,22 @@
-import { ClassAttributes, ClassCreationAttributes } from "../interfaces/class.interface";
-import { Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import {
+    ClassAttributes,
+    ClassCreationAttributes,
+} from "../interfaces/class.interface";
+import {
+    Column,
+    DataType,
+    HasMany,
+    Model,
+    PrimaryKey,
+    Table,
+} from "sequelize-typescript";
 import { Room } from "src/modules/rooms/entities/room.entity";
 
 @Table
-export class Class extends Model<ClassAttributes, ClassCreationAttributes>
-    implements ClassCreationAttributes {
+export class Class
+    extends Model<ClassAttributes, ClassCreationAttributes>
+    implements ClassCreationAttributes
+{
     @PrimaryKey
     @Column({
         autoIncrement: true,
@@ -27,5 +39,4 @@ export class Class extends Model<ClassAttributes, ClassCreationAttributes>
     rooms: Room[];
     // @HasMany(() => Subject)
     // subjects: Subject[];
-
 }

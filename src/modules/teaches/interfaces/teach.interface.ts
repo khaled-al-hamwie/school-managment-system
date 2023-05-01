@@ -6,5 +6,4 @@ export interface TeachAttributes {
     subject_id: number;
 }
 
-export interface TeachCreationAttributes
-    extends Optional<TeachAttributes, "teach_id"> { }
+export type TeachCreationAttributes = Optional<TeachAttributes, "teach_id">;
