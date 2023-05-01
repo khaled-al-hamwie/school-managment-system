@@ -12,7 +12,7 @@ import {
 	Query,
 	UseGuards,
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
 import TeacherGuard from "src/core/guards/teacher.guard";
@@ -34,6 +34,7 @@ export class TeachersController {
 	constructor(private readonly teachersService: TeachersService) {}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Post()
 	create(@Body() createTeacherDto: CreateTeacherDto) {
@@ -47,6 +48,7 @@ export class TeachersController {
 		return this.teachersService.login(body);
 	}
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Get()
 	findAll(
@@ -56,6 +58,7 @@ export class TeachersController {
 		return this.teachersService.findAll(query, page);
 	}
 	@ApiTags(PHONE_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(TeacherGuard)
 	@Get("profile")
 	showProfile(
@@ -65,6 +68,7 @@ export class TeachersController {
 	}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Get(":id")
 	async findOne(
@@ -76,6 +80,7 @@ export class TeachersController {
 	}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(

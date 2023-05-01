@@ -12,7 +12,7 @@ import {
 	Query,
 	UseGuards,
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
 import StudentGuard from "src/core/guards/student.guard";
@@ -34,6 +34,7 @@ export class StudentsController {
 	constructor(private readonly studentsService: StudentsService) {}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Post()
 	create(@Body() createStudentDto: CreateStudentDto) {
@@ -48,6 +49,7 @@ export class StudentsController {
 	}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Get()
 	findAll(
@@ -58,6 +60,7 @@ export class StudentsController {
 	}
 
 	@ApiTags(PHONE_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(StudentGuard)
 	@Get("profile")
 	showProfile(
@@ -67,6 +70,7 @@ export class StudentsController {
 	}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Get(":id")
 	async findOne(@Param("id", ParseIntPipe) student_id: string) {
@@ -76,6 +80,7 @@ export class StudentsController {
 	}
 
 	@ApiTags(WEB_TAG)
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(

@@ -41,6 +41,8 @@ export class ManagersController {
 		return this.managersService.login(body);
 	}
 
+	@ApiBearerAuth("Authorization")
+	@UseGuards(ManagerGuard)
 	@Get()
 	findAll(
 		@Query() query: FindAllManagerDto,
@@ -49,6 +51,7 @@ export class ManagersController {
 		return this.managersService.findAll(query, page);
 	}
 
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Get(":id")
 	async findOne(
@@ -59,6 +62,7 @@ export class ManagersController {
 		return manager;
 	}
 
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(
