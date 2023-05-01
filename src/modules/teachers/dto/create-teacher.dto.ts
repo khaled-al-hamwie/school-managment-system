@@ -28,7 +28,7 @@ export class CreateTeacherDto extends CreateCredentialDto {
 	@IsISO8601()
 	birth_day: TeacherAttributes["birth_day"] | string;
 
-	@ApiProperty({ type: "Gender f or m", default: "f" })
+	@ApiProperty({ enum: GenderEnum, default: "f" })
 	@Transform(tolowerCaseTransform)
 	@NameValidator(1, 2)
 	@IsEnum(GenderEnum)
