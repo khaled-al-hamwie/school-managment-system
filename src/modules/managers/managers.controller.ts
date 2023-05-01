@@ -13,7 +13,9 @@ import {
 	Query,
 	UseGuards,
 } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/guards/manager.guard";
+import { MANAGER_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateManagerDto } from "./dto/create-manager.dto";
 import { FindAllManagerDto } from "./dto/findAll-manager.dto";
@@ -21,10 +23,12 @@ import { UpdateManagerDto } from "./dto/update-manager.dto";
 import { ManagerAttributes } from "./interfaces/manager.interface";
 import { ManagersService } from "./managers.service";
 
+@ApiTags(MANAGER_TAG, WEB_TAG)
 @Controller("managers")
 export class ManagersController {
 	constructor(private readonly managersService: ManagersService) {}
 
+	@ApiBearerAuth("Authorization")
 	@UseGuards(ManagerGuard)
 	@Post()
 	create(@Body() createManagerDto: CreateManagerDto) {

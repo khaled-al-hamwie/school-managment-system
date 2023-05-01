@@ -12,9 +12,15 @@ import {
 	Query,
 	UseGuards,
 } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
 import TeacherGuard from "src/core/guards/teacher.guard";
+import {
+	PHONE_TAG,
+	TEACHER_TAG,
+	WEB_TAG,
+} from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
@@ -22,22 +28,25 @@ import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import { TeacherAttributes } from "./interfaces/teacher.interface";
 import { TeachersService } from "./teachers.service";
 
+@ApiTags(TEACHER_TAG)
 @Controller("teachers")
 export class TeachersController {
 	constructor(private readonly teachersService: TeachersService) {}
 
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Post()
 	create(@Body() createTeacherDto: CreateTeacherDto) {
 		return this.teachersService.create(createTeacherDto);
 	}
 
+	@ApiTags(PHONE_TAG)
 	@Post("/login")
 	@HttpCode(HttpStatus.OK)
 	login(@Body() body: CreateAuthDto) {
 		return this.teachersService.login(body);
 	}
-
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Get()
 	findAll(
@@ -46,7 +55,7 @@ export class TeachersController {
 	) {
 		return this.teachersService.findAll(query, page);
 	}
-
+	@ApiTags(PHONE_TAG)
 	@UseGuards(TeacherGuard)
 	@Get("profile")
 	showProfile(
@@ -55,6 +64,7 @@ export class TeachersController {
 		return this.teachersService.findOne({ teacher_id });
 	}
 
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Get(":id")
 	async findOne(
@@ -65,6 +75,7 @@ export class TeachersController {
 		return teacher;
 	}
 
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(

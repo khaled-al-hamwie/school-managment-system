@@ -12,9 +12,15 @@ import {
 	Query,
 	UseGuards,
 } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
 import StudentGuard from "src/core/guards/student.guard";
+import {
+	PHONE_TAG,
+	STUDENT_TAG,
+	WEB_TAG,
+} from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { FindAllStudentDto } from "./dto/findAll-student.dto";
@@ -22,22 +28,26 @@ import { UpdateStudentDto } from "./dto/update-student.dto";
 import { StudentAttributes } from "./interfaces/student.interface";
 import { StudentsService } from "./students.service";
 
+@ApiTags(STUDENT_TAG)
 @Controller("students")
 export class StudentsController {
 	constructor(private readonly studentsService: StudentsService) {}
 
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Post()
 	create(@Body() createStudentDto: CreateStudentDto) {
 		return this.studentsService.create(createStudentDto);
 	}
 
+	@ApiTags(PHONE_TAG)
 	@Post("/login")
 	@HttpCode(HttpStatus.OK)
 	login(@Body() body: CreateAuthDto) {
 		return this.studentsService.login(body);
 	}
 
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Get()
 	findAll(
@@ -47,6 +57,7 @@ export class StudentsController {
 		return this.studentsService.findAll(query, page);
 	}
 
+	@ApiTags(PHONE_TAG)
 	@UseGuards(StudentGuard)
 	@Get("profile")
 	showProfile(
@@ -55,6 +66,7 @@ export class StudentsController {
 		return this.studentsService.findOne({ student_id });
 	}
 
+	@ApiTags(WEB_TAG)
 	@UseGuards(ManagerGuard)
 	@Get(":id")
 	async findOne(@Param("id", ParseIntPipe) student_id: string) {
@@ -63,6 +75,8 @@ export class StudentsController {
 		return student;
 	}
 
+	@ApiTags(WEB_TAG)
+	@UseGuards(ManagerGuard)
 	@Patch(":id")
 	update(
 		@Param("id", ParseIntPipe) student_id: string,
