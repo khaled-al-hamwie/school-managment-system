@@ -26,9 +26,11 @@ export class CreateStudentDto extends CreateCredentialDto {
 	@NameValidator(3, 16)
 	mother_name: StudentAttributes["mother_name"];
 
+	@ApiProperty({ type: "ISO8601 date", default: "2020-02-12" })
 	@IsISO8601()
 	birth_day: StudentAttributes["birth_day"] | string;
 
+	@ApiProperty({ type: "Gender f or m", default: "f" })
 	@Transform(tolowerCaseTransform)
 	@NameValidator(1, 2)
 	@IsEnum(GenderEnum)
@@ -38,6 +40,7 @@ export class CreateStudentDto extends CreateCredentialDto {
 	@NameValidator(2, 10)
 	nationality?: StudentAttributes["nationality"];
 
+	@ApiProperty({ default: "0944332211" })
 	@IsPhoneNumber("SY")
 	phone_number: StudentAttributes["phone_number"];
 

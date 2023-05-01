@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import {
 	IsEnum,
@@ -23,9 +24,11 @@ export class CreateTeacherDto extends CreateCredentialDto {
 	@NameValidator(3, 16)
 	last_name: TeacherAttributes["last_name"];
 
+	@ApiProperty({ type: "ISO8601 date", default: "2020-02-12" })
 	@IsISO8601()
 	birth_day: TeacherAttributes["birth_day"] | string;
 
+	@ApiProperty({ type: "Gender f or m", default: "f" })
 	@Transform(tolowerCaseTransform)
 	@NameValidator(1, 2)
 	@IsEnum(GenderEnum)
@@ -35,6 +38,7 @@ export class CreateTeacherDto extends CreateCredentialDto {
 	@NameValidator(2, 10)
 	nationality?: TeacherAttributes["nationality"];
 
+	@ApiProperty({ default: "0944332211" })
 	@IsPhoneNumber("SY")
 	phone_number: TeacherAttributes["phone_number"];
 
