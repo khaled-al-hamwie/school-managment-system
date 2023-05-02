@@ -9,20 +9,20 @@ import { StudentsModule } from "./modules/students/students.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 
 @Module({
-	imports: [
-		ConfigModule.forRoot({ isGlobal: true }),
-		CacheModule.register({ ttl: 60, max: 1000, isGlobal: true }),
-		databaseProvider,
-		ManagersModule,
-		TeachersModule,
-		StudentsModule,
-		ClassesModule,
-	],
-	providers: [
-		{
-			provide: APP_INTERCEPTOR,
-			useClass: CacheInterceptor,
-		},
-	],
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        CacheModule.register({ ttl: 60, max: 1000, isGlobal: true }),
+        databaseProvider,
+        ManagersModule,
+        TeachersModule,
+        StudentsModule,
+        ClassesModule,
+    ],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: CacheInterceptor,
+        },
+    ],
 })
 export class AppModule {}

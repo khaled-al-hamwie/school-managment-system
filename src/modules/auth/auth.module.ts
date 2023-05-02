@@ -3,8 +3,8 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthService } from "./auth.service";
 
 @Module({
-	imports: [JwtModule],
-	providers: [AuthService],
-	exports: [AuthService],
+    imports: [JwtModule],
+    providers: [AuthService],
+    exports: [AuthService],
 })
 export class AuthModule {}

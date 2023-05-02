@@ -1,10 +1,24 @@
-import { Column, DataType, ForeignKey, PrimaryKey, BelongsTo, HasMany, Model, Table } from "sequelize-typescript";
+import {
+    Column,
+    DataType,
+    ForeignKey,
+    PrimaryKey,
+    BelongsTo,
+    HasMany,
+    Model,
+    Table,
+} from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
-import { RoomAttributes, RoomCreationAttributes } from "../interfaces/room.interface";
+import {
+    RoomAttributes,
+    RoomCreationAttributes,
+} from "../interfaces/room.interface";
 
 @Table
-export class Room extends Model<RoomAttributes, RoomCreationAttributes>
-    implements RoomCreationAttributes {
+export class Room
+    extends Model<RoomAttributes, RoomCreationAttributes>
+    implements RoomCreationAttributes
+{
     @PrimaryKey
     @Column({
         autoIncrement: true,
@@ -28,6 +42,4 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes>
 
     // @HasMany(() => Lecture)
     // lectures: Lecture;
-
 }
-

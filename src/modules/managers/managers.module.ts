@@ -8,13 +8,13 @@ import { ManagersController } from "./managers.controller";
 import { ManagersService } from "./managers.service";
 
 @Module({
-	imports: [
-		CredentialsModule,
-		SequelizeModule.forFeature([Manager]),
-		AuthModule,
-	],
-	controllers: [ManagersController],
-	providers: [ManagersService, ManagerStrategy],
-	exports: [ManagersService],
+    imports: [
+        CredentialsModule,
+        SequelizeModule.forFeature([Manager]),
+        AuthModule,
+    ],
+    controllers: [ManagersController],
+    providers: [ManagersService, ManagerStrategy],
+    exports: [ManagersService],
 })
 export class ManagersModule {}

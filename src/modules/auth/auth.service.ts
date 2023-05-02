@@ -8,19 +8,19 @@ import TeacherPayload from "./interfaces/teacher.payload.interface";
 
 @Injectable()
 export class AuthService {
-	constructor(
-		private configService: ConfigService,
-		private jwtService: JwtService
-	) {}
-	signToken(
-		payload: ManagerPayload | TeacherPayload | StudentPayload
-	): JwtAttributes {
-		const option = {
-			secret: this.configService.get("JWTKEY"),
-			expiresIn: this.configService.get("TOKEN_EXPIRATION"),
-		};
-		return {
-			access_token: this.jwtService.sign(payload, option),
-		};
-	}
+    constructor(
+        private configService: ConfigService,
+        private jwtService: JwtService
+    ) {}
+    signToken(
+        payload: ManagerPayload | TeacherPayload | StudentPayload
+    ): JwtAttributes {
+        const option = {
+            secret: this.configService.get("JWTKEY"),
+            expiresIn: this.configService.get("TOKEN_EXPIRATION"),
+        };
+        return {
+            access_token: this.jwtService.sign(payload, option),
+        };
+    }
 }

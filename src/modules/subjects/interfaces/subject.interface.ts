@@ -7,5 +7,7 @@ export interface SubjectAttributes {
     semester: number;
 }
 
-export interface SubjectCreationAttributes
-    extends Optional<SubjectAttributes, "subject_id"> { }
+export type SubjectCreationAttributes = Optional<
+    SubjectAttributes,
+    "subject_id"
+>;

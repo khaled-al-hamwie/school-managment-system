@@ -7,32 +7,32 @@ import TeacherPayload from "../interfaces/teacher.payload.interface";
 
 @Injectable()
 export default class TeacherStrategy extends PassportStrategy(
-	Strategy,
-	TEACHER_TYPE
+    Strategy,
+    TEACHER_TYPE
 ) {
-	constructor(private readonly teachersService: TeachersService) {
-		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			ignoreExpiration: false,
-			secretOrKey: process.env.JWTKEY,
-		});
-	}
+    constructor(private readonly teachersService: TeachersService) {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: process.env.JWTKEY,
+        });
+    }
 
-	async validate(payload: TeacherPayload) {
-		const id = payload.teacher_id;
-		if (!id) {
-			throw new UnauthorizedException();
-		}
-		const teacher = await this.teachersService.findOne({
-			teacher_id: payload.teacher_id,
-		});
-		if (!teacher) {
-			throw new UnauthorizedException();
-		}
-		return {
-			teacher_id: payload.teacher_id,
-			user_name: payload.user_name,
-			credential_id: payload.credentail_id,
-		};
-	}
+    async validate(payload: TeacherPayload) {
+        const id = payload.teacher_id;
+        if (!id) {
+            throw new UnauthorizedException();
+        }
+        const teacher = await this.teachersService.findOne({
+            teacher_id: payload.teacher_id,
+        });
+        if (!teacher) {
+            throw new UnauthorizedException();
+        }
+        return {
+            teacher_id: payload.teacher_id,
+            user_name: payload.user_name,
+            credential_id: payload.credentail_id,
+        };
+    }
 }

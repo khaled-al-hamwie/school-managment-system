@@ -5,10 +5,10 @@ import { MainValidationPipe } from "./core/pipes/MainValidation.pipe";
 import swaggerSetup from "./core/swagger/swagger.setup";
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
-	app.useGlobalPipes(MainValidationPipe);
-	app.use(compression());
-	swaggerSetup(app);
-	await app.listen(4000);
+    const app = await NestFactory.create(AppModule);
+    app.useGlobalPipes(MainValidationPipe);
+    app.use(compression());
+    swaggerSetup(app);
+    await app.listen(4000);
 }
 bootstrap();

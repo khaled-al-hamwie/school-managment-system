@@ -4,8 +4,8 @@ import { CredentialsService } from "./credentials.service";
 import { Credential } from "./entities/credential.entity";
 
 @Module({
-	imports: [SequelizeModule.forFeature([Credential])],
-	providers: [CredentialsService],
-	exports: [CredentialsService],
+    imports: [SequelizeModule.forFeature([Credential])],
+    providers: [CredentialsService],
+    exports: [CredentialsService],
 })
 export class CredentialsModule {}

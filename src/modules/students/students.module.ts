@@ -8,12 +8,12 @@ import { StudentsController } from "./students.controller";
 import { StudentsService } from "./students.service";
 
 @Module({
-	imports: [
-		CredentialsModule,
-		SequelizeModule.forFeature([Student]),
-		AuthModule,
-	],
-	controllers: [StudentsController],
-	providers: [StudentsService, StudentStrategy],
+    imports: [
+        CredentialsModule,
+        SequelizeModule.forFeature([Student]),
+        AuthModule,
+    ],
+    controllers: [StudentsController],
+    providers: [StudentsService, StudentStrategy],
 })
 export class StudentsModule {}
