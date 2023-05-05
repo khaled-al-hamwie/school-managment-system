@@ -54,7 +54,8 @@ export class ManagersService {
             user_name: credentail.user_name,
         });
     }
-    findAll(query: FindAllManagerDto, offset = 0) {
+
+    findAll(query: FindAllManagerDto, page: number = 0) {
         const whereOptions: WhereOptions<ManagerAttributes> = {};
         for (const key in query) {
             if (Object.prototype.hasOwnProperty.call(query, key)) {
@@ -68,7 +69,7 @@ export class ManagersService {
                 model: Credential,
                 attributes: { exclude: ["password"] },
             },
-            offset,
+            offset: page * 5,
             limit: 5,
             order: [["first_name", "ASC"]],
         });
