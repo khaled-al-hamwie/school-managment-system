@@ -22,19 +22,19 @@ export class Class
         autoIncrement: true,
         type: DataType.SMALLINT,
     })
-    class_id?: number;
+    class_id?: ClassAttributes["class_id"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    name: string;
+    name: ClassAttributes["name"];
 
     @Column({
         type: DataType.TINYINT,
         allowNull: false,
     })
-    max_rooms: number;
+    max_rooms: ClassAttributes["max_rooms"];
 
     @HasMany(() => Room)
     rooms: Room[];
