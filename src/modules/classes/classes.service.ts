@@ -1,19 +1,21 @@
 import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
 import { CreateClassDto } from "./dto/create-class.dto";
 import { UpdateClassDto } from "./dto/update-class.dto";
+import { Class } from "./entities/class.entity";
 
 @Injectable()
 export class ClassesService {
+    constructor(
+        @InjectModel(Class) private readonly ClassEntity: typeof Class
+    ) {}
     create(createClassDto: CreateClassDto) {
-        return "This action adds a new class";
+        this.ClassEntity.create(createClassDto);
+        return "done";
     }
 
     findAll() {
         return `This action returns all classes`;
-    }
-
-    findOne(id: number) {
-        return `This action returns a #${id} class`;
     }
 
     update(id: number, updateClassDto: UpdateClassDto) {

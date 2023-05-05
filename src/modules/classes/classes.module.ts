@@ -8,5 +8,6 @@ import { Class } from "./entities/class.entity";
     imports: [SequelizeModule.forFeature([Class])],
     controllers: [ClassesController],
     providers: [ClassesService],
+    exports: [ClassesService],
 })
 export class ClassesModule {}
