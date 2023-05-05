@@ -54,7 +54,7 @@ export class TeachersService {
 		});
 	}
 
-	findAll(query: FindAllTeacherDto, offset: number = 0) {
+	findAll(query: FindAllTeacherDto, page: number = 0) {
 		const whereOptions: WhereOptions<TeacherAttributes> = {};
 		for (const key in query) {
 			if (Object.prototype.hasOwnProperty.call(query, key)) {
@@ -68,7 +68,7 @@ export class TeachersService {
 				model: Credential,
 				attributes: { exclude: ["password"] },
 			},
-			offset,
+			offset: page * 5,
 			limit: 5,
 			order: [["first_name", "ASC"]],
 		});
