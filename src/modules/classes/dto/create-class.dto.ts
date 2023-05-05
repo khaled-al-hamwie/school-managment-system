@@ -1,11 +1,12 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { IsInt, IsPositive } from "class-validator";
+import NameValidator from "src/core/validators/name.validator";
+import { ClassAttributes } from "../interfaces/class.interface";
 
 export class CreateClassDto {
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+    @NameValidator(3, 16)
+    name: ClassAttributes["name"];
 
-    @IsNotEmpty()
-    @IsNumber()
-    max_rooms: number;
+    @IsPositive()
+    @IsInt()
+    max_rooms: ClassAttributes["max_rooms"];
 }
