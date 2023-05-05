@@ -68,16 +68,6 @@ export class TeachersController {
         return this.teachersService.findOne({ teacher_id });
     }
 
-    // <<<<<<< HEAD
-    // 	@UseGuards(ManagerGuard)
-    // 	@Get()
-    // 	findAll(
-    // 		@Query() query: FindAllTeacherDto,
-    // 		@Query("page", ParseIntPagePipe) page: number = 0
-    // 	) {
-    // 		return this.teachersService.findAll(query, page);
-    // 	}
-    // =======
     @ApiTags(WEB_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
