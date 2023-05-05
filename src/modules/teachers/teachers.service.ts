@@ -1,7 +1,7 @@
 import {
-	ForbiddenException,
-	Injectable,
-	NotFoundException,
+    ForbiddenException,
+    Injectable,
+    NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, WhereOptions } from "sequelize";
@@ -18,81 +18,81 @@ import { TeacherAttributes } from "./interfaces/teacher.interface";
 
 @Injectable()
 export class TeachersService {
-	constructor(
-		@InjectModel(Teacher) private readonly TeacherEntity: typeof Teacher,
-		private readonly credentailsService: CredentialsService,
-		private readonly authService: AuthService
-	) {}
-	async create(createTeacherDto: CreateTeacherDto) {
-		const credentail = await this.credentailsService.create({
-			email: createTeacherDto.email,
-			user_name: createTeacherDto.user_name,
-			password: createTeacherDto.password,
-		});
-		removeCredentails(createTeacherDto);
-		this.TeacherEntity.create({
-			credential_id: credentail.credential_id,
-			...createTeacherDto,
-		});
-		return "done";
-	}
+    constructor(
+        @InjectModel(Teacher) private readonly TeacherEntity: typeof Teacher,
+        private readonly credentailsService: CredentialsService,
+        private readonly authService: AuthService
+    ) {}
+    async create(createTeacherDto: CreateTeacherDto) {
+        const credentail = await this.credentailsService.create({
+            email: createTeacherDto.email,
+            user_name: createTeacherDto.user_name,
+            password: createTeacherDto.password,
+        });
+        removeCredentails(createTeacherDto);
+        this.TeacherEntity.create({
+            credential_id: credentail.credential_id,
+            ...createTeacherDto,
+        });
+        return "done";
+    }
 
-	async login(body: CreateAuthDto) {
-		const credentail = await this.credentailsService.verify(body);
-		const teacher = await this.findOne({
-			credential_id: credentail.credential_id,
-		});
-		if (!teacher) {
-			throw new ForbiddenException("credentials don't match", {
-				description: "Forbidden",
-			});
-		}
-		return this.authService.signToken({
-			credentail_id: credentail.credential_id,
-			teacher_id: teacher.teacher_id,
-			user_name: credentail.user_name,
-		});
-	}
+    async login(body: CreateAuthDto) {
+        const credentail = await this.credentailsService.verify(body);
+        const teacher = await this.findOne({
+            credential_id: credentail.credential_id,
+        });
+        if (!teacher) {
+            throw new ForbiddenException("credentials don't match", {
+                description: "Forbidden",
+            });
+        }
+        return this.authService.signToken({
+            credentail_id: credentail.credential_id,
+            teacher_id: teacher.teacher_id,
+            user_name: credentail.user_name,
+        });
+    }
 
-	findAll(query: FindAllTeacherDto, page: number = 0) {
-		const whereOptions: WhereOptions<TeacherAttributes> = {};
-		for (const key in query) {
-			if (Object.prototype.hasOwnProperty.call(query, key)) {
-				whereOptions[key] = { [Op.regexp]: query[key] };
-			}
-		}
-		return this.TeacherEntity.findAll({
-			where: whereOptions,
-			attributes: { exclude: ["credential_id"] },
-			include: {
-				model: Credential,
-				attributes: { exclude: ["password"] },
-			},
-			offset: page * 5,
-			limit: 5,
-			order: [["first_name", "ASC"]],
-		});
-	}
+    findAll(query: FindAllTeacherDto, page: number = 0) {
+        const whereOptions: WhereOptions<TeacherAttributes> = {};
+        for (const key in query) {
+            if (Object.prototype.hasOwnProperty.call(query, key)) {
+                whereOptions[key] = { [Op.regexp]: query[key] };
+            }
+        }
+        return this.TeacherEntity.findAll({
+            where: whereOptions,
+            attributes: { exclude: ["credential_id"] },
+            include: {
+                model: Credential,
+                attributes: { exclude: ["password"] },
+            },
+            offset: page * 5,
+            limit: 5,
+            order: [["first_name", "ASC"]],
+        });
+    }
 
-	async findOne(options: WhereOptions<TeacherAttributes>) {
-		return this.TeacherEntity.findOne({
-			where: options,
-			limit: 1,
-		});
-	}
+    async findOne(options: WhereOptions<TeacherAttributes>) {
+        return this.TeacherEntity.findOne({
+            where: options,
+            limit: 1,
+        });
+    }
 
-	async update(
-		teacher_id: TeacherAttributes["teacher_id"],
-		updateTeacherDto: UpdateTeacherDto
-	) {
-		const teacher = await this.findOne({ teacher_id });
-		if (!teacher) throw new NotFoundException("teacher dosen't exists");
-		teacher.update(updateTeacherDto).then((output) => output.save());
-		if (updateTeacherDto.password)
-			this.credentailsService.update(
-				teacher.credential_id,
-				updateTeacherDto.password
-			);
-		return "done";
-	}
+    async update(
+        teacher_id: TeacherAttributes["teacher_id"],
+        updateTeacherDto: UpdateTeacherDto
+    ) {
+        const teacher = await this.findOne({ teacher_id });
+        if (!teacher) throw new NotFoundException("teacher dosen't exists");
+        teacher.update(updateTeacherDto).then((output) => output.save());
+        if (updateTeacherDto.password)
+            this.credentailsService.update(
+                teacher.credential_id,
+                updateTeacherDto.password
+            );
+        return "done";
+    }
 }

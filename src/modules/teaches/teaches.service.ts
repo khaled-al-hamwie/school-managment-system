@@ -1,26 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTeachDto } from './dto/create-teach.dto';
-import { UpdateTeachDto } from './dto/update-teach.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateTeachDto } from "./dto/create-teach.dto";
+import { UpdateTeachDto } from "./dto/update-teach.dto";
 
 @Injectable()
 export class TeachesService {
-  create(createTeachDto: CreateTeachDto) {
-    return 'This action adds a new teach';
-  }
+    create(createTeachDto: CreateTeachDto) {
+        return "This action adds a new teach";
+    }
 
-  findAll() {
-    return `This action returns all teaches`;
-  }
+    findAll() {
+        return `This action returns all teaches`;
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} teach`;
-  }
+    findOne(id: number) {
+        return `This action returns a #${id} teach`;
+    }
 
-  update(id: number, updateTeachDto: UpdateTeachDto) {
-    return `This action updates a #${id} teach`;
-  }
+    update(id: number, updateTeachDto: UpdateTeachDto) {
+        return `This action updates a #${id} teach`;
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} teach`;
-  }
+    remove(id: number) {
+        return `This action removes a #${id} teach`;
+    }
 }

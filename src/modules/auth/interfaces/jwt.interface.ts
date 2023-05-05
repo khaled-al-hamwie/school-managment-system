@@ -1,3 +1,3 @@
 export interface JwtAttributes {
-	access_token: string;
+    access_token: string;
 }

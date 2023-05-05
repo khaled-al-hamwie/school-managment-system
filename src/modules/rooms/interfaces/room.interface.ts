@@ -6,5 +6,4 @@ export interface RoomAttributes {
     max_students: number;
 }
 
-export interface RoomCreationAttributes
-    extends Optional<RoomAttributes, "room_id"> { }
+export type RoomCreationAttributes = Optional<RoomAttributes, "room_id">;

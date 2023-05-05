@@ -8,5 +8,7 @@ export interface LectureAttributes {
     period: number;
 }
 
-export interface LectureCreationAttributes
-    extends Optional<LectureAttributes, "lecture_id"> { }
+export type LectureCreationAttributes = Optional<
+    LectureAttributes,
+    "lecture_id"
+>;
