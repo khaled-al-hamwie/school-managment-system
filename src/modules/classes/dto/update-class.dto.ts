@@ -1,9 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { PartialType } from "@nestjs/swagger";
+import { CreateClassDto } from "./create-class.dto";
 
-export class UpdateClassDto {
-    @IsString()
-    name?: string;
-
-    @IsNumber()
-    max_rooms?: number;
-}
+export class UpdateClassDto extends PartialType(CreateClassDto) {}
