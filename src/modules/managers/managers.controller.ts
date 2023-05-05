@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	HttpCode,
 	HttpStatus,
@@ -14,6 +13,7 @@ import {
 	UseGuards,
 } from "@nestjs/common";
 import ManagerGuard from "src/core/guards/manager.guard";
+import { ParseIntPagePipe } from "src/core/pipes/ParseIntPage.pipe";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateManagerDto } from "./dto/create-manager.dto";
 import { FindAllManagerDto } from "./dto/findAll-manager.dto";
@@ -40,7 +40,7 @@ export class ManagersController {
 	@Get()
 	findAll(
 		@Query() query: FindAllManagerDto,
-		@Query("page", ParseIntPipe) page: number
+		@Query("page", ParseIntPagePipe) page: number = 0
 	) {
 		return this.managersService.findAll(query, page);
 	}

@@ -15,6 +15,7 @@ import {
 import { User } from "src/core/decorators/user.decorator";
 import ManagerGuard from "src/core/guards/manager.guard";
 import TeacherGuard from "src/core/guards/teacher.guard";
+import { ParseIntPagePipe } from "src/core/pipes/ParseIntPage.pipe";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
@@ -42,7 +43,7 @@ export class TeachersController {
 	@Get()
 	findAll(
 		@Query() query: FindAllTeacherDto,
-		@Query("page", ParseIntPipe) page: number
+		@Query("page", ParseIntPagePipe) page: number = 0
 	) {
 		return this.teachersService.findAll(query, page);
 	}
