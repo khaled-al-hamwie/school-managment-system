@@ -10,7 +10,8 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
+/reports
+.nestjs_repl_history
 # OS
 .DS_Store
 
