@@ -55,7 +55,7 @@ export class ManagersService {
         });
     }
 
-    findAll(query: FindAllManagerDto, page: number = 0) {
+    findAll(query: FindAllManagerDto, page = 0) {
         const whereOptions: WhereOptions<ManagerAttributes> = {};
         for (const key in query) {
             if (Object.prototype.hasOwnProperty.call(query, key)) {

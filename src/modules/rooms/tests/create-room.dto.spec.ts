@@ -19,7 +19,7 @@ describe("create room dto", () => {
         expect(erros.length).toBe(0);
     });
     describe("class_id", () => {
-        let attr = "class_id";
+        const attr = "class_id";
         const min = 1;
         const max = 65535;
         it(`should not allow no ${attr}`, async () => {
@@ -74,7 +74,7 @@ describe("create room dto", () => {
     });
 
     describe("name", () => {
-        let attr = "name";
+        const attr = "name";
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
             const ofImportDto = plainToInstance(CreateRoomDto, body);
@@ -106,7 +106,7 @@ describe("create room dto", () => {
     });
 
     describe("student_count", () => {
-        let attr = "student_count";
+        const attr = "student_count";
         const min = 1;
         const max = 255;
         it(`should not allow no ${attr}`, async () => {

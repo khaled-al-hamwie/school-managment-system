@@ -46,7 +46,7 @@ export class ManagersController {
     @Get()
     findAll(
         @Query() query: FindAllManagerDto,
-        @Query("page", ParseIntPagePipe) page: number = 0
+        @Query("page", ParseIntPagePipe) page: number
     ) {
         return this.managersService.findAll(query, page);
     }

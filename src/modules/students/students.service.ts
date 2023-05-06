@@ -55,7 +55,7 @@ export class StudentsService {
         });
     }
 
-    findAll(query: FindAllStudentDto, page: number = 0) {
+    findAll(query: FindAllStudentDto, page = 0) {
         const whereOptions: WhereOptions<StudentAttributes> = {};
         for (const key in query) {
             if (Object.prototype.hasOwnProperty.call(query, key)) {

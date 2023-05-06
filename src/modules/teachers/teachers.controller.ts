@@ -54,7 +54,7 @@ export class TeachersController {
     @Get()
     findAll(
         @Query() query: FindAllTeacherDto,
-        @Query("page", ParseIntPagePipe) page: number = 0
+        @Query("page", ParseIntPagePipe) page: number
     ) {
         return this.teachersService.findAll(query, page);
     }
