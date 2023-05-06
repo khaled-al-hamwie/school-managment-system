@@ -1,11 +1,10 @@
 import {
+    BelongsTo,
     Column,
     DataType,
     ForeignKey,
-    PrimaryKey,
-    BelongsTo,
-    HasMany,
     Model,
+    PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
@@ -21,21 +20,23 @@ export class Room
 {
     @PrimaryKey
     @Column({
+        type: DataType.SMALLINT.UNSIGNED,
         autoIncrement: true,
-        type: DataType.SMALLINT,
     })
-    room_id?: number;
+    room_id?: RoomAttributes["room_id"];
+
     @ForeignKey(() => Class)
     @Column({
         type: DataType.SMALLINT,
         allowNull: false,
     })
-    class_id: number;
+    class_id: RoomAttributes["class_id"];
+
     @Column({
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
     })
-    max_students: number;
+    student_count: RoomAttributes["student_count"];
 
     @BelongsTo(() => Class)
     class: Class;
