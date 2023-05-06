@@ -1,8 +1,4 @@
 import {
-    ClassAttributes,
-    ClassCreationAttributes,
-} from "../interfaces/class.interface";
-import {
     Column,
     DataType,
     HasMany,
@@ -11,6 +7,10 @@ import {
     Table,
 } from "sequelize-typescript";
 import { Room } from "src/modules/rooms/entities/room.entity";
+import {
+    ClassAttributes,
+    ClassCreationAttributes,
+} from "../interfaces/class.interface";
 
 @Table
 export class Class
@@ -22,19 +22,20 @@ export class Class
         autoIncrement: true,
         type: DataType.SMALLINT,
     })
-    class_id?: number;
+    class_id?: ClassAttributes["class_id"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    name: string;
+    name: ClassAttributes["name"];
 
     @Column({
-        type: DataType.DECIMAL(9, 2),
+        type: DataType.TINYINT,
         allowNull: false,
     })
-    max_rooms: number;
+    max_rooms: ClassAttributes["max_rooms"];
+
     @HasMany(() => Room)
     rooms: Room[];
     // @HasMany(() => Subject)
