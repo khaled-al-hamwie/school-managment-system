@@ -30,19 +30,19 @@ switch (process.env.NODE_ENV) {
 createDatabase(config.username, config.password, config.database);
 export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
     ...config,
-    models: [
-        Credential,
-        Manager,
-        Teacher,
-        Student,
-        Class,
-        Room,
-        Subject,
-        Teach,
-        Lecture,
-    ],
-    // autoLoadModels: true,
-    // synchronize: true,
+    // models: [
+    //     Credential,
+    //     Manager,
+    //     Teacher,
+    //     Student,
+    //     Class,
+    //     Room,
+    //     Subject,
+    //     Teach,
+    //     Lecture,
+    // ],
+    autoLoadModels: true,
+    synchronize: true,
     logging: (Entity) =>
         new Logger("SequelizeQuery").verbose(
             "\n" + Entity.split("Executing (default): ")[1]
