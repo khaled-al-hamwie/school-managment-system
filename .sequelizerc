@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-	config: path.resolve("dbConfig.js"),
-	"seeders-path": path.resolve("dist", "seeders"),
-	env: "development",
+  config: path.resolve("dbConfig.js"),
+  "seeders-path": path.resolve(".", "seeders"),
+  env: "development",
 };
