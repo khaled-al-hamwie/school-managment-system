@@ -10,7 +10,7 @@ import {
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import ManagerGuard from "src/core/guards/manager.guard";
+import ManagerGuard from "src/core/common/guards/manager.guard";
 import { CLASS_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import { ClassesService } from "./classes.service";
 import { CreateClassDto } from "./dto/create-class.dto";

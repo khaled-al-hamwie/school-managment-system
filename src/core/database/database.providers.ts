@@ -9,7 +9,7 @@ import Student from "src/modules/students/entities/student.entity";
 import { Subject } from "src/modules/subjects/entities/subject.entity";
 import Teacher from "src/modules/teachers/entities/teacher.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
-import { DEVELOPMENT, PRODUCTION, TEST } from "../constants";
+import { DEVELOPMENT, PRODUCTION, TEST } from "../common/constants";
 import { databaseConfig } from "./database.config";
 import createDatabase from "./database.createData";
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber, IsPhoneNumber, IsPositive } from "class-validator";
-import NameValidator from "src/core/validators/name.validator";
+import NameValidator from "src/core/common/validators/name.validator";
 import { CreateCredentialDto } from "src/modules/credentials/dto/create-credential.dto";
 import { ManagerAttributes } from "../interfaces/manager.interface";
 

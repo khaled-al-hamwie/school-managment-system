@@ -13,10 +13,10 @@ import {
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { User } from "src/core/decorators/user.decorator";
-import ManagerGuard from "src/core/guards/manager.guard";
-import TeacherGuard from "src/core/guards/teacher.guard";
-import { ParseIntPagePipe } from "src/core/pipes/ParseIntPage.pipe";
+import { User } from "src/core/common/decorators/user.decorator";
+import ManagerGuard from "src/core/common/guards/manager.guard";
+import TeacherGuard from "src/core/common/guards/teacher.guard";
+import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import {
     PHONE_TAG,
     TEACHER_TAG,

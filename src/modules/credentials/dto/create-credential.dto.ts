@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, NotContains } from "class-validator";
-import NameValidator from "src/core/validators/name.validator";
+import NameValidator from "src/core/common/validators/name.validator";
 import { CredentialAttributes } from "../interfaces/credential.interface";
 
 export class CreateCredentialDto {

@@ -13,8 +13,8 @@ import {
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import ManagerGuard from "src/core/guards/manager.guard";
-import { ParseIntPagePipe } from "src/core/pipes/ParseIntPage.pipe";
+import ManagerGuard from "src/core/common/guards/manager.guard";
+import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import { MANAGER_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CreateManagerDto } from "./dto/create-manager.dto";

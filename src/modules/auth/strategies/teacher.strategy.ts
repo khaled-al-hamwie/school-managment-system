@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { TEACHER_TYPE } from "src/core/constants/guard.types";
+import { TEACHER_TYPE } from "src/core/common/constants/guard.types";
 import { TeachersService } from "src/modules/teachers/teachers.service";
 import TeacherPayload from "../interfaces/teacher.payload.interface";
 

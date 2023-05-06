@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, WhereOptions } from "sequelize";
-import removeCredentails from "src/core/transformers/removeCredentails.transform";
+import removeCredentails from "src/core/common/transformers/removeCredentails.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
