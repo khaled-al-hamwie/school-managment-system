@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { STUDENT_TYPE } from "src/core/constants/guard.types";
+import { STUDENT_TYPE } from "src/core/common/constants/guard.types";
 import { StudentsService } from "src/modules/students/students.service";
 import StudentPayload from "../interfaces/student.payload.interface";
 

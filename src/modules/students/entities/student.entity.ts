@@ -7,7 +7,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
-import { Gender } from "src/core/types/gender.type";
+import { Gender } from "src/core/common/types/gender.type";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import {
     StudentAttributes,

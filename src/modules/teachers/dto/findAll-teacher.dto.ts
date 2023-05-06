@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from "class-validator";
-import { GenderEnum } from "src/core/enums/gender.enum";
+import { GenderEnum } from "src/core/common/enums/gender.enum";
 import { TeacherAttributes } from "../interfaces/teacher.interface";
 
 export class FindAllTeacherDto {

@@ -1,5 +1,5 @@
 import { Optional } from "sequelize";
-import { Gender } from "src/core/types/gender.type";
+import { Gender } from "src/core/common/types/gender.type";
 
 export interface StudentAttributes {
     student_id?: number;

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsPositive } from "class-validator";
-import NameValidator from "src/core/validators/name.validator";
+import NameValidator from "src/core/common/validators/name.validator";
 import { ClassAttributes } from "../interfaces/class.interface";
 
 export class CreateClassDto {
