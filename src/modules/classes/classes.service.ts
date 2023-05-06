@@ -17,12 +17,16 @@ export class ClassesService {
     }
 
     findAll(name: string | undefined) {
-        return this.ClassEntity.findAll({
-            where: {
+        let WhereOptions = {};
+        if (name) {
+            WhereOptions = {
                 name: {
                     [Op.regexp]: name,
                 },
-            },
+            };
+        }
+        return this.ClassEntity.findAll({
+            where: WhereOptions,
         });
     }
 
