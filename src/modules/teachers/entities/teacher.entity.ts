@@ -27,7 +27,7 @@ export default class Teacher
 
     @ForeignKey(() => Credential)
     @Column({
-        type: DataType.BIGINT,
+        type: DataType.BIGINT.UNSIGNED,
         allowNull: false,
         unique: true,
     })

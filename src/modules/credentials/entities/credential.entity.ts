@@ -20,7 +20,7 @@ export class Credential
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.BIGINT,
+        type: DataType.BIGINT.UNSIGNED,
     })
     credential_id: number;
 
@@ -38,7 +38,7 @@ export class Credential
     email: string;
 
     @Column({
-        type: DataType.STRING(245),
+        type: DataType.STRING(150),
         allowNull: false,
     })
     password: string;

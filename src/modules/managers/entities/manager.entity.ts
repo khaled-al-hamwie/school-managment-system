@@ -27,7 +27,7 @@ export default class Manager
 
     @ForeignKey(() => Credential)
     @Column({
-        type: DataType.BIGINT,
+        type: DataType.BIGINT.UNSIGNED,
         allowNull: false,
         unique: true,
     })
