@@ -33,6 +33,12 @@ export class Room
     class_id: RoomAttributes["class_id"];
 
     @Column({
+        type: DataType.STRING(16),
+        allowNull: false,
+    })
+    name: RoomAttributes["name"];
+
+    @Column({
         type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
     })
