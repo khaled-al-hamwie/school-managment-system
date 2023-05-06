@@ -1,26 +1,42 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { WhereOptions } from "sequelize";
+import { ClassesService } from "../classes/classes.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
+import { Room } from "./entities/room.entity";
+import { RoomAttributes } from "./interfaces/room.interface";
 
 @Injectable()
 export class RoomsService {
-    create(createRoomDto: CreateRoomDto) {
-        return "This action adds a new room";
+    constructor(
+        @InjectModel(Room) private readonly RoomEntity: typeof Room,
+        private readonly classessService: ClassesService
+    ) {}
+
+    async create(createRoomDto: CreateRoomDto) {
+        const myClass = await this.classessService.findOne({
+            class_id: createRoomDto.class_id,
+        });
+        if (!myClass) throw new NotFoundException("class doesn't exists");
+        this.RoomEntity.create(createRoomDto);
+        return "done";
     }
 
-    findAll() {
-        return `This action returns all rooms`;
+    findOne(options: WhereOptions<RoomAttributes>) {
+        return this.RoomEntity.findOne({
+            where: options,
+            limit: 1,
+        });
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} room`;
-    }
-
-    update(id: number, updateRoomDto: UpdateRoomDto) {
-        return `This action updates a #${id} room`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} room`;
+    async update(
+        room_id: RoomAttributes["room_id"],
+        updateClassDto: UpdateRoomDto
+    ) {
+        const room = await this.findOne({ room_id });
+        if (!room) throw new NotFoundException("Room doesn't exists");
+        room.update(updateClassDto).then((output) => output.save());
+        return "done";
     }
 }
