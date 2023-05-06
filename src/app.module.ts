@@ -5,6 +5,7 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { databaseProvider } from "./core/database/database.providers";
 import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
+import { RoomsModule } from "./modules/rooms/rooms.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 
@@ -17,6 +18,7 @@ import { TeachersModule } from "./modules/teachers/teachers.module";
         TeachersModule,
         StudentsModule,
         ClassesModule,
+        RoomsModule,
     ],
     providers: [
         {
