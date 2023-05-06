@@ -11,6 +11,9 @@ describe("create manager dto", () => {
             middle_name: "test f",
             last_name: "test f",
             phone_number: "+963 944233644",
+            birth_day: new Date().toISOString(),
+            gender: "f",
+            nationality: "Uk",
             location: "damascus ,syria",
             salary: 100,
 
@@ -97,6 +100,49 @@ describe("create manager dto", () => {
             expect(erros[0].constraints).toEqual({
                 isLength:
                     "first_name must be shorter than or equal to 45 characters",
+            });
+        });
+    });
+
+    describe("nationality", () => {
+        it("should pass without the nationality", async () => {
+            delete body["nationality"];
+            const ofImportDto = plainToInstance(CreateManagerDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros.length).toBe(0);
+        });
+        it("should not allow small nationality", async () => {
+            body["nationality"] = "1   ";
+            const ofImportDto = plainToInstance(CreateManagerDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual("nationality");
+            expect(erros[0].constraints).toEqual({
+                isLength:
+                    "nationality must be longer than or equal to 2 characters",
+            });
+        });
+        it("should not allow large nationality", async () => {
+            body["nationality"] = "1f      ".repeat(44);
+            const ofImportDto = plainToInstance(CreateManagerDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual("nationality");
+            expect(erros[0].constraints).toEqual({
+                isLength:
+                    "nationality must be shorter than or equal to 10 characters",
+            });
+        });
+    });
+    describe("gender", () => {
+        const attr = "gender";
+        it(`should not allow no ${attr}`, async () => {
+            delete body[`${attr}`];
+            const ofImportDto = plainToInstance(CreateManagerDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(`${attr}`);
+            expect(erros[0].constraints).toEqual({
+                isEnum: `${attr} must be one of the following values: f, m`,
+                isString: `${attr} must be a string`,
+                isLength: `${attr} must be longer than or equal to 1 characters`,
             });
         });
     });

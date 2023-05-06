@@ -21,9 +21,9 @@ export default class Manager
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.TINYINT,
+        type: DataType.TINYINT.UNSIGNED,
     })
-    manager_id: number;
+    manager_id?: ManagerAttributes["manager_id"];
 
     @ForeignKey(() => Credential)
     @Column({
@@ -31,44 +31,63 @@ export default class Manager
         allowNull: false,
         unique: true,
     })
-    credential_id: number;
+    credential_id: ManagerAttributes["credential_id"];
 
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(16),
         allowNull: false,
     })
-    first_name: string;
+    first_name: ManagerAttributes["first_name"];
 
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(16),
         allowNull: false,
     })
-    middle_name: string;
+    middle_name: ManagerAttributes["middle_name"];
 
     @Column({
-        type: DataType.STRING(45),
+        type: DataType.STRING(16),
         allowNull: false,
     })
-    last_name: string;
+    last_name: ManagerAttributes["last_name"];
+
+    @Column({
+        type: DataType.DATEONLY,
+        allowNull: false,
+    })
+    birth_day: ManagerAttributes["birth_day"];
+
+    @Column({
+        type: DataType.STRING(2),
+        allowNull: false,
+    })
+    gender: ManagerAttributes["gender"];
+
+    @Column({
+        type: DataType.STRING(10),
+        allowNull: false,
+        defaultValue: "UK",
+    })
+    nationality?: ManagerAttributes["nationality"];
 
     @Column({
         type: DataType.STRING(20),
         allowNull: false,
     })
-    phone_number: string;
+    phone_number: ManagerAttributes["phone_number"];
 
     @Column({
         type: DataType.STRING(45),
         allowNull: false,
     })
-    location: string;
+    location: ManagerAttributes["location"];
 
     @Column({
         type: DataType.DECIMAL(9, 2),
         allowNull: false,
         validate: { min: 0 },
     })
-    salary: number;
+    salary: ManagerAttributes["salary"];
 
     @BelongsTo(() => Credential)
     credentail: Credential;

@@ -1,5 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsPhoneNumber, IsPositive } from "class-validator";
+import { Transform } from "class-transformer";
+import {
+    IsEnum,
+    IsISO8601,
+    IsNumber,
+    IsOptional,
+    IsPhoneNumber,
+    IsPositive,
+} from "class-validator";
+import { GenderEnum } from "src/core/common/enums/gender.enum";
+import tolowerCaseTransform from "src/core/common/transformers/tolowercase.transform";
 import NameValidator from "src/core/common/validators/name.validator";
 import { CreateCredentialDto } from "src/modules/credentials/dto/create-credential.dto";
 import { ManagerAttributes } from "../interfaces/manager.interface";
@@ -14,6 +24,20 @@ export class CreateManagerDto extends CreateCredentialDto {
 
     @NameValidator(5, 45)
     last_name: ManagerAttributes["last_name"];
+
+    @ApiProperty({ type: "ISO8601 date", default: "2020-02-12" })
+    @IsISO8601()
+    birth_day: ManagerAttributes["birth_day"] | string;
+
+    @ApiProperty({ enum: GenderEnum, default: "f" })
+    @Transform(tolowerCaseTransform)
+    @NameValidator(1, 2)
+    @IsEnum(GenderEnum)
+    gender: ManagerAttributes["gender"];
+
+    @IsOptional()
+    @NameValidator(2, 10)
+    nationality?: ManagerAttributes["nationality"];
 
     @ApiProperty({ default: "0944332211" })
     @IsPhoneNumber("SY")
