@@ -54,7 +54,7 @@ export class TeachersService {
         });
     }
 
-    findAll(query: FindAllTeacherDto, page: number = 0) {
+    findAll(query: FindAllTeacherDto, page = 0) {
         const whereOptions: WhereOptions<TeacherAttributes> = {};
         for (const key in query) {
             if (Object.prototype.hasOwnProperty.call(query, key)) {

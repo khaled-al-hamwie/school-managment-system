@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Query } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, WhereOptions } from "sequelize";
 import { CreateClassDto } from "./dto/create-class.dto";

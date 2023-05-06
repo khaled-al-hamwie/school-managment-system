@@ -18,7 +18,7 @@ describe("create class dto", () => {
         expect(erros.length).toBe(0);
     });
     describe("name", () => {
-        let attr = "name";
+        const attr = "name";
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
             const ofImportDto = plainToInstance(CreateClassDto, body);
@@ -49,7 +49,7 @@ describe("create class dto", () => {
         });
     });
     describe("max-rooms", () => {
-        let attr = "max_rooms";
+        const attr = "max_rooms";
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
             const ofImportDto = plainToInstance(CreateClassDto, body);
