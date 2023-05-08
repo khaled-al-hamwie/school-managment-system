@@ -11,7 +11,6 @@ describe("create class dto", () => {
             lecture_length: 20,
             rest_length: 5,
             number_of_lectures: 4,
-            year: "2020-2021",
         };
     });
 
@@ -51,16 +50,7 @@ describe("create class dto", () => {
             });
         });
     });
-    it("year", async () => {
-        const attr = "year";
-        body[attr] = "202a/2021";
-        const ofImportDto = plainToInstance(CreateClassDto, body);
-        const erros: ValidationError[] = await validate(ofImportDto);
-        expect(erros[0].property).toEqual(attr);
-        expect(erros[0].constraints).toEqual({
-            matches: `provide a year of format 2021-2022`,
-        });
-    });
+
     describe("number_of_lectures, lecture_length, rest_length", () => {
         const attr = "number_of_lectures";
         const min = 1;

@@ -31,12 +31,6 @@ export class Class
     name: ClassAttributes["name"];
 
     @Column({
-        type: DataType.STRING(9),
-        allowNull: false,
-    })
-    year: ClassAttributes["year"];
-
-    @Column({
         type: DataType.TINYINT.UNSIGNED,
         allowNull: false,
     })
