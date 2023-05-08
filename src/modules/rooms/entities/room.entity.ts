@@ -27,7 +27,7 @@ export class Room
 
     @ForeignKey(() => Class)
     @Column({
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
     })
     class_id: RoomAttributes["class_id"];

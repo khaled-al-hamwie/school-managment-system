@@ -20,7 +20,7 @@ export class Class
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
     })
     class_id?: ClassAttributes["class_id"];
 
@@ -31,11 +31,28 @@ export class Class
     name: ClassAttributes["name"];
 
     @Column({
-        type: DataType.TINYINT,
+        type: DataType.STRING(9),
         allowNull: false,
     })
-    max_rooms: ClassAttributes["max_rooms"];
+    year: ClassAttributes["year"];
 
+    @Column({
+        type: DataType.TINYINT.UNSIGNED,
+        allowNull: false,
+    })
+    number_of_lectures: number;
+
+    @Column({
+        type: DataType.TINYINT.UNSIGNED,
+        allowNull: false,
+    })
+    lecture_length: number;
+
+    @Column({
+        type: DataType.TINYINT.UNSIGNED,
+        allowNull: false,
+    })
+    rest_length: number;
     @HasMany(() => Room)
     rooms: Room[];
     // @HasMany(() => Subject)
