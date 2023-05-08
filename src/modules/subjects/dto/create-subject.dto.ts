@@ -1,11 +1,14 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import NameValidator from "src/core/common/validators/name.validator";
+import NumberValidator from "src/core/common/validators/number.validator";
+import { SubjectAttributes } from "../interfaces/subject.interface";
 
 export class CreateSubjectDto {
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+    @NameValidator(3, 16)
+    name: SubjectAttributes["name"];
 
-    @IsNotEmpty()
-    @IsNumber()
-    semester: number;
+    @NumberValidator(1, 65536)
+    class_id: SubjectAttributes["class_id"];
+
+    @NumberValidator(1, 10)
+    semester: SubjectAttributes["semester"];
 }
