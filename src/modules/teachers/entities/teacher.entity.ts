@@ -7,7 +7,6 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
-import { Gender } from "src/core/common/types/gender.type";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import {
     TeacherAttributes,
@@ -21,72 +20,73 @@ export default class Teacher
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
     })
-    teacher_id?: number;
+    teacher_id?: TeacherAttributes["teacher_id"];
 
     @ForeignKey(() => Credential)
     @Column({
-        type: DataType.BIGINT,
+        type: DataType.BIGINT.UNSIGNED,
         allowNull: false,
         unique: true,
     })
-    credential_id: number;
+    credential_id: TeacherAttributes["credential_id"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    first_name: string;
+    first_name: TeacherAttributes["first_name"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    middle_name: string;
+    middle_name: TeacherAttributes["middle_name"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    last_name: string;
+    last_name: TeacherAttributes["last_name"];
 
     @Column({
         type: DataType.DATEONLY,
         allowNull: false,
     })
-    birth_day: Date;
+    birth_day: TeacherAttributes["birth_day"];
 
     @Column({
         type: DataType.STRING(2),
         allowNull: false,
     })
-    gender: Gender;
+    gender: TeacherAttributes["gender"];
+
     @Column({
         type: DataType.STRING(10),
         allowNull: false,
         defaultValue: "UK",
     })
-    nationality?: string;
+    nationality?: TeacherAttributes["nationality"];
 
     @Column({
         type: DataType.STRING(20),
         allowNull: false,
     })
-    phone_number: string;
+    phone_number: TeacherAttributes["phone_number"];
 
     @Column({
         type: DataType.STRING(45),
         allowNull: false,
     })
-    location: string;
+    location: TeacherAttributes["location"];
 
     @Column({
         type: DataType.DECIMAL(9, 2),
         allowNull: false,
         validate: { min: 0 },
     })
-    salary: number;
+    salary: TeacherAttributes["salary"];
 
     @BelongsTo(() => Credential)
     credentail: Credential;

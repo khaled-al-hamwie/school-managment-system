@@ -20,28 +20,28 @@ export class Credential
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.BIGINT,
+        type: DataType.BIGINT.UNSIGNED,
     })
-    credential_id: number;
+    credential_id: CredentialAttributes["credential_id"];
 
     @Column({
         type: DataType.STRING(45),
         allowNull: false,
         unique: true,
     })
-    user_name: string;
+    user_name: CredentialAttributes["user_name"];
 
     @Column({
         type: DataType.STRING(500),
         allowNull: false,
     })
-    email: string;
+    email: CredentialAttributes["email"];
 
     @Column({
-        type: DataType.STRING(245),
+        type: DataType.STRING(150),
         allowNull: false,
     })
-    password: string;
+    password: CredentialAttributes["password"];
 
     @CreatedAt
     @Column({

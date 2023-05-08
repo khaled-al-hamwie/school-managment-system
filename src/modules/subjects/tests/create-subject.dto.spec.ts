@@ -1,21 +1,20 @@
 import { plainToInstance } from "class-transformer";
 import { ValidationError, validate } from "class-validator";
-import { CreateClassDto } from "../dto/create-class.dto";
+import { CreateSubjectDto } from "../dto/create-subject.dto";
 
-let body: CreateClassDto;
+let body: CreateSubjectDto;
 
 describe("create class dto", () => {
     beforeEach(() => {
         body = {
             name: "first class",
-            lecture_length: 20,
-            rest_length: 5,
-            number_of_lectures: 4,
+            class_id: 4,
+            semester: 1,
         };
     });
 
     it("should pass", async () => {
-        const ofImportDto = plainToInstance(CreateClassDto, body);
+        const ofImportDto = plainToInstance(CreateSubjectDto, body);
         const erros: ValidationError[] = await validate(ofImportDto);
         expect(erros.length).toBe(0);
     });
@@ -23,7 +22,7 @@ describe("create class dto", () => {
         const attr = "name";
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
@@ -33,7 +32,7 @@ describe("create class dto", () => {
         });
         it(`should not allow small ${attr}`, async () => {
             body[attr] = "1f      ";
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
@@ -42,22 +41,22 @@ describe("create class dto", () => {
         });
         it(`should not allow large ${attr}`, async () => {
             body[attr] = "1f      ".repeat(44);
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
-                isLength: `${attr} must be shorter than or equal to 16 characters`,
+                isLength: `${attr} must be shorter than or equal to 26 characters`,
             });
         });
     });
 
-    describe("number_of_lectures, lecture_length, rest_length", () => {
-        const attr = "number_of_lectures";
+    describe("class_id", () => {
+        const attr = "class_id";
         const min = 1;
-        const max = 255;
+        const max = 65536;
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
@@ -68,7 +67,7 @@ describe("create class dto", () => {
         });
         it(`should not allow ${attr} less than ${min}`, async () => {
             body[attr] = 0;
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
@@ -76,8 +75,8 @@ describe("create class dto", () => {
             });
         });
         it(`should not allow ${attr} greater than ${max}`, async () => {
-            body[attr] = 256;
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            body[attr] = max + 1;
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
@@ -86,7 +85,50 @@ describe("create class dto", () => {
         });
         it(`should not allow decimal ${attr}`, async () => {
             body[attr] = 1.1;
-            const ofImportDto = plainToInstance(CreateClassDto, body);
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(attr);
+            expect(erros[0].constraints).toEqual({
+                isInt: `${attr} must be an integer number`,
+            });
+        });
+    });
+    describe("semester", () => {
+        const attr = "semester";
+        const min = 1;
+        const max = 10;
+        it(`should not allow no ${attr}`, async () => {
+            delete body[attr];
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(attr);
+            expect(erros[0].constraints).toEqual({
+                isInt: `${attr} must be an integer number`,
+                min: `${attr} must not be less than ${min}`,
+                max: `${attr} must not be greater than ${max}`,
+            });
+        });
+        it(`should not allow ${attr} less than ${min}`, async () => {
+            body[attr] = 0;
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(attr);
+            expect(erros[0].constraints).toEqual({
+                min: `${attr} must not be less than ${min}`,
+            });
+        });
+        it(`should not allow ${attr} greater than ${max}`, async () => {
+            body[attr] = max + 1;
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(attr);
+            expect(erros[0].constraints).toEqual({
+                max: `${attr} must not be greater than ${max}`,
+            });
+        });
+        it(`should not allow decimal ${attr}`, async () => {
+            body[attr] = 1.1;
+            const ofImportDto = plainToInstance(CreateSubjectDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({

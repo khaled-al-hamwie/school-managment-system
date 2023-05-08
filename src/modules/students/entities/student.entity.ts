@@ -7,7 +7,6 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
-import { Gender } from "src/core/common/types/gender.type";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import {
     StudentAttributes,
@@ -22,72 +21,72 @@ export default class Student
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
     })
-    student_id?: number;
+    student_id?: StudentAttributes["student_id"];
 
     @ForeignKey(() => Credential)
     @Column({
-        type: DataType.BIGINT,
+        type: DataType.BIGINT.UNSIGNED,
         allowNull: false,
         unique: true,
     })
-    credential_id: number;
+    credential_id: StudentAttributes["credential_id"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    first_name: string;
+    first_name: StudentAttributes["first_name"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    last_name: string;
+    last_name: StudentAttributes["last_name"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    father_name: string;
+    father_name: StudentAttributes["father_name"];
 
     @Column({
         type: DataType.STRING(16),
         allowNull: false,
     })
-    mother_name: string;
+    mother_name: StudentAttributes["mother_name"];
 
     @Column({
         type: DataType.DATEONLY,
         allowNull: false,
     })
-    birth_day: Date;
+    birth_day: StudentAttributes["birth_day"];
 
     @Column({
         type: DataType.STRING(2),
         allowNull: false,
     })
-    gender: Gender;
+    gender: StudentAttributes["gender"];
 
     @Column({
         type: DataType.STRING(10),
         allowNull: false,
         defaultValue: "UK",
     })
-    nationality?: string;
+    nationality?: StudentAttributes["nationality"];
 
     @Column({
         type: DataType.STRING(20),
         allowNull: false,
     })
-    phone_number: string;
+    phone_number: StudentAttributes["phone_number"];
 
     @Column({
         type: DataType.STRING(45),
         allowNull: false,
     })
-    location: string;
+    location: StudentAttributes["location"];
 
     @Column({
         type: DataType.DATEONLY,

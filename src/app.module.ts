@@ -7,6 +7,7 @@ import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
 import { StudentsModule } from "./modules/students/students.module";
+import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 
 @Module({
@@ -19,6 +20,7 @@ import { TeachersModule } from "./modules/teachers/teachers.module";
         StudentsModule,
         ClassesModule,
         RoomsModule,
+        SubjectsModule,
     ],
     providers: [
         {
