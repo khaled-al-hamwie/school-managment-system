@@ -45,7 +45,7 @@ describe("create class dto", () => {
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
-                isLength: `${attr} must be shorter than or equal to 16 characters`,
+                isLength: `${attr} must be shorter than or equal to 26 characters`,
             });
         });
     });

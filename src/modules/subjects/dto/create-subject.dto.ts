@@ -3,7 +3,7 @@ import NumberValidator from "src/core/common/validators/number.validator";
 import { SubjectAttributes } from "../interfaces/subject.interface";
 
 export class CreateSubjectDto {
-    @NameValidator(3, 16)
+    @NameValidator(3, 26)
     name: SubjectAttributes["name"];
 
     @NumberValidator(1, 65536)

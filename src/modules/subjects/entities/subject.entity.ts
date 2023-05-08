@@ -33,7 +33,7 @@ export class Subject
     class_id: SubjectAttributes["class_id"];
 
     @Column({
-        type: DataType.STRING(16),
+        type: DataType.STRING(26),
         allowNull: false,
     })
     name: SubjectAttributes["name"];
