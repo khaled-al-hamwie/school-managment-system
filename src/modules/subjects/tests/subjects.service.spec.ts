@@ -7,7 +7,7 @@ import { setTimeout } from "timers/promises";
 import { CreateSubjectDto } from "../dto/create-subject.dto";
 import { SubjectsService } from "../subjects.service";
 
-describe("ClassesService", () => {
+describe("subject Service", () => {
     let service: SubjectsService;
     let classesService: ClassesService;
     let body: CreateSubjectDto;
@@ -19,41 +19,36 @@ describe("ClassesService", () => {
         service = module.get<SubjectsService>(SubjectsService);
         classesService = module.get<ClassesService>(ClassesService);
         classesService.create(bodySample);
-        console.info((await classesService.findAll(""))[0].class_id);
         body = {
             class_id: (await classesService.findAll(""))[0].class_id,
             name: "math",
             semester: 1,
         };
-        console.info(body);
     });
 
     it("should be defined", () => {
         expect(service).toBeDefined();
-        expect(classesService).toBeDefined();
     });
 
-    it("should create a class", () => {
-        const output = service.create(body);
+    it("should create a class", async () => {
+        const output = await service.create(body);
         expect(output).toBe("done");
     });
-    // it("should find", async () => {
-    //     await setTimeout(1000);
-    //     const output = await service.findOne({ name: body.name });
-    //     expect(output).not.toBeNull();
-    // });
-    // it("should update", async () => {
-    //     const myClass_id = (await service.findOne({ name: body.name }))
-    //         .class_id;
-    //     const output = await service.update(myClass_id, {
-    //         name: "fjds;lak;jfdsalk",
-    //     });
-    //     expect(output).toBe("done");
-    // });
-    // it("should remove", async () => {
-    //     const myClass_id = (await service.findOne({ name: body.name }))
-    //         .class_id;
-    //     const output = service.remove(myClass_id);
-    //     expect(output).toBe("done");
-    // });
+    it("should find", async () => {
+        await setTimeout(1000);
+        const output = await service.findOne({ name: body.name });
+        expect(output).not.toBeNull();
+    });
+    it("should update", async () => {
+        const subject = (await service.findOne({ name: body.name })).subject_id;
+        const output = await service.update(subject, {
+            name: "fjds;lak;jfdsalk",
+        });
+        expect(output).toBe("done");
+    });
+    it("should remove", async () => {
+        const subject = (await service.findOne({ name: body.name })).subject_id;
+        const output = service.remove(subject);
+        expect(output).toBe("done");
+    });
 });

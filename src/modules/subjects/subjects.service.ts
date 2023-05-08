@@ -1,9 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { WhereOptions } from "sequelize";
+import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { ClassesService } from "../classes/classes.service";
+import { Class } from "../classes/entities/class.entity";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
+import { FindAllSubjectDto } from "./dto/findAll-subject.dto";
 import { UpdateSubjectDto } from "./dto/update-subject.dto";
 import { Subject } from "./entities/subject.entity";
+import { SubjectAttributes } from "./interfaces/subject.interface";
 
 @Injectable()
 export class SubjectsService {
@@ -22,19 +27,49 @@ export class SubjectsService {
         return "done";
     }
 
-    findAll() {
-        return `This action returns all subjects`;
+    findAll(query: FindAllSubjectDto, page = 0) {
+        const whereOptions: WhereOptions<SubjectAttributes> =
+            whereWrapperTransform(query);
+
+        return this.SubjectEntity.findAll({
+            where: whereOptions,
+            include: {
+                model: Class,
+            },
+            offset: page * 5,
+            limit: 5,
+            order: [["name", "ASC"]],
+        });
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} subject`;
+    // TO-DO add the book of the subject , and teacher
+    findOne(options: WhereOptions<SubjectAttributes>) {
+        return this.SubjectEntity.findOne({
+            where: options,
+            limit: 1,
+        });
     }
 
-    update(id: number, updateSubjectDto: UpdateSubjectDto) {
-        return `This action updates a #${id} subject`;
+    async update(
+        subject_id: SubjectAttributes["subject_id"],
+        updateSubjectDto: UpdateSubjectDto
+    ) {
+        const subject = await this.findOne({ subject_id });
+        if (!subject) throw new NotFoundException("class doesn't exists");
+        if (
+            updateSubjectDto.class_id &&
+            !(await this.classesService.findOne({
+                class_id: updateSubjectDto.class_id,
+            }))
+        ) {
+            throw new NotFoundException("class does'nt exists");
+        }
+        subject.update(updateSubjectDto).then((output) => output.save());
+        return "done";
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} subject`;
+    remove(subject_id: SubjectAttributes["subject_id"]) {
+        this.SubjectEntity.destroy({ where: { subject_id } });
+        return "done";
     }
 }
