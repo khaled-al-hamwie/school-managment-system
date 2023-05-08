@@ -1,11 +1,25 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { ClassesService } from "../classes/classes.service";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
 import { UpdateSubjectDto } from "./dto/update-subject.dto";
+import { Subject } from "./entities/subject.entity";
 
 @Injectable()
 export class SubjectsService {
-    create(createSubjectDto: CreateSubjectDto) {
-        return "This action adds a new subject";
+    constructor(
+        @InjectModel(Subject) private readonly SubjectEntity: typeof Subject,
+        private readonly classesService: ClassesService
+    ) {}
+    async create(createSubjectDto: CreateSubjectDto) {
+        const myClass = await this.classesService.findOne({
+            class_id: createSubjectDto.class_id,
+        });
+        if (!myClass) {
+            throw new NotFoundException("class doesn't exists");
+        }
+        this.SubjectEntity.create(createSubjectDto);
+        return "done";
     }
 
     findAll() {
