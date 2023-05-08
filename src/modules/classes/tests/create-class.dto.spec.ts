@@ -8,7 +8,10 @@ describe("create class dto", () => {
     beforeEach(() => {
         body = {
             name: "first class",
-            max_rooms: 5,
+            lecture_length: 20,
+            rest_length: 5,
+            number_of_lectures: 4,
+            year: "2020-2021",
         };
     });
 
@@ -48,8 +51,20 @@ describe("create class dto", () => {
             });
         });
     });
-    describe("max-rooms", () => {
-        const attr = "max_rooms";
+    it("year", async () => {
+        const attr = "year";
+        body[attr] = "202a/2021";
+        const ofImportDto = plainToInstance(CreateClassDto, body);
+        const erros: ValidationError[] = await validate(ofImportDto);
+        expect(erros[0].property).toEqual(attr);
+        expect(erros[0].constraints).toEqual({
+            matches: `provide a year of format 2021-2022`,
+        });
+    });
+    describe("number_of_lectures, lecture_length, rest_length", () => {
+        const attr = "number_of_lectures";
+        const min = 1;
+        const max = 255;
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
             const ofImportDto = plainToInstance(CreateClassDto, body);
@@ -57,30 +72,30 @@ describe("create class dto", () => {
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
                 isInt: `${attr} must be an integer number`,
-                isPositive: `${attr} must be a positive number`,
+                min: `${attr} must not be less than ${min}`,
+                max: `${attr} must not be greater than ${max}`,
             });
         });
-        it(`should not allow string ${attr}`, async () => {
-            body[attr] = "1f      ";
+        it(`should not allow ${attr} less than ${min}`, async () => {
+            body[attr] = 0;
             const ofImportDto = plainToInstance(CreateClassDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
-                isInt: `${attr} must be an integer number`,
-                isPositive: `${attr} must be a positive number`,
+                min: `${attr} must not be less than ${min}`,
             });
         });
-        it(`should not allow negative ${attr}`, async () => {
-            body[attr] = -3;
+        it(`should not allow ${attr} greater than ${max}`, async () => {
+            body[attr] = 256;
             const ofImportDto = plainToInstance(CreateClassDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
-                isPositive: `${attr} must be a positive number`,
+                max: `${attr} must not be greater than ${max}`,
             });
         });
         it(`should not allow decimal ${attr}`, async () => {
-            body[attr] = 0.1;
+            body[attr] = 1.1;
             const ofImportDto = plainToInstance(CreateClassDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);
