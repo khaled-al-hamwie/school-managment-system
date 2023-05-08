@@ -54,15 +54,18 @@ export class SubjectsService {
         subject_id: SubjectAttributes["subject_id"],
         updateSubjectDto: UpdateSubjectDto
     ) {
+        const { class_id } = updateSubjectDto;
         const subject = await this.findOne({ subject_id });
-        if (!subject) throw new NotFoundException("class doesn't exists");
+        if (!subject) throw new NotFoundException("subject doesn't exists");
         if (
-            updateSubjectDto.class_id &&
+            class_id &&
             !(await this.classesService.findOne({
-                class_id: updateSubjectDto.class_id,
+                class_id,
             }))
         ) {
-            throw new NotFoundException("class does'nt exists");
+            throw new NotFoundException(
+                `class with id=${class_id} does'nt exists`
+            );
         }
         subject.update(updateSubjectDto).then((output) => output.save());
         return "done";
