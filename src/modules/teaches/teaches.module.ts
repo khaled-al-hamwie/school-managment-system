@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common";
+import { SequelizeModule } from "@nestjs/sequelize";
+import { Teach } from "./entities/teach.entity";
 import { TeachesService } from "./teaches.service";
-import { TeachesController } from "./teaches.controller";
 
 @Module({
-    controllers: [TeachesController],
+    imports: [SequelizeModule.forFeature([Teach])],
     providers: [TeachesService],
 })
 export class TeachesModule {}
