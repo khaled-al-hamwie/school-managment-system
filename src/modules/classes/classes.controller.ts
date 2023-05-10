@@ -4,6 +4,7 @@ import {
     Delete,
     Get,
     Param,
+    ParseIntPipe,
     Patch,
     Post,
     Query,
@@ -38,14 +39,17 @@ export class ClassesController {
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
     @Patch(":id")
-    update(@Param("id") id: string, @Body() updateClassDto: UpdateClassDto) {
+    update(
+        @Param("id", ParseIntPipe) id: string,
+        @Body() updateClassDto: UpdateClassDto
+    ) {
         return this.classesService.update(+id, updateClassDto);
     }
 
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
     @Delete(":id")
-    remove(@Param("id") id: string) {
+    remove(@Param("id", ParseIntPipe) id: string) {
         return this.classesService.remove(+id);
     }
 }
