@@ -44,7 +44,7 @@ describe("subject Service", () => {
     it("should remove", async () => {
         const subject = (await service.findOne({ name: "fjds;lak;jfdsalk" }))
             .subject_id;
-        const output = service.remove(subject);
+        const output = await service.remove(subject);
         expect(output).toBe("done");
     });
 });
