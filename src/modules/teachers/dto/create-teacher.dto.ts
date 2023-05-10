@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import {
-    ArrayMaxSize,
     ArrayMinSize,
+    ArrayUnique,
     IsEnum,
     IsISO8601,
     IsInt,
@@ -56,9 +56,11 @@ export class CreateTeacherDto extends CreateCredentialDto {
     salary: TeacherAttributes["salary"];
 
     @IsOptional()
+    @ArrayUnique()
     @ApiProperty({ minimum: 1, maximum: 65535, default: [12, 20] })
     @IsInt({ each: true })
     @Min(1, { each: true })
     @Max(65535, { each: true })
+    @ArrayMinSize(1)
     subject_ids?: SubjectAttributes["subject_id"][];
 }
