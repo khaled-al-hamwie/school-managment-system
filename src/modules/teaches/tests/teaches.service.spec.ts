@@ -42,7 +42,6 @@ describe("TeachesService", () => {
         });
         subject_id1 = (await subjectsService.findAll(null))[0].subject_id;
         teacher_id1 = (await teachersService.findAll(null))[0].teacher_id;
-        console.info(teacher_id1);
         await Teach.destroy({ where: {} });
     });
 
