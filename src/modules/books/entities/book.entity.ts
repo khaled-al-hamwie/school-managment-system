@@ -30,6 +30,11 @@ export class Book
     @Column({
         type: DataType.DECIMAL(9, 2),
     })
+    version?: BookAttributes["version"];
+
+    @Column({
+        type: DataType.DECIMAL(9, 2),
+    })
     price?: BookAttributes["price"];
 
     @Column({
