@@ -32,8 +32,8 @@ export class TeachesService {
         });
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} teach`;
+    remove(options: WhereOptions<TeachAttributes>) {
+        return this.TeachEntity.destroy({ where: options });
     }
 
     async teachNotExist(

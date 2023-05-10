@@ -49,6 +49,6 @@ export class Subject
     @BelongsTo(() => Class)
     class: Class;
 
-    @HasMany(() => Teach)
+    @HasMany(() => Teach, { onDelete: "CASCADE" })
     teaches: Teach[];
 }

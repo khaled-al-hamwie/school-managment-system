@@ -84,7 +84,8 @@ export class SubjectsService {
         return "done";
     }
 
-    remove(subject_id: SubjectAttributes["subject_id"]) {
+    async remove(subject_id: SubjectAttributes["subject_id"]) {
+        await this.TeachesService.remove({ subject_id });
         this.SubjectEntity.destroy({ where: { subject_id } });
         return "done";
     }
