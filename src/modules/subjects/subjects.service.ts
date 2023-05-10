@@ -2,7 +2,7 @@ import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Cache } from "cache-manager";
-import { Op, WhereOptions } from "sequelize";
+import { FindOptions, Op, WhereOptions } from "sequelize";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { ClassesService } from "../classes/classes.service";
 import { Class } from "../classes/entities/class.entity";
@@ -50,9 +50,6 @@ export class SubjectsService {
 
         return this.SubjectEntity.findAll({
             where: whereOptions,
-            include: {
-                model: Class,
-            },
             offset: page * 5,
             limit: 5,
             order: [["name", "ASC"]],
@@ -60,10 +57,14 @@ export class SubjectsService {
     }
 
     // TO-DO add the book of the subject , and teacher
-    findOne(options: WhereOptions<SubjectAttributes>) {
+    findOne(
+        where: WhereOptions<SubjectAttributes>,
+        options?: FindOptions<SubjectAttributes>
+    ) {
         return this.SubjectEntity.findOne({
-            where: options,
+            where,
             limit: 1,
+            ...options,
         });
     }
 

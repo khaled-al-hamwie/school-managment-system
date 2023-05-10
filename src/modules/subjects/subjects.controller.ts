@@ -14,6 +14,9 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import { SUBJECT_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
+import { Class } from "../classes/entities/class.entity";
+import Teacher from "../teachers/entities/teacher.entity";
+import { Teach } from "../teaches/entities/teach.entity";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
 import { DeleteSubjectDto } from "./dto/delete-subject.dto";
 import { FindAllSubjectDto } from "./dto/findAll-subject.dto";
@@ -49,7 +52,26 @@ export class SubjectsController {
     findOne(
         @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"]
     ) {
-        return this.subjectsService.findOne({ subject_id });
+        return this.subjectsService.findOne(
+            { subject_id },
+            {
+                include: [
+                    {
+                        model: Class,
+                    },
+                    {
+                        model: Teach,
+                        include: [
+                            {
+                                model: Teacher,
+                                attributes: { exclude: ["credential_id"] },
+                            },
+                        ],
+                        attributes: { exclude: ["teacher_id", "subject_id"] },
+                    },
+                ],
+            }
+        );
     }
 
     @ApiBearerAuth("Authorization")
