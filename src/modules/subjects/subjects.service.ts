@@ -4,6 +4,7 @@ import { WhereOptions } from "sequelize";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { ClassesService } from "../classes/classes.service";
 import { Class } from "../classes/entities/class.entity";
+import { TeachesService } from "../teaches/teaches.service";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
 import { FindAllSubjectDto } from "./dto/findAll-subject.dto";
 import { UpdateSubjectDto } from "./dto/update-subject.dto";
@@ -14,7 +15,8 @@ import { SubjectAttributes } from "./interfaces/subject.interface";
 export class SubjectsService {
     constructor(
         @InjectModel(Subject) private readonly SubjectEntity: typeof Subject,
-        private readonly classesService: ClassesService
+        private readonly classesService: ClassesService,
+        private readonly TeachesService: TeachesService
     ) {}
     async create(createSubjectDto: CreateSubjectDto) {
         const myClass = await this.classesService.findOne({
@@ -23,7 +25,13 @@ export class SubjectsService {
         if (!myClass) {
             throw new NotFoundException("class doesn't exists");
         }
-        this.SubjectEntity.create(createSubjectDto);
+        const subject = await this.SubjectEntity.create(createSubjectDto);
+        if (createSubjectDto.teacher_ids) {
+            this.TeachesService.create(
+                subject.subject_id,
+                createSubjectDto.teacher_ids
+            );
+        }
         return "done";
     }
 
