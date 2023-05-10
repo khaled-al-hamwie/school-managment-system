@@ -27,6 +27,7 @@ export const databaseConfig: IDatabaseConfig = {
         logging: undefined,
         define: {
             timestamps: false,
+            engine: "MyISAM",
         },
     },
     production: {
