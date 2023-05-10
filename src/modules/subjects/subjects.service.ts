@@ -2,12 +2,13 @@ import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Cache } from "cache-manager";
-import { WhereOptions } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { ClassesService } from "../classes/classes.service";
 import { Class } from "../classes/entities/class.entity";
 import { TeachesService } from "../teaches/teaches.service";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
+import { DeleteSubjectDto } from "./dto/delete-subject.dto";
 import { FindAllSubjectDto } from "./dto/findAll-subject.dto";
 import { UpdateSubjectDto } from "./dto/update-subject.dto";
 import { Subject } from "./entities/subject.entity";
@@ -87,6 +88,19 @@ export class SubjectsService {
     async remove(subject_id: SubjectAttributes["subject_id"]) {
         await this.TeachesService.remove({ subject_id });
         this.SubjectEntity.destroy({ where: { subject_id } });
+        return "done";
+    }
+
+    removeTeachers(
+        subject_id: SubjectAttributes["subject_id"],
+        deleteSubjectDto: DeleteSubjectDto
+    ) {
+        this.TeachesService.remove({
+            subject_id,
+            teacher_id: {
+                [Op.in]: deleteSubjectDto.teacher_ids,
+            },
+        });
         return "done";
     }
 }

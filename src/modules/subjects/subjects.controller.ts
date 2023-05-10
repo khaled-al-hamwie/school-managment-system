@@ -15,6 +15,7 @@ import ManagerGuard from "src/core/common/guards/manager.guard";
 import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import { SUBJECT_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
+import { DeleteSubjectDto } from "./dto/delete-subject.dto";
 import { FindAllSubjectDto } from "./dto/findAll-subject.dto";
 import { UpdateSubjectDto } from "./dto/update-subject.dto";
 import { SubjectAttributes } from "./interfaces/subject.interface";
@@ -68,5 +69,18 @@ export class SubjectsController {
         @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"]
     ) {
         return this.subjectsService.remove(+subject_id);
+    }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Delete(":id/teacher")
+    removeTeachers(
+        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
+        @Body() deleteSubjectDto: DeleteSubjectDto
+    ) {
+        return this.subjectsService.removeTeachers(
+            +subject_id,
+            deleteSubjectDto
+        );
     }
 }
