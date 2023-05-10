@@ -1,5 +1,7 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { Cache } from "cache-manager";
 import { WhereOptions } from "sequelize";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { ClassesService } from "../classes/classes.service";
@@ -15,15 +17,26 @@ import { SubjectAttributes } from "./interfaces/subject.interface";
 export class SubjectsService {
     constructor(
         @InjectModel(Subject) private readonly SubjectEntity: typeof Subject,
+        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
         private readonly classesService: ClassesService,
         private readonly TeachesService: TeachesService
     ) {}
     async create(createSubjectDto: CreateSubjectDto) {
-        const myClass = await this.classesService.findOne({
-            class_id: createSubjectDto.class_id,
-        });
-        if (!myClass) {
-            throw new NotFoundException("class doesn't exists");
+        const classExist = await this.cacheManager.get(
+            `class:${createSubjectDto.class_id}:exist`
+        );
+        if (!classExist) {
+            const myClass = await this.classesService.findOne({
+                class_id: createSubjectDto.class_id,
+            });
+            if (!myClass) {
+                throw new NotFoundException("class doesn't exists");
+            }
+            await this.cacheManager.set(
+                `class:${createSubjectDto.class_id}:exist`,
+                true,
+                10 * 60 * 60 * 60
+            );
         }
         const subject = await this.SubjectEntity.create(createSubjectDto);
         if (createSubjectDto.teacher_ids) {
@@ -62,7 +75,7 @@ export class SubjectsService {
         subject_id: SubjectAttributes["subject_id"],
         updateSubjectDto: UpdateSubjectDto
     ) {
-        const { class_id } = updateSubjectDto;
+        const { class_id, teacher_ids } = updateSubjectDto;
         const subject = await this.findOne({ subject_id });
         if (!subject) throw new NotFoundException("subject doesn't exists");
         if (
@@ -76,6 +89,9 @@ export class SubjectsService {
             );
         }
         subject.update(updateSubjectDto).then((output) => output.save());
+        if (teacher_ids) {
+            this.TeachesService.create(subject_id, teacher_ids);
+        }
         return "done";
     }
 
