@@ -56,7 +56,7 @@ describe("TeachesService", () => {
     });
     it("should find", async () => {
         await setTimeout(1000);
-        let teach = await service.findOne({ subject_id: subject_id1 });
+        const teach = await service.findOne({ subject_id: subject_id1 });
         expect(teach.subject_id).toBe(subject_id1);
     });
     it("should not exist", async () => {

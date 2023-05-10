@@ -5,7 +5,6 @@ import { Cache } from "cache-manager";
 import { FindOptions, Op, WhereOptions } from "sequelize";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { ClassesService } from "../classes/classes.service";
-import { Class } from "../classes/entities/class.entity";
 import { TeachesService } from "../teaches/teaches.service";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
 import { DeleteSubjectDto } from "./dto/delete-subject.dto";
@@ -20,7 +19,7 @@ export class SubjectsService {
         @InjectModel(Subject) private readonly SubjectEntity: typeof Subject,
         @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
         private readonly classesService: ClassesService,
-        private readonly TeachesService: TeachesService
+        private readonly teachesService: TeachesService
     ) {}
     async create(createSubjectDto: CreateSubjectDto) {
         const classExist = await this.cacheManager.get(
@@ -36,7 +35,7 @@ export class SubjectsService {
         }
         const subject = await this.SubjectEntity.create(createSubjectDto);
         if (createSubjectDto.teacher_ids) {
-            this.TeachesService.create(
+            this.teachesService.create(
                 subject.subject_id,
                 createSubjectDto.teacher_ids
             );
@@ -81,13 +80,13 @@ export class SubjectsService {
 
         subject.update(updateSubjectDto).then((output) => output.save());
         if (teacher_ids) {
-            this.TeachesService.create(subject_id, teacher_ids);
+            this.teachesService.create(subject_id, teacher_ids);
         }
         return "done";
     }
 
     async remove(subject_id: SubjectAttributes["subject_id"]) {
-        await this.TeachesService.remove({ subject_id });
+        await this.teachesService.remove({ subject_id });
         this.SubjectEntity.destroy({ where: { subject_id } });
         return "done";
     }
@@ -96,7 +95,7 @@ export class SubjectsService {
         subject_id: SubjectAttributes["subject_id"],
         deleteSubjectDto: DeleteSubjectDto
     ) {
-        this.TeachesService.remove({
+        this.teachesService.remove({
             subject_id,
             teacher_id: {
                 [Op.in]: deleteSubjectDto.teacher_ids,
