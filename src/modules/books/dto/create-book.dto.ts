@@ -5,7 +5,10 @@ import { IsOptional, IsPositive } from "class-validator";
 
 export class CreateBookDto {
     @NumberValidator(1, 65535)
-    book_id: BookAttributes["book_id"];
+    subject_id: BookAttributes["subject_id"];
+
+    // @NumberValidator(1, 65535)
+    // subject_id: BookAttributes["_id"];
 
     @NameValidator(5, 45)
     name: BookAttributes["name"];
