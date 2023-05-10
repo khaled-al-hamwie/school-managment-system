@@ -2,6 +2,7 @@ import { CacheInterceptor, CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_INTERCEPTOR } from "@nestjs/core";
+import { EventEmitterModule } from "@nestjs/event-emitter";
 import { databaseProvider } from "./core/database/database.providers";
 import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
@@ -15,6 +16,7 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         CacheModule.register({ ttl: 60, max: 1000, isGlobal: true }),
+        EventEmitterModule.forRoot(),
         databaseProvider,
         ManagersModule,
         TeachersModule,
