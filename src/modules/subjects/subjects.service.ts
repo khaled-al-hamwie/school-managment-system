@@ -26,12 +26,7 @@ export class SubjectsService {
             `class:${createSubjectDto.class_id}:exist`
         );
         if (!classExist) {
-            const myClass = await this.classesService.findOne({
-                class_id: createSubjectDto.class_id,
-            });
-            if (!myClass) {
-                throw new NotFoundException("class doesn't exists");
-            }
+            await this.classesService.checkClass(createSubjectDto.class_id);
             await this.cacheManager.set(
                 `class:${createSubjectDto.class_id}:exist`,
                 true,
@@ -78,16 +73,10 @@ export class SubjectsService {
         const { class_id, teacher_ids } = updateSubjectDto;
         const subject = await this.findOne({ subject_id });
         if (!subject) throw new NotFoundException("subject doesn't exists");
-        if (
-            class_id &&
-            !(await this.classesService.findOne({
-                class_id,
-            }))
-        ) {
-            throw new NotFoundException(
-                `class with id=${class_id} does'nt exists`
-            );
+        if (class_id) {
+            await this.classesService.checkClass(updateSubjectDto.class_id);
         }
+
         subject.update(updateSubjectDto).then((output) => output.save());
         if (teacher_ids) {
             this.TeachesService.create(subject_id, teacher_ids);
