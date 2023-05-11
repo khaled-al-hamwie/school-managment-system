@@ -3,11 +3,13 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
+import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
     TeacherAttributes,
     TeacherCreationAttributes,
@@ -91,6 +93,6 @@ export default class Teacher
     @BelongsTo(() => Credential)
     credentail: Credential;
 
-    // @HasMany(() => Teach)
-    // teaches: Teach[];
+    @HasMany(() => Teach)
+    teaches: Teach[];
 }

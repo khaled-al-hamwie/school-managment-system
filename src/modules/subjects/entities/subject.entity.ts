@@ -3,11 +3,13 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
+import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
     SubjectAttributes,
     SubjectCreationAttributes,
@@ -46,4 +48,7 @@ export class Subject
 
     @BelongsTo(() => Class)
     class: Class;
+
+    @HasMany(() => Teach, { onDelete: "CASCADE" })
+    teaches: Teach[];
 }

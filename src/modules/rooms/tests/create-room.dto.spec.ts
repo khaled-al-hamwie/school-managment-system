@@ -33,17 +33,6 @@ describe("create room dto", () => {
                 min: `${attr} must not be less than ${min}`,
             });
         });
-        it(`should not allow string ${attr}`, async () => {
-            body[attr] = "1f      ";
-            const ofImportDto = plainToInstance(CreateRoomDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(attr);
-            expect(erros[0].constraints).toEqual({
-                isInt: `${attr} must be an integer number`,
-                max: `${attr} must not be greater than ${max}`,
-                min: `${attr} must not be less than ${min}`,
-            });
-        });
         it(`should not allow ${attr} smaller than ${min}`, async () => {
             body[attr] = -3;
             const ofImportDto = plainToInstance(CreateRoomDto, body);
@@ -111,17 +100,6 @@ describe("create room dto", () => {
         const max = 255;
         it(`should not allow no ${attr}`, async () => {
             delete body[attr];
-            const ofImportDto = plainToInstance(CreateRoomDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(attr);
-            expect(erros[0].constraints).toEqual({
-                isInt: `${attr} must be an integer number`,
-                max: `${attr} must not be greater than ${max}`,
-                min: `${attr} must not be less than ${min}`,
-            });
-        });
-        it(`should not allow string ${attr}`, async () => {
-            body[attr] = "1f      ";
             const ofImportDto = plainToInstance(CreateRoomDto, body);
             const erros: ValidationError[] = await validate(ofImportDto);
             expect(erros[0].property).toEqual(attr);

@@ -4,8 +4,9 @@ import {
     NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Op, WhereOptions } from "sequelize";
+import { WhereOptions } from "sequelize";
 import removeCredentails from "src/core/common/transformers/removeCredentails.transform";
+import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { AuthService } from "../auth/auth.service";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { CredentialsService } from "../credentials/credentials.service";
@@ -56,12 +57,8 @@ export class StudentsService {
     }
 
     findAll(query: FindAllStudentDto, page = 0) {
-        const whereOptions: WhereOptions<StudentAttributes> = {};
-        for (const key in query) {
-            if (Object.prototype.hasOwnProperty.call(query, key)) {
-                whereOptions[key] = { [Op.regexp]: query[key] };
-            }
-        }
+        const whereOptions: WhereOptions<StudentAttributes> =
+            whereWrapperTransform(query);
         return this.StudentEntity.findAll({
             where: whereOptions,
             attributes: { exclude: ["credential_id"] },

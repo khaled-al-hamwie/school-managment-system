@@ -1,26 +1,45 @@
 import { Injectable } from "@nestjs/common";
-import { CreateTeachDto } from "./dto/create-teach.dto";
-import { UpdateTeachDto } from "./dto/update-teach.dto";
+import { InjectModel } from "@nestjs/sequelize";
+import { WhereOptions } from "sequelize";
+import { SubjectAttributes } from "../subjects/interfaces/subject.interface";
+import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
+import { TeachersService } from "../teachers/teachers.service";
+import { Teach } from "./entities/teach.entity";
+import { TeachAttributes } from "./interfaces/teach.interface";
 
 @Injectable()
 export class TeachesService {
-    create(createTeachDto: CreateTeachDto) {
-        return "This action adds a new teach";
+    constructor(
+        @InjectModel(Teach) private readonly TeachEntity: typeof Teach,
+        private readonly teachersService: TeachersService
+    ) {}
+    async create(
+        subject_id: SubjectAttributes["subject_id"],
+        teacher_ids: TeacherAttributes["teacher_id"][]
+    ) {
+        for (let i = 0; i < teacher_ids.length; i++) {
+            const teacher_id = teacher_ids[i];
+            const teacher = await this.teachersService.findOne({ teacher_id });
+            if (teacher && (await this.teachNotExist(subject_id, teacher_id)))
+                await this.TeachEntity.create({ subject_id, teacher_id });
+        }
     }
 
-    findAll() {
-        return `This action returns all teaches`;
+    findOne(options: WhereOptions<TeachAttributes>) {
+        return this.TeachEntity.findOne({
+            where: options,
+            limit: 1,
+        });
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} teach`;
+    remove(options: WhereOptions<TeachAttributes>) {
+        return this.TeachEntity.destroy({ where: options });
     }
 
-    update(id: number, updateTeachDto: UpdateTeachDto) {
-        return `This action updates a #${id} teach`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} teach`;
+    async teachNotExist(
+        subject_id: SubjectAttributes["subject_id"],
+        teacher_id: TeacherAttributes["teacher_id"]
+    ) {
+        return (await this.findOne({ subject_id, teacher_id })) == null;
     }
 }
