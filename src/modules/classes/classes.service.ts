@@ -41,8 +41,7 @@ export class ClassesService {
         class_id: ClassAttributes["class_id"],
         updateClassDto: UpdateClassDto
     ) {
-        const myClass = await this.findOne({ class_id });
-        if (!myClass) throw new NotFoundException("class doesn't exists");
+        const myClass = await this.checkClass(class_id);
         myClass.update(updateClassDto).then((output) => output.save());
         return "done";
     }
@@ -50,5 +49,13 @@ export class ClassesService {
     remove(class_id: ClassAttributes["class_id"]) {
         this.ClassEntity.destroy({ where: { class_id } });
         return "done";
+    }
+
+    async checkClass(class_id: ClassAttributes["class_id"]) {
+        const myClass = await this.findOne({
+            class_id,
+        });
+        if (!myClass) throw new NotFoundException("class doesn't exists");
+        return myClass;
     }
 }

@@ -15,10 +15,7 @@ export class RoomsService {
     ) {}
 
     async create(createRoomDto: CreateRoomDto) {
-        const myClass = await this.classessService.findOne({
-            class_id: createRoomDto.class_id,
-        });
-        if (!myClass) throw new NotFoundException("class doesn't exists");
+        await this.classessService.checkClass(createRoomDto.class_id);
         this.RoomEntity.create(createRoomDto);
         return "done";
     }
@@ -36,6 +33,8 @@ export class RoomsService {
     ) {
         const room = await this.findOne({ room_id });
         if (!room) throw new NotFoundException("Room doesn't exists");
+        if (updateClassDto.class_id)
+            await this.classessService.checkClass(updateClassDto.class_id);
         room.update(updateClassDto).then((output) => output.save());
         return "done";
     }
