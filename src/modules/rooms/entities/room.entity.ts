@@ -3,11 +3,13 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
+import { Lecture } from "src/modules/lectures/entities/lecture.entity";
 import {
     RoomAttributes,
     RoomCreationAttributes,
@@ -47,6 +49,6 @@ export class Room
     @BelongsTo(() => Class)
     class: Class;
 
-    // @HasMany(() => Lecture)
-    // lectures: Lecture;
+    @HasMany(() => Lecture)
+    lectures: Lecture;
 }
