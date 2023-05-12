@@ -6,12 +6,14 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
 import { databaseProvider } from "./core/database/database.providers";
 import { BooksModule } from "./modules/books/books.module";
 import { ClassesModule } from "./modules/classes/classes.module";
+import { LecturesModule } from "./modules/lectures/lectures.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
+import { WorkPeridsModule } from "./modules/work-perids/work-perids.module";
 
 @Module({
     imports: [
@@ -27,6 +29,8 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         SubjectsModule,
         BooksModule,
         TeachesModule,
+        LecturesModule,
+        WorkPeridsModule,
     ],
     providers: [
         {
