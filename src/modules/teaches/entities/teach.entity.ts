@@ -3,17 +3,18 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Lecture } from "src/modules/lectures/entities/lecture.entity";
 import { Subject } from "src/modules/subjects/entities/subject.entity";
 import Teacher from "src/modules/teachers/entities/teacher.entity";
 import {
     TeachAttributes,
     TeachCreationAttributes,
 } from "../interfaces/teach.interface";
-//  import{ Lecture } from "src/modules/lectures/entities/lecture.entity";
 
 @Table
 export class Teach
@@ -47,6 +48,6 @@ export class Teach
     @BelongsTo(() => Subject)
     subject: Subject;
 
-    // @HasMany(() => Lecture)
-    // lectures: Lecture[];
+    @HasMany(() => Lecture)
+    lectures: Lecture[];
 }

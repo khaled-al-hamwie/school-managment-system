@@ -7,6 +7,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { DAY } from "src/core/common/types/day.type";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
@@ -19,42 +20,48 @@ export class Lecture
     extends Model<LectureAttributes, LectureCreationAttributes>
     implements LectureCreationAttributes
 {
-    room_id: number;
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
     })
-    lecture_id?: number;
+    lecture_id?: LectureAttributes["lecture_id"];
 
-    // @ForeignKey(() => Room)
-    // @Column({
-    //     type: DataType.SMALLINT,
-    //     allowNull: false,
-    // })
-    // room_id: number;
+    @ForeignKey(() => Room)
+    @Column({
+        type: DataType.SMALLINT.UNSIGNED,
+        allowNull: false,
+    })
+    room_id: LectureAttributes["room_id"];
 
     @ForeignKey(() => Teach)
     @Column({
-        type: DataType.SMALLINT,
-        allowNull: false,
+        type: DataType.MEDIUMINT.UNSIGNED,
+        allowNull: true,
     })
-    teach_id: number;
+    teach_id: LectureAttributes["teach_id"];
 
     @Column({
-        type: DataType.SMALLINT,
+        type: DataType.ENUM(...DAY),
         allowNull: false,
     })
-    day: number;
+    day: LectureAttributes["day"];
 
     @Column({
-        type: DataType.SMALLINT,
+        type: DataType.TIME,
         allowNull: false,
     })
-    period: number;
+    start_time: string;
 
-    // @BelongsTo(() => Room)
-    // room: Room;
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    })
+    is_rest?: boolean;
+
+    @BelongsTo(() => Room)
+    room: Room;
 
     @BelongsTo(() => Teach)
     teach: Teach;
