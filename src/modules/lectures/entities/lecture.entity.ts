@@ -39,7 +39,7 @@ export class Lecture
         type: DataType.MEDIUMINT.UNSIGNED,
         allowNull: true,
     })
-    teach_id: LectureAttributes["teach_id"];
+    teach_id?: LectureAttributes["teach_id"];
 
     @Column({
         type: DataType.ENUM(...DAY),
