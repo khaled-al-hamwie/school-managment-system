@@ -12,7 +12,6 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
-import { WorkPeridsModule } from "./modules/work-perids/work-perids.module";
 
 @Module({
     imports: [
@@ -28,7 +27,6 @@ import { WorkPeridsModule } from "./modules/work-perids/work-perids.module";
         SubjectsModule,
         TeachesModule,
         LecturesModule,
-        WorkPeridsModule,
     ],
     providers: [
         {
