@@ -23,7 +23,9 @@ describe("LecturesService", () => {
         expect(service).toBeDefined();
     });
     it("should create", async () => {
-        const output = await service.create(body);
-        // expect(output).not.toThrowError();
+        await service.create(body);
+    });
+    it("should create lectures", async () => {
+        await service.addLectures("07:30", 6, 1, [1, 3]);
     });
 });
