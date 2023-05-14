@@ -30,6 +30,7 @@ export class Lecture
     @ForeignKey(() => Room)
     @Column({
         type: DataType.SMALLINT.UNSIGNED,
+        unique: true,
         allowNull: false,
     })
     room_id: LectureAttributes["room_id"];
