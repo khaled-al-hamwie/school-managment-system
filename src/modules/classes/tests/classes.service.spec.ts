@@ -21,7 +21,6 @@ describe("ClassesService", () => {
 
     it("should be defined", () => {
         expect(service).toBeDefined();
-        expect("hi").toBe("hi");
     });
 
     it("should create a class", () => {
@@ -42,7 +41,7 @@ describe("ClassesService", () => {
         expect(output).toBe("done");
     });
     it("should remove", async () => {
-        const myClass_id = (await service.findOne({ name: body.name }))
+        const myClass_id = (await service.findOne({ name: "fjds;lak;jfdsalk" }))
             .class_id;
         const output = service.remove(myClass_id);
         expect(output).toBe("done");
