@@ -7,8 +7,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
-import { DAY } from "src/core/common/types/day.type";
-import { Room } from "src/modules/rooms/entities/room.entity";
+import { ScheduleDay } from "src/modules/schedule_days/entities/schedule_day.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
     LectureAttributes,
@@ -27,13 +26,13 @@ export class Lecture
     })
     lecture_id?: LectureAttributes["lecture_id"];
 
-    @ForeignKey(() => Room)
+    @ForeignKey(() => ScheduleDay)
     @Column({
         type: DataType.SMALLINT.UNSIGNED,
         unique: true,
         allowNull: false,
     })
-    room_id: LectureAttributes["room_id"];
+    schedule_day_id: LectureAttributes["schedule_day_id"];
 
     @ForeignKey(() => Teach)
     @Column({
@@ -41,12 +40,6 @@ export class Lecture
         allowNull: true,
     })
     teach_id?: LectureAttributes["teach_id"];
-
-    @Column({
-        type: DataType.ENUM(...DAY),
-        allowNull: false,
-    })
-    day: LectureAttributes["day"];
 
     @Column({
         type: DataType.TIME,
@@ -61,8 +54,8 @@ export class Lecture
     })
     is_rest?: boolean;
 
-    @BelongsTo(() => Room)
-    room: Room;
+    @BelongsTo(() => ScheduleDay)
+    schedule_day: ScheduleDay;
 
     @BelongsTo(() => Teach)
     teach: Teach;

@@ -8,12 +8,12 @@ import { ClassesModule } from "./modules/classes/classes.module";
 import { LecturesModule } from "./modules/lectures/lectures.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
+import { ScheduleDaysModule } from "./modules/schedule_days/schedule_days.module";
+import { SchedulesModule } from "./modules/schedules/schedules.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
-import { SchedulesModule } from './modules/schedules/schedules.module';
-import { ScheduleDaysModule } from './modules/schedule_days/schedule_days.module';
 
 @Module({
     imports: [
@@ -28,9 +28,9 @@ import { ScheduleDaysModule } from './modules/schedule_days/schedule_days.module
         RoomsModule,
         SubjectsModule,
         TeachesModule,
-        LecturesModule,
         SchedulesModule,
         ScheduleDaysModule,
+        LecturesModule,
     ],
     providers: [
         {
