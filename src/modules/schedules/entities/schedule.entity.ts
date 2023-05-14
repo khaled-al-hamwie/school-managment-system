@@ -11,6 +11,7 @@ import {
     UpdatedAt,
 } from "sequelize-typescript";
 import { Room } from "src/modules/rooms/entities/room.entity";
+import { ScheduleDay } from "src/modules/schedule_days/entities/schedule_day.entity";
 import {
     ScheduleAttributes,
     ScheduleCreationAttributes,
@@ -57,7 +58,7 @@ export class Schedule
         type: DataType.TINYINT.UNSIGNED,
         allowNull: false,
     })
-    number_of_days: ScheduleAttributes["number_of_days"];
+    days_count: ScheduleAttributes["days_count"];
 
     @Column({
         type: DataType.BOOLEAN,
@@ -82,4 +83,7 @@ export class Schedule
 
     @BelongsTo(() => Room)
     room: Room;
+
+    @HasMany(() => ScheduleDay)
+    schedule_days: ScheduleDay[];
 }

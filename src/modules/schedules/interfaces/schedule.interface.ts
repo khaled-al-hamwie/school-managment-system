@@ -7,7 +7,7 @@ export interface ScheduleAttributes {
     title: string;
     lecture_length: number;
     rest_length: number;
-    number_of_days: number;
+    days_count: number;
     is_current: boolean;
 }
 
