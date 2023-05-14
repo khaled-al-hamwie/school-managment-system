@@ -20,6 +20,7 @@ describe("create a lecture dto", () => {
         const erros: ValidationError[] = await validate(ofImportDto);
         expect(erros.length).toBe(0);
     });
+
     it("school_start must be of format HH:MM", async () => {
         const attr = "school_start";
         createLectureDto[attr] = "12:77";
@@ -37,6 +38,7 @@ describe("create a lecture dto", () => {
             },
         ]);
     });
+
     describe("rests", () => {
         const attr = "rests";
         it("should not be null", async () => {
@@ -79,6 +81,7 @@ describe("create a lecture dto", () => {
             });
         });
     });
+
     describe("days", () => {
         const attr = "days";
         it("days at least one", async () => {
@@ -99,6 +102,90 @@ describe("create a lecture dto", () => {
                     value: createLectureDto[attr],
                 },
             ]);
+        });
+
+        it("day names are unique", async () => {
+            const child_attr = "day";
+            createLectureDto.days[1][child_attr] = "mon";
+            const ofImportDto = plainToInstance(
+                CreateLectureDto,
+                createLectureDto
+            );
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros).toEqual([
+                {
+                    children: [],
+                    constraints: {
+                        arrayUnique: "All days's elements must be unique",
+                    },
+                    property: attr,
+                    target: createLectureDto,
+                    value: createLectureDto[attr],
+                },
+            ]);
+        });
+    });
+    describe("periods", () => {
+        let body: any;
+        beforeEach(() => {
+            createLectureDto.days = [
+                { day: "fri", periods: [{ lecture_number: 1 }] },
+            ];
+            body = createLectureDto.days[0].periods[0];
+        });
+        describe("lecture_number", () => {
+            const attr = "lecture_number";
+            const min = 1;
+            const max = 16;
+            it(`should not allow no ${attr}`, async () => {
+                delete body[attr];
+                const ofImportDto = plainToInstance(
+                    CreateLectureDto,
+                    createLectureDto
+                );
+                const erros: ValidationError[] = await validate(ofImportDto);
+                expect(erros[0].property).toEqual("days");
+                expect(erros.length).toBeGreaterThanOrEqual(1);
+            });
+            it(`should not allow ${attr} less than ${min}`, async () => {
+                body[attr] = 0;
+                const ofImportDto = plainToInstance(
+                    CreateLectureDto,
+                    createLectureDto
+                );
+                const erros: ValidationError[] = await validate(ofImportDto);
+                expect(erros[0].property).toEqual("days");
+                expect(erros.length).toBeGreaterThanOrEqual(1);
+            });
+            it(`should not allow ${attr} greater than ${max}`, async () => {
+                body[attr] = max + 1;
+                const ofImportDto = plainToInstance(
+                    CreateLectureDto,
+                    createLectureDto
+                );
+                const erros: ValidationError[] = await validate(ofImportDto);
+                expect(erros[0].property).toEqual("days");
+                expect(erros.length).toBeGreaterThanOrEqual(1);
+            });
+            it(`should not allow decimal ${attr}`, async () => {
+                body[attr] = 1.1;
+                const ofImportDto = plainToInstance(
+                    CreateLectureDto,
+                    createLectureDto
+                );
+                const erros: ValidationError[] = await validate(ofImportDto);
+                expect(erros[0].property).toEqual("days");
+                expect(erros.length).toBeGreaterThanOrEqual(1);
+            });
+            it(`should not allow deplucate ${attr}`, async () => {
+                createLectureDto.days[0].periods.push({ lecture_number: 1 });
+                const ofImportDto = plainToInstance(
+                    CreateLectureDto,
+                    createLectureDto
+                );
+                const erros: ValidationError[] = await validate(ofImportDto);
+                expect(erros.length).toBeGreaterThanOrEqual(1);
+            });
         });
     });
 });
