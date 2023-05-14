@@ -29,7 +29,6 @@ export class Lecture
     @ForeignKey(() => ScheduleDay)
     @Column({
         type: DataType.SMALLINT.UNSIGNED,
-        unique: true,
         allowNull: false,
     })
     schedule_day_id: LectureAttributes["schedule_day_id"];
