@@ -31,11 +31,18 @@ export class RoomsService {
         room_id: RoomAttributes["room_id"],
         updateClassDto: UpdateRoomDto
     ) {
-        const room = await this.findOne({ room_id });
-        if (!room) throw new NotFoundException("Room doesn't exists");
+        const room = await this.checkRoom(room_id);
         if (updateClassDto.class_id)
             await this.classessService.checkClass(updateClassDto.class_id);
         room.update(updateClassDto).then((output) => output.save());
         return "done";
+    }
+
+    async checkRoom(room_id: RoomAttributes["room_id"]) {
+        const room = await this.findOne({
+            room_id,
+        });
+        if (!room) throw new NotFoundException("Room doesn't exists");
+        return room;
     }
 }
