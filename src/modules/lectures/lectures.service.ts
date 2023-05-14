@@ -1,11 +1,6 @@
-import {
-    ForbiddenException,
-    Injectable,
-    NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { WhereOptions } from "sequelize";
-import { RoomsService } from "../rooms/rooms.service";
 import { CreateLectureDto } from "./dto/create-lecture.dto";
 import { UpdateLectureDto } from "./dto/update-lecture.dto";
 import { Lecture } from "./entities/lecture.entity";
@@ -14,19 +9,10 @@ import { LectureAttributes } from "./interfaces/lecture.interface";
 @Injectable()
 export class LecturesService {
     constructor(
-        @InjectModel(Lecture) private readonly LectureEntity: typeof Lecture,
-        private readonly roomsService: RoomsService
+        @InjectModel(Lecture) private readonly LectureEntity: typeof Lecture
     ) {}
-    async create(
-        // room_id: LectureAttributes["room_id"],
-        createLectureDto: CreateLectureDto
-    ) {
-        // check if a room exists in the rooms and not in the lectures
-        // await this.roomsService.checkRoom(room_id);
-        // get the lecture length and the rest length
-        // starting from the start of the day iterate over the days and then for each day iterate over the periods
-        // and check if it is rest and if it is a teach lecture , and don't forget to check if the lecture exists
-        return "This action adds a new lecture";
+    async create(createLectureDto: CreateLectureDto) {
+        await this.LectureEntity.create(createLectureDto);
     }
 
     findAll() {
