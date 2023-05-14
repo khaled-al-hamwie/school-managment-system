@@ -13,6 +13,7 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
+import { SchedulesModule } from './modules/schedules/schedules.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         BooksModule,
         TeachesModule,
         LecturesModule,
+        SchedulesModule,
     ],
     providers: [
         {
