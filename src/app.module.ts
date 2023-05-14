@@ -14,6 +14,7 @@ import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
 import { SchedulesModule } from './modules/schedules/schedules.module';
+import { ScheduleDaysModule } from './modules/schedule_days/schedule_days.module';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { SchedulesModule } from './modules/schedules/schedules.module';
         TeachesModule,
         LecturesModule,
         SchedulesModule,
+        ScheduleDaysModule,
     ],
     providers: [
         {
