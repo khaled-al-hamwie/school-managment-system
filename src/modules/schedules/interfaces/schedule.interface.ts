@@ -9,6 +9,8 @@ export interface ScheduleAttributes {
     rest_length: number;
     days_count: number;
     is_current: boolean;
+    created_at: Date;
+    updated_at: Date;
 }
 
 export type ScheduleCreationAttributes = Optional<
