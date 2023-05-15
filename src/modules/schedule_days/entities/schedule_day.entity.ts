@@ -3,11 +3,13 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { DAY } from "src/core/common/types/day.type";
+import { Lecture } from "src/modules/lectures/entities/lecture.entity";
 import { Schedule } from "src/modules/schedules/entities/schedule.entity";
 import {
     ScheduleDayAttributes,
@@ -53,4 +55,7 @@ export class ScheduleDay
 
     @BelongsTo(() => Schedule)
     schedule: Schedule;
+
+    @HasMany(() => Lecture)
+    lectures: Lecture[];
 }
