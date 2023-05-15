@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import {
     ArrayMaxSize,
     ArrayMinSize,
@@ -18,6 +19,7 @@ export class CreateScheduleDto {
     @NameValidator(3, 45)
     title: ScheduleAttributes["title"];
 
+    @ApiProperty({ default: "13:05" })
     @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
         message: "school_start please provide a time in HH:MM format",
     })
@@ -26,6 +28,7 @@ export class CreateScheduleDto {
     @NumberValidator(1, 20)
     lecture_number: ScheduleDayAttributes["lecture_number"];
 
+    @ApiProperty({ default: ["sat", "sun"], maxItems: 7, minItems: 1 })
     @IsArray()
     @IsEnum(DAY, { message: "day please provide a day like mon", each: true })
     @ArrayUnique()
