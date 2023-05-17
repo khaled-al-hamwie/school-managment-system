@@ -1,13 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import {
-    FindAttributeOptions,
-    FindOptions,
-    Includeable,
-    WhereOptions,
-} from "sequelize";
+import { Includeable, WhereOptions } from "sequelize";
 import { Lecture } from "../lectures/entities/lecture.entity";
-import { RoomsService } from "../rooms/rooms.service";
 import { ScheduleDay } from "../schedule_days/entities/schedule_day.entity";
 import { ScheduleDaysService } from "../schedule_days/schedule_days.service";
 import { CreateScheduleDto } from "./dto/create-schedule.dto";
@@ -22,24 +16,14 @@ import {
 export class SchedulesService {
     constructor(
         @InjectModel(Schedule) private readonly ScheduleEntity: typeof Schedule,
-        private readonly roomsService: RoomsService,
         private readonly scheduleDaysService: ScheduleDaysService
     ) {}
     async create(
         room_id: ScheduleAttributes["room_id"],
+        title: ScheduleAttributes["title"],
         createScheduleDto: CreateScheduleDto
     ) {
-        await this.roomsService.checkRoom(room_id);
-        this.createAsyncSchedule(createScheduleDto, room_id);
-        return "done";
-    }
-
-    private async createAsyncSchedule(
-        createScheduleDto: CreateScheduleDto,
-        room_id: number
-    ) {
-        const { title, days, lecture_number, rests, school_start } =
-            createScheduleDto;
+        const { days, lecture_number, rests, school_start } = createScheduleDto;
 
         const schedule = await this.ScheduleEntity.create({
             days_count: days.length,
@@ -47,6 +31,7 @@ export class SchedulesService {
             rest_length: 15,
             room_id,
             title,
+            is_current: true,
         });
         await this.scheduleDaysService.create({
             days,
