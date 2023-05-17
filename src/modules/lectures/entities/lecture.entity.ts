@@ -44,14 +44,20 @@ export class Lecture
         type: DataType.TIME,
         allowNull: false,
     })
-    start_time: string;
+    start_time: LectureAttributes["start_time"];
 
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         defaultValue: false,
     })
-    is_rest?: boolean;
+    is_rest?: LectureAttributes["is_rest"];
+
+    @Column({
+        type: DataType.TINYINT.UNSIGNED,
+        allowNull: true,
+    })
+    lecture_number?: LectureAttributes["lecture_number"];
 
     @BelongsTo(() => ScheduleDay)
     schedule_day: ScheduleDay;
