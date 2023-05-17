@@ -28,16 +28,16 @@ import { SchedulesService } from "./schedules.service";
 export class SchedulesController {
     constructor(private readonly schedulesService: SchedulesService) {}
 
-    @ApiTags(WEB_TAG)
-    @ApiBearerAuth("Authorization")
-    @UseGuards(ManagerGuard)
-    @Post("rooms/:room_id/schedules")
-    create(
-        @Param("room_id", ParseIntPipe) room_id: ScheduleAttributes["room_id"],
-        @Body() createScheduleDto: CreateScheduleDto
-    ) {
-        return this.schedulesService.create(room_id, createScheduleDto);
-    }
+    // @ApiTags(WEB_TAG)
+    // @ApiBearerAuth("Authorization")
+    // @UseGuards(ManagerGuard)
+    // @Post("rooms/:room_id/schedules")
+    // create(
+    //     @Param("room_id", ParseIntPipe) room_id: ScheduleAttributes["room_id"],
+    //     @Body() createScheduleDto: CreateScheduleDto
+    // ) {
+    //     return this.schedulesService.create(room_id, createScheduleDto);
+    // }
 
     @ApiTags(WEB_TAG)
     @ApiBearerAuth("Authorization")
