@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { instanceToPlain, plainToInstance } from "class-transformer";
 import { WhereOptions } from "sequelize";
+import { saveModel } from "src/core/common/transformers/modelSave";
 import { ClassesService } from "../classes/classes.service";
 import { CreateScheduleDto } from "../schedules/dto/create-schedule.dto";
 import { SchedulesService } from "../schedules/schedules.service";
@@ -57,7 +58,7 @@ export class RoomsService {
         const room = await this.checkRoom(room_id);
         if (updateRoomDto.class_id)
             await this.classessService.checkClass(updateRoomDto.class_id);
-        room.update(updateRoomDto).then((output) => output.save());
+        room.update(updateRoomDto).then(saveModel);
         this.schedulesService.update(room_id, updateRoomDto.name);
         return "done";
     }

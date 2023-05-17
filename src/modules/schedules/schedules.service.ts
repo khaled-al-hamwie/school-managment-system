@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Includeable, Order, WhereOptions } from "sequelize";
+import { Model } from "sequelize-typescript";
+import { saveModel } from "src/core/common/transformers/modelSave";
 import { RoomAttributes } from "../rooms/interfaces/room.interface";
 import { ScheduleDaysService } from "../schedule_days/schedule_days.service";
 import { CreateScheduleDto } from "./dto/create-schedule.dto";
@@ -68,12 +70,9 @@ export class SchedulesService {
         room_id: RoomAttributes["room_id"],
         title: ScheduleAttributes["title"]
     ) {
-        const u = await this.findOne({ room_id });
-        console.info(u);
-        return u;
-        // this.ScheduleEntity.update(,{title})
+        const schedule = await this.findOne({ room_id });
+        schedule.update({ title }).then(saveModel);
     }
-
     remove(id: number) {
         return `This action removes a #${id} schedule`;
     }
