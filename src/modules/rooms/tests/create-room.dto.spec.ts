@@ -10,6 +10,10 @@ describe("create room dto", () => {
             student_count: 12,
             name: "test",
             class_id: 1,
+            days: ["sat", "sun"],
+            school_start: "07:30",
+            lecture_number: 6,
+            rests: [1, 3],
         };
     });
 
