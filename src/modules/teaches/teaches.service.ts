@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { WhereOptions } from "sequelize";
 import { SubjectAttributes } from "../subjects/interfaces/subject.interface";
@@ -41,5 +41,12 @@ export class TeachesService {
         teacher_id: TeacherAttributes["teacher_id"]
     ) {
         return (await this.findOne({ subject_id, teacher_id })) == null;
+    }
+
+    async checkTeach(teach_id: TeachAttributes["teach_id"]) {
+        const teach = await this.findOne({ teach_id });
+        if (!teach)
+            throw new NotFoundException(`teach with ${teach_id} does'nt exist`);
+        return teach;
     }
 }
