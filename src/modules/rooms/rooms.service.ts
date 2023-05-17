@@ -52,12 +52,13 @@ export class RoomsService {
 
     async update(
         room_id: RoomAttributes["room_id"],
-        updateClassDto: UpdateRoomDto
+        updateRoomDto: UpdateRoomDto
     ) {
         const room = await this.checkRoom(room_id);
-        if (updateClassDto.class_id)
-            await this.classessService.checkClass(updateClassDto.class_id);
-        room.update(updateClassDto).then((output) => output.save());
+        if (updateRoomDto.class_id)
+            await this.classessService.checkClass(updateRoomDto.class_id);
+        room.update(updateRoomDto).then((output) => output.save());
+        this.schedulesService.update(room_id, updateRoomDto.name);
         return "done";
     }
 
