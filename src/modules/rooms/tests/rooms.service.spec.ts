@@ -21,6 +21,10 @@ describe("RoomsService", () => {
         classService.create(bodySample);
         body = {
             class_id: (await classService.findAll(""))[0].class_id,
+            days: ["fri", "mon"],
+            lecture_number: 6,
+            rests: [1, 3],
+            school_start: "07:00",
             student_count: 10,
             name: "dfjs;alk",
         };
@@ -39,8 +43,12 @@ describe("RoomsService", () => {
         try {
             await service.create({
                 class_id: -1,
-                name: "should not create",
+                days: ["fri", "mon"],
+                lecture_number: 6,
+                rests: [1, 3],
+                school_start: "07:00",
                 student_count: 10,
+                name: "dfjs;alk",
             });
         } catch (error) {
             expect(error.name).toBe("NotFoundException");
