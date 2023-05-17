@@ -31,6 +31,7 @@ export class LecturesService {
             await this.create({
                 schedule_day_id,
                 start_time: time,
+                lecture_number: lecture_number + 1,
             });
             time = addTimes(time, "00:45");
             if (rests.includes(lecture_number)) {
