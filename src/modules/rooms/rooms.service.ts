@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { instanceToPlain, plainToInstance } from "class-transformer";
 import { WhereOptions } from "sequelize";
 import { ClassesService } from "../classes/classes.service";
+import { CreateScheduleDto } from "../schedules/dto/create-schedule.dto";
+import { SchedulesService } from "../schedules/schedules.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { Room } from "./entities/room.entity";
@@ -11,12 +14,32 @@ import { RoomAttributes } from "./interfaces/room.interface";
 export class RoomsService {
     constructor(
         @InjectModel(Room) private readonly RoomEntity: typeof Room,
-        private readonly classessService: ClassesService
-    ) { }
+        private readonly classessService: ClassesService,
+        private readonly schedulesService: SchedulesService
+    ) {}
 
     async create(createRoomDto: CreateRoomDto) {
         await this.classessService.checkClass(createRoomDto.class_id);
-        this.RoomEntity.create(createRoomDto);
+        const {
+            class_id,
+            days,
+            lecture_number,
+            name,
+            rests,
+            school_start,
+            student_count,
+        } = createRoomDto;
+        const room = await this.RoomEntity.create({
+            class_id,
+            name,
+            student_count,
+        });
+        this.schedulesService.create(room.room_id, name, {
+            days,
+            lecture_number,
+            rests,
+            school_start,
+        });
         return "done";
     }
 
