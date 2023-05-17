@@ -1,11 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Includeable, WhereOptions } from "sequelize";
-import { Lecture } from "../lectures/entities/lecture.entity";
-import { ScheduleDay } from "../schedule_days/entities/schedule_day.entity";
+import { Includeable, Order, WhereOptions } from "sequelize";
+import { RoomAttributes } from "../rooms/interfaces/room.interface";
 import { ScheduleDaysService } from "../schedule_days/schedule_days.service";
 import { CreateScheduleDto } from "./dto/create-schedule.dto";
-import { UpdateScheduleDto } from "./dto/update-schedule.dto";
 import { Schedule } from "./entities/schedule.entity";
 import {
     ScheduleAttributes,
@@ -55,27 +53,25 @@ export class SchedulesService {
     findOne(
         where: WhereOptions<ScheduleAttributes>,
         attributes?: (keyof ScheduleCreationAttributes)[],
-        include?: Includeable | Includeable[]
+        include?: Includeable | Includeable[],
+        order?: Order
     ) {
         return this.ScheduleEntity.findOne({
             where,
             attributes,
             include,
-            order: [
-                // [Schedule.associations.schedule_days, "day", "DESC"],
-                [{ model: ScheduleDay, as: "schedule_days" }, "day", "ASC"],
-                [
-                    { model: ScheduleDay, as: "schedule_days" },
-                    { model: Lecture, as: "lectures" },
-                    "start_time",
-                    "ASC",
-                ],
-            ],
+            order,
         });
     }
 
-    update(id: number, updateScheduleDto: UpdateScheduleDto) {
-        return `This action updates a #${id} schedule`;
+    async update(
+        room_id: RoomAttributes["room_id"],
+        title: ScheduleAttributes["title"]
+    ) {
+        const u = await this.findOne({ room_id });
+        console.info(u);
+        return u;
+        // this.ScheduleEntity.update(,{title})
     }
 
     remove(id: number) {
