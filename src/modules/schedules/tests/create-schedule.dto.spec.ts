@@ -6,7 +6,6 @@ let body: CreateScheduleDto;
 describe("create schedule dto", () => {
     beforeEach(() => {
         body = {
-            title: "class 1 room 1 section 1",
             school_start: "12:30",
             lecture_number: 12,
             days: ["fri", "sat", "sun", "mon", "tue"],
@@ -18,28 +17,6 @@ describe("create schedule dto", () => {
         const ofImportDto = plainToInstance(CreateScheduleDto, body);
         const erros: ValidationError[] = await validate(ofImportDto);
         expect(erros.length).toBe(0);
-    });
-
-    describe("title", () => {
-        const attr = "title";
-        it(`should not allow no ${attr}`, async () => {
-            delete body[attr];
-            const ofImportDto = plainToInstance(CreateScheduleDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros.length).toBeGreaterThanOrEqual(1);
-        });
-        it(`should not allow small ${attr}`, async () => {
-            body[attr] = "1f      ";
-            const ofImportDto = plainToInstance(CreateScheduleDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros.length).toBeGreaterThanOrEqual(1);
-        });
-        it(`should not allow large ${attr}`, async () => {
-            body[attr] = "1f      ".repeat(44);
-            const ofImportDto = plainToInstance(CreateScheduleDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros.length).toBeGreaterThanOrEqual(1);
-        });
     });
 
     it("school_start is A time", async () => {

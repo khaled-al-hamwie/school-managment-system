@@ -10,15 +10,10 @@ import {
     Min,
 } from "class-validator";
 import { DAY, DayType } from "src/core/common/types/day.type";
-import NameValidator from "src/core/common/validators/name.validator";
 import NumberValidator from "src/core/common/validators/number.validator";
 import { ScheduleDayAttributes } from "src/modules/schedule_days/interfaces/schedule_day.interface";
-import { ScheduleAttributes } from "../interfaces/schedule.interface";
 
 export class CreateScheduleDto {
-    @NameValidator(3, 45)
-    title: ScheduleAttributes["title"];
-
     @ApiProperty({ default: "13:05" })
     @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
         message: "school_start please provide a time in HH:MM format",
@@ -43,6 +38,3 @@ export class CreateScheduleDto {
     @ArrayMinSize(1)
     rests: number[];
 }
-
-// lecture length is 45 minute
-// rest is 15 minute
