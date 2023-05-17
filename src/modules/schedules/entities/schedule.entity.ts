@@ -33,6 +33,7 @@ export class Schedule
     @Column({
         type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
+        unique: true,
     })
     room_id: ScheduleAttributes["room_id"];
 
