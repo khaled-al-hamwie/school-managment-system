@@ -81,15 +81,23 @@ export class ScheduleDaysService {
                 error.push(
                     `the day ${day_object.day} is not allowed provied a day from ${days}`
                 );
-            day_object.lectures.forEach((lecture) => {
-                if (lecture.lecture_number > scheduleDays[0].lecture_number)
-                    error.push(
-                        `the lecture_number ${lecture.lecture_number} on the day ${day_object.day} is not allowed please provide a value <=${scheduleDays[0].lecture_number}`
-                    );
-            });
+            this.checkLecturesLength(day_object, scheduleDays, error);
         });
         if (error.length >= 1) throw new ForbiddenException(error);
         return scheduleDays;
+    }
+
+    private checkLecturesLength(
+        day_object: DayDto,
+        scheduleDays: ScheduleDay[],
+        error: any[]
+    ) {
+        day_object.lectures.forEach((lecture) => {
+            if (lecture.lecture_number > scheduleDays[0].lecture_number)
+                error.push(
+                    `the lecture_number ${lecture.lecture_number} on the day ${day_object.day} is not allowed please provide a value <=${scheduleDays[0].lecture_number}`
+                );
+        });
     }
 
     private scheduleNotIncludeDay(
