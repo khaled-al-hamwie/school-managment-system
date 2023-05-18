@@ -1,14 +1,11 @@
 import {
     Body,
     Controller,
-    DefaultValuePipe,
     Delete,
     Get,
     Param,
-    ParseBoolPipe,
     ParseIntPipe,
-    Put,
-    Query,
+    Patch,
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
@@ -19,6 +16,7 @@ import {
     scheduleInclude,
     scheduleOrder,
 } from "./constants";
+import { UpdateScheduleDto } from "./dto/update-schedule.dto";
 import { ScheduleAttributes } from "./interfaces/schedule.interface";
 import { SchedulesService } from "./schedules.service";
 
@@ -54,13 +52,16 @@ export class SchedulesController {
         );
     }
 
-    @Put("schedules/:id")
-    addLectures(
+    @ApiTags(WEB_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Patch("schedules/:id")
+    update(
         @Param("id", ParseIntPipe)
         schedule_id: ScheduleAttributes["schedule_id"],
-        @Body() body: any
+        @Body() body: UpdateScheduleDto
     ) {
-        return "adding the lectures";
+        return this.schedulesService.updateSchedule(schedule_id, body);
     }
 
     @Delete(":id")

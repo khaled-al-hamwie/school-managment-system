@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Includeable, Order, WhereOptions } from "sequelize";
-import { Model } from "sequelize-typescript";
 import { saveModel } from "src/core/common/transformers/modelSave";
 import { RoomAttributes } from "../rooms/interfaces/room.interface";
 import { ScheduleDaysService } from "../schedule_days/schedule_days.service";
 import { CreateScheduleDto } from "./dto/create-schedule.dto";
+import { UpdateScheduleDto } from "./dto/update-schedule.dto";
 import { Schedule } from "./entities/schedule.entity";
 import {
     ScheduleAttributes,
@@ -73,11 +73,28 @@ export class SchedulesService {
         const schedule = await this.findOne({ room_id });
         schedule.update({ title }).then(saveModel);
     }
+
+    async updateSchedule(
+        schedule_id: ScheduleAttributes["schedule_id"],
+        updateScheduleDto: UpdateScheduleDto
+    ) {
+        const schedule = await this.checkSchedule(schedule_id);
+        await this.scheduleDaysService.update({
+            ...updateScheduleDto,
+            schedule_id,
+            days_count: schedule.days_count,
+        });
+        return "done";
+    }
+
+    async checkSchedule(schedule_id: ScheduleAttributes["schedule_id"]) {
+        const schedule = await this.findOne({ schedule_id });
+        if (!schedule) {
+            throw new NotFoundException("schedule does'nt exist");
+        }
+        return schedule;
+    }
     remove(id: number) {
         return `This action removes a #${id} schedule`;
     }
 }
-// fri sat sun mon tue
-// fri mon sat sun tue
-
-// sat sun mon tue fri
