@@ -2,15 +2,19 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { WhereOptions } from "sequelize";
 import { addTimes } from "src/core/common/transformers/addTimes.transform";
+import { saveModel } from "src/core/common/transformers/modelSave";
+import { TeachesService } from "../teaches/teaches.service";
 import { CreateLectureDto } from "./dto/create-lecture.dto";
 import { UpdateLectureDto } from "./dto/update-lecture.dto";
+import { UpdateLecturesDto } from "./dto/update-lectures.dto";
 import { Lecture } from "./entities/lecture.entity";
 import { LectureAttributes } from "./interfaces/lecture.interface";
 
 @Injectable()
 export class LecturesService {
     constructor(
-        @InjectModel(Lecture) private readonly LectureEntity: typeof Lecture
+        @InjectModel(Lecture) private readonly LectureEntity: typeof Lecture,
+        private readonly teachesService: TeachesService
     ) {}
     async create(createLectureDto: CreateLectureDto) {
         await this.LectureEntity.create(createLectureDto);
@@ -56,8 +60,25 @@ export class LecturesService {
         });
     }
 
-    update(id: number, updateLectureDto: UpdateLectureDto) {
-        return `This action updates a #${id} lecture`;
+    async update(lecture: Lecture, updateLectureDto: UpdateLectureDto) {
+        await lecture.update(updateLectureDto).then(saveModel);
+    }
+
+    async updateLectures(body: UpdateLecturesDto) {
+        for (let i = 0; i < body.lectures.length; i++) {
+            const lec = body.lectures[i];
+            const lecture = await this.findOne({
+                lecture_number: lec.lecture_number,
+                schedule_day_id: body.schedule_day_id,
+            });
+            if (lec.teach_id == 0) {
+                this.update(lecture, { teach_id: null });
+            } else {
+                await this.teachesService.checkTeach(lec.teach_id);
+                // #TO-ADD check if it exist in other schedule in the same day and the same time
+                this.update(lecture, { teach_id: lec.teach_id });
+            }
+        }
     }
 
     remove(id: number) {
