@@ -14,7 +14,7 @@ describe("subject Service", () => {
         }).compile();
 
         service = module.get<SubjectsService>(SubjectsService);
-        const class_id = await Class.create({
+        await Class.create({
             class_id: 2,
             name: "bla bla class",
         });

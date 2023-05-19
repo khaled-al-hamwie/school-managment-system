@@ -44,7 +44,7 @@ describe("LecturesService", () => {
     });
 
     it("should update lectures", async () => {
-        let body: UpdateLecturesDto = {
+        const body: UpdateLecturesDto = {
             schedule_day_id: 1,
             lectures: [
                 {

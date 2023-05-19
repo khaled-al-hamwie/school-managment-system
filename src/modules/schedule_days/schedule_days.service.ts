@@ -2,10 +2,7 @@ import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { FindAttributeOptions, WhereOptions } from "sequelize";
 import { LecturesService } from "../lectures/lectures.service";
-import {
-    DayDto,
-    UpdateScheduleDto,
-} from "../schedules/dto/update-schedule.dto";
+import { DayDto } from "../schedules/dto/update-schedule.dto";
 import { CreateScheduleDayDto } from "./dto/create-schedule_day.dto";
 import { UpdateScheduleDayDto } from "./dto/update-schedule_day.dto";
 import { ScheduleDay } from "./entities/schedule_day.entity";
@@ -23,7 +20,7 @@ export class ScheduleDaysService {
             createScheduleDayDto;
         for (let i = 0; i < days.length; i++) {
             const day = days[i];
-            let schedule_day = await this.ScheduleDayEntity.create({
+            const schedule_day = await this.ScheduleDayEntity.create({
                 day,
                 schedule_id,
                 lecture_number,
@@ -57,7 +54,7 @@ export class ScheduleDaysService {
         const scheduleDays = await this.checkDay(body);
 
         for (let i = 0; i < body.days.length; i++) {
-            let schedule_day = scheduleDays.find(
+            const schedule_day = scheduleDays.find(
                 (schedule_day_object) =>
                     schedule_day_object.day == body.days[i].day
             );

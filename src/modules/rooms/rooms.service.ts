@@ -1,10 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { instanceToPlain, plainToInstance } from "class-transformer";
 import { WhereOptions } from "sequelize";
 import { saveModel } from "src/core/common/transformers/modelSave";
 import { ClassesService } from "../classes/classes.service";
-import { CreateScheduleDto } from "../schedules/dto/create-schedule.dto";
 import { SchedulesService } from "../schedules/schedules.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
