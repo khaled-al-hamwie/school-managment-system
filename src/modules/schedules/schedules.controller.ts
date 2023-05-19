@@ -9,7 +9,9 @@ import {
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { User } from "src/core/common/decorators/user.decorator";
 import ManagerGuard from "src/core/common/guards/manager.guard";
+import StudentGuard from "src/core/common/guards/student.guard";
 import { SCHEDULE_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import {
     scheduleAttributes,
@@ -46,6 +48,18 @@ export class SchedulesController {
     ) {
         return this.schedulesService.findOne(
             { schedule_id },
+            scheduleAttributes,
+            scheduleInclude,
+            scheduleOrder
+        );
+    }
+    @ApiTags(WEB_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Get("schedules/student")
+    findStudentSchedule(@User("student_id") room_id) {
+        return this.schedulesService.findOne(
+            { room_id },
             scheduleAttributes,
             scheduleInclude,
             scheduleOrder
