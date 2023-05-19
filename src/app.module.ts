@@ -5,15 +5,12 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { databaseProvider } from "./core/database/database.providers";
 import { ClassesModule } from "./modules/classes/classes.module";
-import { LecturesModule } from "./modules/lectures/lectures.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
-import { ScheduleDaysModule } from "./modules/schedule_days/schedule_days.module";
 import { SchedulesModule } from "./modules/schedules/schedules.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
-import { TeachesModule } from "./modules/teaches/teaches.module";
 
 @Module({
     imports: [
@@ -27,10 +24,7 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         ClassesModule,
         RoomsModule,
         SubjectsModule,
-        TeachesModule,
         SchedulesModule,
-        ScheduleDaysModule,
-        LecturesModule,
     ],
     providers: [
         {
