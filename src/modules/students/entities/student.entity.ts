@@ -3,11 +3,14 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
+import { Record } from "src/modules/records/entities/record.entity";
+import { Room } from "src/modules/rooms/entities/room.entity";
 import {
     StudentAttributes,
     StudentCreationAttributes,
@@ -32,6 +35,13 @@ export default class Student
         unique: true,
     })
     credential_id: StudentAttributes["credential_id"];
+
+    @ForeignKey(() => Room)
+    @Column({
+        type: DataType.SMALLINT.UNSIGNED,
+        allowNull: true,
+    })
+    room_id: StudentAttributes["room_id"];
 
     @Column({
         type: DataType.STRING(16),
@@ -97,4 +107,10 @@ export default class Student
 
     @BelongsTo(() => Credential)
     credentail: Credential;
+
+    @BelongsTo(() => Room)
+    room: Room;
+
+    @HasMany(() => Record)
+    records: Record[];
 }

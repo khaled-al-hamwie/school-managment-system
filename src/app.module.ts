@@ -11,6 +11,7 @@ import { SchedulesModule } from "./modules/schedules/schedules.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
+import { RecordsModule } from './modules/records/records.module';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { TeachersModule } from "./modules/teachers/teachers.module";
         RoomsModule,
         SubjectsModule,
         SchedulesModule,
+        RecordsModule,
     ],
     providers: [
         {

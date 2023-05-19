@@ -10,6 +10,7 @@ import {
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
 import { Schedule } from "src/modules/schedules/entities/schedule.entity";
+import Student from "src/modules/students/entities/student.entity";
 import {
     RoomAttributes,
     RoomCreationAttributes,
@@ -51,4 +52,7 @@ export class Room
 
     @HasMany(() => Schedule)
     scheduals: Schedule;
+
+    @HasMany(() => Student)
+    students: Student[];
 }
