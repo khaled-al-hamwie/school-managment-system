@@ -7,6 +7,7 @@ import { databaseProvider } from "./core/database/database.providers";
 import { BooksModule } from "./modules/books/books.module";
 import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
+import { RecordsModule } from "./modules/records/records.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
 import { SchedulesModule } from "./modules/schedules/schedules.module";
 import { StudentsModule } from "./modules/students/students.module";
@@ -29,6 +30,7 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         BooksModule,
         TeachesModule,
         SchedulesModule,
+        RecordsModule,
     ],
     providers: [
         {
