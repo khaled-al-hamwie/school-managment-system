@@ -27,16 +27,20 @@ export const scheduleInclude: Includeable | Includeable[] = [
                     include: [
                         [
                             Sequelize.fn(
-                                "ADDTIME",
-                                Sequelize.col(
-                                    "schedule_days->lectures.start_time"
-                                ),
+                                "DATE_FORMAT",
                                 Sequelize.fn(
-                                    "IF",
-                                    Sequelize.col("is_rest"),
-                                    "00:15:00",
-                                    "00:45:00"
-                                )
+                                    "ADDTIME",
+                                    Sequelize.col(
+                                        "schedule_days->lectures.start_time"
+                                    ),
+                                    Sequelize.fn(
+                                        "IF",
+                                        Sequelize.col("is_rest"),
+                                        "00:15:00",
+                                        "00:45:00"
+                                    )
+                                ),
+                                "%H:%i:%s"
                             ),
                             "end_time",
                         ],
