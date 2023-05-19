@@ -72,6 +72,9 @@ export class RoomsService {
             await this.classessService.checkClass(updateRoomDto.class_id);
         room.update(updateRoomDto).then(saveModel);
         this.schedulesService.update(room_id, updateRoomDto.name);
+        if (updateRoomDto.student_ids) {
+            this.studentsService.addRooms(room_id, updateRoomDto.student_ids);
+        }
         return "done";
     }
 
