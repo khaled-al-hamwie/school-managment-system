@@ -3,7 +3,9 @@ import { InjectModel } from "@nestjs/sequelize";
 import { WhereOptions } from "sequelize";
 import { saveModel } from "src/core/common/transformers/modelSave";
 import { ClassesService } from "../classes/classes.service";
+import { RecordsService } from "../records/records.service";
 import { SchedulesService } from "../schedules/schedules.service";
+import { StudentsService } from "../students/students.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { Room } from "./entities/room.entity";
@@ -14,7 +16,9 @@ export class RoomsService {
     constructor(
         @InjectModel(Room) private readonly RoomEntity: typeof Room,
         private readonly classessService: ClassesService,
-        private readonly schedulesService: SchedulesService
+        private readonly schedulesService: SchedulesService,
+        private readonly recordsService: RecordsService,
+        private readonly studentsService: StudentsService
     ) {}
 
     async create(createRoomDto: CreateRoomDto) {
@@ -39,6 +43,16 @@ export class RoomsService {
             rests,
             school_start,
         });
+        if (createRoomDto.student_ids) {
+            this.recordsService.create(
+                createRoomDto.class_id,
+                createRoomDto.student_ids
+            );
+            this.studentsService.addRooms(
+                room.room_id,
+                createRoomDto.student_ids
+            );
+        }
         return "done";
     }
 
