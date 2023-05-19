@@ -1,5 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
+import { Class } from "src/modules/classes/entities/class.entity";
 import { setTimeout } from "timers/promises";
 import { CreateSubjectDto } from "../dto/create-subject.dto";
 import { SubjectsService } from "../subjects.service";
@@ -13,9 +14,12 @@ describe("subject Service", () => {
         }).compile();
 
         service = module.get<SubjectsService>(SubjectsService);
-
+        const class_id = await Class.create({
+            class_id: 2,
+            name: "bla bla class",
+        });
         body = {
-            class_id: 1,
+            class_id: 2,
             name: "math",
             semester: 1,
         };
@@ -46,5 +50,8 @@ describe("subject Service", () => {
             .subject_id;
         const output = await service.remove(subject);
         expect(output).toBe("done");
+    });
+    afterAll(async () => {
+        await Class.destroy({ where: {} });
     });
 });
