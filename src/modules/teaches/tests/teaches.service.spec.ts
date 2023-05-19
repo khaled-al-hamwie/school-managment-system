@@ -1,6 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
-import cleanCredential from "src/core/database/database.cleanCredentail";
 import { Subject } from "src/modules/subjects/entities/subject.entity";
 import Teacher from "src/modules/teachers/entities/teacher.entity";
 import { setTimeout } from "timers/promises";
