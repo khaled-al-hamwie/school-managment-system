@@ -11,7 +11,7 @@ import { DAY, DayType } from "src/core/common/types/day.type";
 import NumberValidator from "src/core/common/validators/number.validator";
 import { LectureAttributes } from "src/modules/lectures/interfaces/lecture.interface";
 
-class LectureDto {
+export class LectureDto {
     @NumberValidator(1, 16)
     lecture_number: number;
 

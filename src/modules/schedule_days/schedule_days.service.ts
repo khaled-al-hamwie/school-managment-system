@@ -1,8 +1,10 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { FindAttributeOptions, WhereOptions } from "sequelize";
+import { FindOptions, Op, where } from "sequelize";
+import { Lecture } from "../lectures/entities/lecture.entity";
 import { LecturesService } from "../lectures/lectures.service";
-import { DayDto } from "../schedules/dto/update-schedule.dto";
+import { DayDto, LectureDto } from "../schedules/dto/update-schedule.dto";
+import { TeachesService } from "../teaches/teaches.service";
 import { CreateScheduleDayDto } from "./dto/create-schedule_day.dto";
 import { UpdateScheduleDayDto } from "./dto/update-schedule_day.dto";
 import { ScheduleDay } from "./entities/schedule_day.entity";
@@ -13,7 +15,8 @@ export class ScheduleDaysService {
     constructor(
         @InjectModel(ScheduleDay)
         private readonly ScheduleDayEntity: typeof ScheduleDay,
-        private readonly lecturesService: LecturesService
+        private readonly lecturesService: LecturesService,
+        private readonly teachesService: TeachesService
     ) {}
     async create(createScheduleDayDto: CreateScheduleDayDto) {
         const { days, lecture_number, rests, schedule_id, start_time } =
@@ -36,15 +39,12 @@ export class ScheduleDaysService {
     }
 
     findAll(
-        where: WhereOptions<ScheduleDayAttributes>,
-        attributes?: FindAttributeOptions,
-        limit?: number
+        options: FindOptions<ScheduleDayAttributes>
+        // where: WhereOptions<ScheduleDayAttributes>,
+        // attributes?: FindAttributeOptions,
+        // limit?: number
     ) {
-        return this.ScheduleDayEntity.findAll({
-            where,
-            limit,
-            attributes,
-        });
+        return this.ScheduleDayEntity.findAll(options);
     }
 
     findOne(id: number) {
@@ -52,7 +52,6 @@ export class ScheduleDaysService {
     }
     async update(body: UpdateScheduleDayDto) {
         const scheduleDays = await this.checkDay(body);
-
         for (let i = 0; i < body.days.length; i++) {
             const schedule_day = scheduleDays.find(
                 (schedule_day_object) =>
@@ -66,35 +65,44 @@ export class ScheduleDaysService {
     }
 
     private async checkDay(body: UpdateScheduleDayDto) {
-        const scheduleDays = await this.findAll(
-            { schedule_id: body.schedule_id },
-            ["day", "schedule_day_id", "lecture_number"],
-            body.days_count
-        );
+        const scheduleDays = await this.findAll({
+            where: { schedule_id: body.schedule_id },
+            attributes: ["day", "schedule_day_id", "lecture_number"],
+            limit: body.days_count,
+        });
         const days = scheduleDays.map((day) => day.day);
         const error = [];
-        body.days.forEach((day_object) => {
+        for (let i = 0; i < body.days.length; i++) {
+            const day_object = body.days[i];
             if (this.scheduleNotIncludeDay(days, day_object))
                 error.push(
                     `the day ${day_object.day} is not allowed provied a day from ${days}`
                 );
-            this.checkLecturesLength(day_object, scheduleDays, error);
-        });
+            await this.checkLecturesLength(day_object, scheduleDays, error);
+        }
+        console.info("here the errror iarr", error);
         if (error.length >= 1) throw new ForbiddenException(error);
         return scheduleDays;
     }
 
-    private checkLecturesLength(
+    private async checkLecturesLength(
         day_object: DayDto,
         scheduleDays: ScheduleDay[],
         error: any[]
     ) {
-        day_object.lectures.forEach((lecture) => {
+        for (let i = 0; i < day_object.lectures.length; i++) {
+            const lecture = day_object.lectures[i];
+
             if (lecture.lecture_number > scheduleDays[0].lecture_number)
                 error.push(
                     `the lecture_number ${lecture.lecture_number} on the day ${day_object.day} is not allowed please provide a value <=${scheduleDays[0].lecture_number}`
                 );
-        });
+            await this.checkTeacherTeachOnSameDay(
+                day_object.day,
+                lecture,
+                error
+            );
+        }
     }
 
     private scheduleNotIncludeDay(
@@ -102,6 +110,39 @@ export class ScheduleDaysService {
         day_object: DayDto
     ) {
         return !days.includes(day_object.day);
+    }
+
+    async checkTeacherTeachOnSameDay(
+        day: "sat" | "sun" | "mon" | "tue" | "wed" | "thu" | "fri",
+        lecture: LectureDto,
+        error: any[]
+    ) {
+        if (lecture.teach_id == 0) return;
+        const teacher_id = (
+            await this.teachesService.checkTeach(lecture.teach_id)
+        ).teacher_id;
+        const teaches_ids = (
+            await this.teachesService.findAll({ where: { teacher_id } })
+        ).map((teach_object) => teach_object.teach_id);
+        const lecture_in_time = await this.findAll({
+            where: { day },
+            include: [
+                {
+                    model: Lecture,
+                    where: {
+                        lecture_number: lecture.lecture_number,
+                        teach_id: {
+                            [Op.in]: teaches_ids,
+                        },
+                    },
+                },
+            ],
+        });
+        if (lecture_in_time.length >= 1) {
+            error.push(
+                `the teach on day ${day} on lecture_number ${lecture.lecture_number} with the teach ${lecture.teach_id} has a conflict with other lecture with id ${lecture_in_time[0].lectures[0].lecture_id}`
+            );
+        }
     }
 
     remove(id: number) {
