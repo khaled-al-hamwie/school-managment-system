@@ -12,11 +12,9 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/common/decorators/user.decorator";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import StudentGuard from "src/core/common/guards/student.guard";
-import TeacherGuard from "src/core/common/guards/teacher.guard";
 import { SCHEDULE_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import { StudentAttributes } from "../students/interfaces/student.interface";
 import { StudentsService } from "../students/students.service";
-import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import {
     scheduleAttributes,
     scheduleInclude,
@@ -60,22 +58,6 @@ export class SchedulesController {
             scheduleInclude,
             scheduleOrder
         );
-    }
-
-    @ApiTags(WEB_TAG)
-    @ApiBearerAuth("Authorization")
-    @UseGuards(TeacherGuard)
-    @Get("schedules/teacher")
-    async findTeacherSchedule(
-        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"]
-    ) {
-        return teacher_id;
-        // return this.schedulesService.findOne(
-        //     { room_id },
-        //     scheduleAttributes,
-        //     scheduleInclude,
-        //     scheduleOrder
-        // );
     }
 
     @ApiTags(WEB_TAG)
