@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Delete, Injectable, InternalServerErrorException, NotFoundException, Param } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -10,6 +10,7 @@ import { Op } from 'sequelize';
 import { Subject } from '../subjects/entities/subject.entity';
 import { FindAllBookDto } from './dto/findAll-book.dto';
 import { error } from 'console';
+import * as fs from 'fs';
 
 @Injectable()
 export class BooksService {
@@ -17,7 +18,7 @@ export class BooksService {
     @InjectModel(Book) private readonly BookEntity: typeof Book,
     private readonly subjectsService: SubjectsService
   ) { }
-  async create(createBookDto: CreateBookDto) {
+  async create(createBookDto: CreateBookDto, file?: Express.Multer.File) {
     const mySubject = await this.subjectsService.findOne({
       subject_id: createBookDto.subject_id,
     });
@@ -52,19 +53,26 @@ export class BooksService {
     })
   }
 
-  async update(
-    book_id: BookAttributes["book_id"],
-    updateBookDto: UpdateBookDto
-  ) {
+  async update(book_id: number, updateBookDto: UpdateBookDto) {
     const book = await this.findOne({ book_id });
-    if (!book) throw new NotFoundException("book doesn't exist");
-    book.update(UpdateBookDto).then((output) => output.save());
+
+    if (!book) {
+      throw new NotFoundException('Book not found');
+    }
+
+    Object.assign(book, updateBookDto);
+    book.save();
     return "done";
   }
+
+
 
   async remove(book_id: BookAttributes["book_id"]) {
     const book = await this.findOne({ book_id });
     if (!book) throw new NotFoundException("book doesn't exist");
+    if (book.pdf_link) {
+      this.deleteFile(book.pdf_link);
+    }
     this.BookEntity.destroy({ where: { book_id } }).
       then(() => {
         return "done";
@@ -72,4 +80,13 @@ export class BooksService {
         throw new error("the book couldn't be deleted..");
       })
   }
+
+  async deleteFile(filePath: string): Promise<void> {
+    try {
+      await fs.promises.unlink(filePath);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
 }

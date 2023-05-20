@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -11,6 +11,9 @@ import ManagerGuard from 'src/core/common/guards/manager.guard';
 import StudentGuard from 'src/core/common/guards/student.guard';
 import TeacherGuard from 'src/core/common/guards/teacher.guard';
 import { BookAttributes } from './interfaces/book.interface';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @ApiTags(BOOK_TAG, WEB_TAG, PHONE_TAG)
 @Controller('books')
@@ -20,11 +23,28 @@ export class BooksController {
   @ApiBearerAuth("Authorization")
   @UseGuards(ManagerGuard)
   @Post()
-  create(@Body() createBookDto: CreateBookDto) {
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads',
+      filename: (req, file, callback) => {
+        const filename = Date.now() + '-' + file.originalname;
+        callback(null, filename);
+      },
+    }),
+  }))
+  create(@Body() createBookDto: CreateBookDto,
+    @UploadedFile(new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 100000000 }),
+        new FileTypeValidator({ fileType: 'pdf' }),
+      ]
+    })) file?: Express.Multer.File) {
+    if (file) {
+      createBookDto.pdf_link = file.path;
+    }
     return this.booksService.create(createBookDto);
   }
   @ApiBearerAuth("Authorization")
-  @UseGuards(StudentGuard, ManagerGuard, TeacherGuard)
   @Get()
   findAll(
     @Query() query: FindAllBookDto,
@@ -33,7 +53,6 @@ export class BooksController {
     return this.booksService.findAll(query, page);
   }
   @ApiBearerAuth("Authorization")
-  @UseGuards(StudentGuard, ManagerGuard, TeacherGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) book_id: BookAttributes["book_id"]) {
     return this.booksService.findOne({ book_id: book_id });
@@ -44,6 +63,7 @@ export class BooksController {
   @Patch(':id')
   update(@Param('id', ParseIntPipe) book_id: BookAttributes["book_id"],
     @Body() updateBookDto: UpdateBookDto) {
+    //return updateBookDto;
     return this.booksService.update(+book_id, updateBookDto);
   }
 

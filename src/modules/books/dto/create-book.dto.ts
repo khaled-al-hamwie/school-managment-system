@@ -2,8 +2,11 @@ import NumberValidator from "src/core/common/validators/number.validator";
 import { BookAttributes } from "../interfaces/book.interface";
 import NameValidator from "src/core/common/validators/name.validator";
 import { IsOptional, IsPositive } from "class-validator";
+import { Transform, TransformFnParams } from "class-transformer";
 
 export class CreateBookDto {
+
+    @Transform(({ value }: TransformFnParams) => Number(value))
     @NumberValidator(1, 65535)
     subject_id: BookAttributes["subject_id"];
 

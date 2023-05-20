@@ -12,7 +12,7 @@ export class RoomsService {
     constructor(
         @InjectModel(Room) private readonly RoomEntity: typeof Room,
         private readonly classessService: ClassesService
-    ) {}
+    ) { }
 
     async create(createRoomDto: CreateRoomDto) {
         const myClass = await this.classessService.findOne({

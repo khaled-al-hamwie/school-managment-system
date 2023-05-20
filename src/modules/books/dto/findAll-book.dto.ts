@@ -3,6 +3,7 @@ import { BookAttributes } from "../interfaces/book.interface";
 
 export class FindAllBookDto {
     @IsString()
+    @IsOptional()
     name: BookAttributes["name"];
 
     @IsNumber()
