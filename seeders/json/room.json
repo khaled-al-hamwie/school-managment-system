@@ -1,0 +1,110 @@
+[
+    {
+        "room_id": 14,
+        "class_id": 7,
+        "name": "C07 R01",
+        "student_count": 30
+    },
+    {
+        "room_id": 18,
+        "class_id": 7,
+        "name": "C07 R02",
+        "student_count": 30
+    },
+    {
+        "room_id": 13,
+        "class_id": 7,
+        "name": "C07 R03",
+        "student_count": 30
+    },
+    {
+        "room_id": 17,
+        "class_id": 8,
+        "name": "C08 R01",
+        "student_count": 30
+    },
+    {
+        "room_id": 1,
+        "class_id": 8,
+        "name": "C08 R02",
+        "student_count": 30
+    },
+    {
+        "room_id": 10,
+        "class_id": 8,
+        "name": "C08 R03",
+        "student_count": 30
+    },
+    {
+        "room_id": 7,
+        "class_id": 9,
+        "name": "C09 R01",
+        "student_count": 30
+    },
+    {
+        "room_id": 8,
+        "class_id": 9,
+        "name": "C09 R02",
+        "student_count": 30
+    },
+    {
+        "room_id": 9,
+        "class_id": 9,
+        "name": "C09 R03",
+        "student_count": 30
+    },
+    {
+        "room_id": 11,
+        "class_id": 10,
+        "name": "C10 R01",
+        "student_count": 30
+    },
+    {
+        "room_id": 16,
+        "class_id": 10,
+        "name": "C10 R02",
+        "student_count": 30
+    },
+    {
+        "room_id": 2,
+        "class_id": 10,
+        "name": "C10 R03",
+        "student_count": 30
+    },
+    {
+        "room_id": 3,
+        "class_id": 11,
+        "name": "C11 R01",
+        "student_count": 30
+    },
+    {
+        "room_id": 4,
+        "class_id": 11,
+        "name": "C11 R02",
+        "student_count": 30
+    },
+    {
+        "room_id": 15,
+        "class_id": 11,
+        "name": "C11 R03",
+        "student_count": 30
+    },
+    {
+        "room_id": 6,
+        "class_id": 12,
+        "name": "C12 R01",
+        "student_count": 30
+    },
+    {
+        "room_id": 5,
+        "class_id": 12,
+        "name": "C12 R02",
+        "student_count": 30
+    },
+    {
+        "room_id": 12,
+        "class_id": 12,
+        "name": "C12 R03",
+        "student_count": 30
+    }
+]
