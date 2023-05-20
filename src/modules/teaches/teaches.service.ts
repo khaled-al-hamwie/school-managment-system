@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { WhereOptions } from "sequelize";
+import { FindOptions, WhereOptions } from "sequelize";
 import { SubjectAttributes } from "../subjects/interfaces/subject.interface";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { TeachersService } from "../teachers/teachers.service";
@@ -24,7 +24,9 @@ export class TeachesService {
                 await this.TeachEntity.create({ subject_id, teacher_id });
         }
     }
-
+    findAll(options?: FindOptions<TeachAttributes>) {
+        return this.TeachEntity.findAll(options);
+    }
     findOne(options: WhereOptions<TeachAttributes>) {
         return this.TeachEntity.findOne({
             where: options,
@@ -41,5 +43,12 @@ export class TeachesService {
         teacher_id: TeacherAttributes["teacher_id"]
     ) {
         return (await this.findOne({ subject_id, teacher_id })) == null;
+    }
+
+    async checkTeach(teach_id: TeachAttributes["teach_id"]) {
+        const teach = await this.findOne({ teach_id });
+        if (!teach)
+            throw new NotFoundException(`teach with ${teach_id} does'nt exist`);
+        return teach;
     }
 }

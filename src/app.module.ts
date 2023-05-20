@@ -7,10 +7,11 @@ import { databaseProvider } from "./core/database/database.providers";
 import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
+import { SchedulesModule } from "./modules/schedules/schedules.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
-import { TeachesModule } from "./modules/teaches/teaches.module";
+import { RecordsModule } from "./modules/records/records.module";
 
 @Module({
     imports: [
@@ -24,7 +25,8 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         ClassesModule,
         RoomsModule,
         SubjectsModule,
-        TeachesModule,
+        SchedulesModule,
+        RecordsModule,
     ],
     providers: [
         {

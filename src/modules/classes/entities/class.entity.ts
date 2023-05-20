@@ -6,7 +6,9 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
+import { Subject } from "src/modules/subjects/entities/subject.entity";
 import {
     ClassAttributes,
     ClassCreationAttributes,
@@ -30,25 +32,12 @@ export class Class
     })
     name: ClassAttributes["name"];
 
-    @Column({
-        type: DataType.TINYINT.UNSIGNED,
-        allowNull: false,
-    })
-    number_of_lectures: number;
-
-    @Column({
-        type: DataType.TINYINT.UNSIGNED,
-        allowNull: false,
-    })
-    lecture_length: number;
-
-    @Column({
-        type: DataType.TINYINT.UNSIGNED,
-        allowNull: false,
-    })
-    rest_length: number;
     @HasMany(() => Room)
     rooms: Room[];
-    // @HasMany(() => Subject)
-    // subjects: Subject[];
+
+    @HasMany(() => Subject)
+    subjects: Subject[];
+
+    @HasMany(() => Record)
+    records: Record[];
 }

@@ -3,6 +3,7 @@ import { AppModule } from "src/app.module";
 import cleanCredential from "src/core/database/database.cleanCredentail";
 import { setTimeout } from "timers/promises";
 import { CreateStudentDto } from "../dto/create-student.dto";
+import Student from "../entities/student.entity";
 import { StudentsService } from "../students.service";
 
 describe("StudentsService", () => {
@@ -62,5 +63,27 @@ describe("StudentsService", () => {
             password: body.password,
         });
         expect(output.access_token).not.toBeNull();
+    });
+
+    it("add rooms", async () => {
+        await Student.create({
+            credential_id: 2,
+            student_id: 44,
+            first_name: "fdsaf",
+            father_name: "fdsafdsa",
+            mother_name: "fdsafdsa",
+            last_name: "fdasfsadfdsa",
+            phone_number: "fdsafdsafads",
+            location: "ffasfdsafdsfdsa",
+            birth_day: new Date(),
+            gender: "f",
+        });
+        await service.addRooms(1, [1, 2, 44]);
+        expect(
+            await Student.findOne({ where: { student_id: 44, room_id: 1 } })
+        ).not.toBeNull();
+    });
+    afterAll(async () => {
+        await Student.destroy({ where: {} });
     });
 });

@@ -8,9 +8,6 @@ describe("create class dto", () => {
     beforeEach(() => {
         body = {
             name: "first class",
-            lecture_length: 20,
-            rest_length: 5,
-            number_of_lectures: 4,
         };
     });
 
@@ -47,50 +44,6 @@ describe("create class dto", () => {
             expect(erros[0].property).toEqual(attr);
             expect(erros[0].constraints).toEqual({
                 isLength: `${attr} must be shorter than or equal to 16 characters`,
-            });
-        });
-    });
-
-    describe("number_of_lectures, lecture_length, rest_length", () => {
-        const attr = "number_of_lectures";
-        const min = 1;
-        const max = 255;
-        it(`should not allow no ${attr}`, async () => {
-            delete body[attr];
-            const ofImportDto = plainToInstance(CreateClassDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(attr);
-            expect(erros[0].constraints).toEqual({
-                isInt: `${attr} must be an integer number`,
-                min: `${attr} must not be less than ${min}`,
-                max: `${attr} must not be greater than ${max}`,
-            });
-        });
-        it(`should not allow ${attr} less than ${min}`, async () => {
-            body[attr] = 0;
-            const ofImportDto = plainToInstance(CreateClassDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(attr);
-            expect(erros[0].constraints).toEqual({
-                min: `${attr} must not be less than ${min}`,
-            });
-        });
-        it(`should not allow ${attr} greater than ${max}`, async () => {
-            body[attr] = 256;
-            const ofImportDto = plainToInstance(CreateClassDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(attr);
-            expect(erros[0].constraints).toEqual({
-                max: `${attr} must not be greater than ${max}`,
-            });
-        });
-        it(`should not allow decimal ${attr}`, async () => {
-            body[attr] = 1.1;
-            const ofImportDto = plainToInstance(CreateClassDto, body);
-            const erros: ValidationError[] = await validate(ofImportDto);
-            expect(erros[0].property).toEqual(attr);
-            expect(erros[0].constraints).toEqual({
-                isInt: `${attr} must be an integer number`,
             });
         });
     });

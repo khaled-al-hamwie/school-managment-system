@@ -7,7 +7,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
-import { Room } from "src/modules/rooms/entities/room.entity";
+import { ScheduleDay } from "src/modules/schedule_days/entities/schedule_day.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
     LectureAttributes,
@@ -19,42 +19,48 @@ export class Lecture
     extends Model<LectureAttributes, LectureCreationAttributes>
     implements LectureCreationAttributes
 {
-    room_id: number;
     @PrimaryKey
     @Column({
         autoIncrement: true,
-        type: DataType.SMALLINT,
+        type: DataType.SMALLINT.UNSIGNED,
     })
-    lecture_id?: number;
+    lecture_id?: LectureAttributes["lecture_id"];
 
-    // @ForeignKey(() => Room)
-    // @Column({
-    //     type: DataType.SMALLINT,
-    //     allowNull: false,
-    // })
-    // room_id: number;
+    @ForeignKey(() => ScheduleDay)
+    @Column({
+        type: DataType.SMALLINT.UNSIGNED,
+        allowNull: false,
+    })
+    schedule_day_id: LectureAttributes["schedule_day_id"];
 
     @ForeignKey(() => Teach)
     @Column({
-        type: DataType.SMALLINT,
-        allowNull: false,
+        type: DataType.MEDIUMINT.UNSIGNED,
+        allowNull: true,
     })
-    teach_id: number;
+    teach_id?: LectureAttributes["teach_id"];
 
     @Column({
-        type: DataType.SMALLINT,
+        type: DataType.TIME,
         allowNull: false,
     })
-    day: number;
+    start_time: LectureAttributes["start_time"];
 
     @Column({
-        type: DataType.SMALLINT,
+        type: DataType.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
     })
-    period: number;
+    is_rest?: LectureAttributes["is_rest"];
 
-    // @BelongsTo(() => Room)
-    // room: Room;
+    @Column({
+        type: DataType.TINYINT.UNSIGNED,
+        allowNull: true,
+    })
+    lecture_number?: LectureAttributes["lecture_number"];
+
+    @BelongsTo(() => ScheduleDay)
+    schedule_day: ScheduleDay;
 
     @BelongsTo(() => Teach)
     teach: Teach;

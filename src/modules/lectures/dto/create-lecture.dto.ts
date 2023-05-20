@@ -1,11 +1,9 @@
-import { IsNotEmpty, IsString, IsNumber } from "class-validator";
+import { LectureAttributes } from "../interfaces/lecture.interface";
 
 export class CreateLectureDto {
-    @IsNotEmpty()
-    @IsNumber()
-    day: string;
-
-    @IsNotEmpty()
-    @IsNumber()
-    period: number;
+    schedule_day_id: LectureAttributes["schedule_day_id"];
+    teach_id?: LectureAttributes["teach_id"];
+    start_time: LectureAttributes["start_time"];
+    is_rest?: LectureAttributes["is_rest"];
+    lecture_number?: LectureAttributes["lecture_number"];
 }

@@ -1,7 +1,8 @@
 const path = require("path");
-
+require("dotenv").config();
+const env = process.env.NODE_ENV ?? "development";
 module.exports = {
   config: path.resolve("dbConfig.js"),
   "seeders-path": path.resolve(".", "seeders"),
-  env: "development",
+  env,
 };

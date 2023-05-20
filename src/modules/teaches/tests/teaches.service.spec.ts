@@ -1,16 +1,13 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
-import cleanCredential from "src/core/database/database.cleanCredentail";
-import { SubjectsService } from "src/modules/subjects/subjects.service";
-import { TeachersService } from "src/modules/teachers/teachers.service";
+import { Subject } from "src/modules/subjects/entities/subject.entity";
+import Teacher from "src/modules/teachers/entities/teacher.entity";
 import { setTimeout } from "timers/promises";
 import { Teach } from "../entities/teach.entity";
 import { TeachesService } from "../teaches.service";
 
 describe("TeachesService", () => {
     let service: TeachesService;
-    let teachersService: TeachersService;
-    let subjectsService: SubjectsService;
     let subject_id1: number;
     let teacher_id1: number;
     beforeAll(async () => {
@@ -19,36 +16,31 @@ describe("TeachesService", () => {
         }).compile();
 
         service = module.get<TeachesService>(TeachesService);
-        teachersService = module.get<TeachersService>(TeachersService);
-        subjectsService = module.get<SubjectsService>(SubjectsService);
-        await cleanCredential();
-        await subjectsService.create({
+
+        await Subject.create({
+            subject_id: 1,
             class_id: 1,
             name: "hjk",
             semester: 1,
         });
-        await teachersService.create({
+        await Teacher.create({
             first_name: "fdsaf",
             middle_name: "fdsafdsa",
             last_name: "fdasfsadfdsa",
             phone_number: "fdsafdsafads",
             location: "ffasfdsafdsfdsa",
             salary: 100,
-            email: "testma@test.com",
-            password: "fdsfsadafsdfsad",
-            user_name: "testma",
             birth_day: new Date(),
             gender: "f",
+            credential_id: 1,
+            teacher_id: 1,
         });
-        subject_id1 = (await subjectsService.findAll(null))[0].subject_id;
-        teacher_id1 = (await teachersService.findAll(null))[0].teacher_id;
-        await Teach.destroy({ where: {} });
+        subject_id1 = 1;
+        teacher_id1 = 1;
     });
 
     it("should be defined", () => {
         expect(service).toBeDefined();
-        expect(teachersService).toBeDefined();
-        expect(subjectsService).toBeDefined();
     });
 
     it("should create", async () => {
@@ -70,5 +62,18 @@ describe("TeachesService", () => {
         await service.create(subject_id1, [0]);
         await setTimeout(1000);
         expect(await service.teachNotExist(subject_id1, 0)).toBeTruthy();
+    });
+    it("check teach", async () => {
+        try {
+            await service.checkTeach(-1);
+        } catch (error) {
+            expect(error.name).toBe("NotFoundException");
+        }
+    });
+
+    afterAll(async () => {
+        await Subject.destroy({ where: {} });
+        await Teacher.destroy({ where: {} });
+        await Teach.destroy({ where: {} });
     });
 });

@@ -1,14 +1,12 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
-import { ClassesService } from "src/modules/classes/classes.service";
-import { bodySample } from "src/modules/classes/tests/sample";
+import { Class } from "src/modules/classes/entities/class.entity";
 import { setTimeout } from "timers/promises";
 import { CreateRoomDto } from "../dto/create-room.dto";
 import { RoomsService } from "../rooms.service";
 
 describe("RoomsService", () => {
     let service: RoomsService;
-    let classService: ClassesService;
     let body: CreateRoomDto;
 
     beforeAll(async () => {
@@ -17,10 +15,13 @@ describe("RoomsService", () => {
         }).compile();
 
         service = module.get<RoomsService>(RoomsService);
-        classService = module.get<ClassesService>(ClassesService);
-        classService.create(bodySample);
+        await Class.create({ class_id: 3, name: "fafa" });
         body = {
-            class_id: (await classService.findAll(""))[0].class_id,
+            class_id: 3,
+            days: ["fri", "mon"],
+            lecture_number: 6,
+            rests: [1, 3],
+            school_start: "07:00",
             student_count: 10,
             name: "dfjs;alk",
         };
@@ -28,7 +29,6 @@ describe("RoomsService", () => {
 
     it("should be defined", () => {
         expect(service).toBeDefined();
-        expect(classService).toBeDefined();
     });
 
     it("should create a class", async () => {
@@ -39,8 +39,12 @@ describe("RoomsService", () => {
         try {
             await service.create({
                 class_id: -1,
-                name: "should not create",
+                days: ["fri", "mon"],
+                lecture_number: 6,
+                rests: [1, 3],
+                school_start: "07:00",
                 student_count: 10,
+                name: "dfjs;alk",
             });
         } catch (error) {
             expect(error.name).toBe("NotFoundException");
@@ -58,5 +62,8 @@ describe("RoomsService", () => {
             student_count: 20,
         });
         expect(output).toBe("done");
+    });
+    afterAll(async () => {
+        await Class.destroy({ where: {} });
     });
 });

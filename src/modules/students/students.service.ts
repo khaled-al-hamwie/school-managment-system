@@ -93,4 +93,17 @@ export class StudentsService {
             );
         return "done";
     }
+
+    async addRooms(
+        room_id: StudentAttributes["room_id"],
+        student_ids: StudentAttributes["student_id"][]
+    ) {
+        for (let i = 0; i < student_ids.length; i++) {
+            const student_id = student_ids[i];
+            await this.StudentEntity.update(
+                { room_id },
+                { where: { student_id } }
+            );
+        }
+    }
 }
