@@ -74,8 +74,6 @@ export class LecturesService {
             if (lec.teach_id == 0) {
                 this.update(lecture, { teach_id: null });
             } else {
-                await this.teachesService.checkTeach(lec.teach_id);
-                // #TO-ADD check if it exist in other schedule in the same day and the same time
                 this.update(lecture, { teach_id: lec.teach_id });
             }
         }
