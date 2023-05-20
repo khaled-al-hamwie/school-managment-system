@@ -3,6 +3,8 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/common/decorators/user.decorator";
 import TeacherGuard from "src/core/common/guards/teacher.guard";
 import { PHONE_TAG } from "src/core/swagger/constants/swagger.tags";
+import { Subject } from "../subjects/entities/subject.entity";
+import Teacher from "../teachers/entities/teacher.entity";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { TeachInclude } from "./constants";
 import { TeachesService } from "./teaches.service";
@@ -11,13 +13,18 @@ import { TeachesService } from "./teaches.service";
 export class TeachesController {
     constructor(private readonly teachesService: TeachesService) {}
 
-    // return all the teacher and what do they taech aka subject
     @Get()
     findAll() {
-        return this.teachesService.findAll();
+        return this.teachesService.findAll({
+            include: [
+                {
+                    model: Teacher,
+                },
+                { model: Subject },
+            ],
+        });
     }
 
-    // another one get the teacher id and return what he teach and when
     @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(TeacherGuard)
