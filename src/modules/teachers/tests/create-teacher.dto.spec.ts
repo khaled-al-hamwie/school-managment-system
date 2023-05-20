@@ -145,4 +145,36 @@ describe("create manager dto", () => {
             });
         });
     });
+    describe("subject_ids", () => {
+        const attr = "subject_ids";
+        it("should not allow a decimal", async () => {
+            body[`${attr}`] = [1, 2, 1.1];
+            const ofImportDto = plainToInstance(CreateTeacherDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(`${attr}`);
+            expect(erros[0].constraints).toEqual({
+                isInt: `each value in ${attr} must be an integer number`,
+            });
+        });
+        it("should not allow a smaller than 1", async () => {
+            const min = 1;
+            body[`${attr}`] = [1, 2, min - 1];
+            const ofImportDto = plainToInstance(CreateTeacherDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(`${attr}`);
+            expect(erros[0].constraints).toEqual({
+                min: `each value in ${attr} must not be less than ${min}`,
+            });
+        });
+        it("should not allow a largger than 65535", async () => {
+            const max = 65535;
+            body[`${attr}`] = [1, 2, max + 1];
+            const ofImportDto = plainToInstance(CreateTeacherDto, body);
+            const erros: ValidationError[] = await validate(ofImportDto);
+            expect(erros[0].property).toEqual(`${attr}`);
+            expect(erros[0].constraints).toEqual({
+                max: `each value in ${attr} must not be greater than ${max}`,
+            });
+        });
+    });
 });

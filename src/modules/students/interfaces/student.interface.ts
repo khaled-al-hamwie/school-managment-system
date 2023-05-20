@@ -1,9 +1,10 @@
 import { Optional } from "sequelize";
 import { Gender } from "src/core/common/types/gender.type";
+import { CredentialAttributes } from "src/modules/credentials/interfaces/credential.interface";
 
 export interface StudentAttributes {
     student_id?: number;
-    credential_id: number;
+    credential_id: CredentialAttributes["credential_id"];
     first_name: string;
     last_name: string;
     father_name: string;

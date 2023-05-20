@@ -1,17 +1,23 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import {
+    ArrayMinSize,
+    ArrayUnique,
     IsEnum,
     IsISO8601,
+    IsInt,
     IsNumber,
     IsOptional,
     IsPhoneNumber,
     IsPositive,
+    Max,
+    Min,
 } from "class-validator";
 import { GenderEnum } from "src/core/common/enums/gender.enum";
 import tolowerCaseTransform from "src/core/common/transformers/tolowercase.transform";
 import NameValidator from "src/core/common/validators/name.validator";
 import { CreateCredentialDto } from "src/modules/credentials/dto/create-credential.dto";
+import { SubjectAttributes } from "src/modules/subjects/interfaces/subject.interface";
 import { TeacherAttributes } from "../interfaces/teacher.interface";
 
 export class CreateTeacherDto extends CreateCredentialDto {
@@ -48,4 +54,13 @@ export class CreateTeacherDto extends CreateCredentialDto {
     @IsPositive()
     @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
     salary: TeacherAttributes["salary"];
+
+    @IsOptional()
+    @ArrayUnique()
+    @ApiProperty({ minimum: 1, maximum: 65535, default: [12, 20] })
+    @IsInt({ each: true })
+    @Min(1, { each: true })
+    @Max(65535, { each: true })
+    @ArrayMinSize(1)
+    subject_ids?: SubjectAttributes["subject_id"][];
 }
