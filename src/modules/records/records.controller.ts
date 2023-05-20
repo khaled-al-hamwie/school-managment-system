@@ -10,8 +10,8 @@ export class RecordsController {
         return this.recordsService.findAll();
     }
 
-    @Get(":id")
-    findOne(@Param("id") id: string) {
-        // return this.recordsService.findOne(+id);
-    }
+    // @Get(":id")
+    // findOne(@Param("id") id: string) {
+    //     // return this.recordsService.findOne(+id);
+    // }
 }

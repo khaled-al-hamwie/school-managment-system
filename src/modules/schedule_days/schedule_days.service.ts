@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { FindOptions, Op, where } from "sequelize";
+import { FindOptions, Op } from "sequelize";
 import { Lecture } from "../lectures/entities/lecture.entity";
 import { LecturesService } from "../lectures/lectures.service";
 import { DayDto, LectureDto } from "../schedules/dto/update-schedule.dto";
@@ -38,12 +38,7 @@ export class ScheduleDaysService {
         }
     }
 
-    findAll(
-        options: FindOptions<ScheduleDayAttributes>
-        // where: WhereOptions<ScheduleDayAttributes>,
-        // attributes?: FindAttributeOptions,
-        // limit?: number
-    ) {
+    findAll(options: FindOptions<ScheduleDayAttributes>) {
         return this.ScheduleDayEntity.findAll(options);
     }
 
