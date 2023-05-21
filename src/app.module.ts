@@ -14,6 +14,7 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
+import { HomeworksModule } from './modules/homeworks/homeworks.module';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         TeachesModule,
         SchedulesModule,
         RecordsModule,
+        HomeworksModule,
     ],
     providers: [
         {
@@ -39,4 +41,4 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         },
     ],
 })
-export class AppModule {}
+export class AppModule { }
