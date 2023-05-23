@@ -6,7 +6,10 @@ import { Homework } from './entities/homework.entity';
 import { RoomsService } from '../rooms/rooms.service';
 import { TeachesService } from '../teaches/teaches.service';
 import { HomeworkAttributes } from './interfaces/homework.interface';
-import { WhereOptions } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
+import { StudentAttributes } from '../students/interfaces/student.interface';
+import { StudentsService } from '../students/students.service';
+import { FindAllHomeworkDto } from './dto/findAll-homework.dto';
 
 
 @Injectable()
@@ -16,6 +19,7 @@ export class HomeworksService {
     @InjectModel(Homework) private readonly HomeworkEntity: typeof Homework,
     private readonly roomsService: RoomsService,
     private readonly teachService: TeachesService,
+    private readonly studentService: StudentsService,
   ) { }
 
   async create(createHomeworkDto: CreateHomeworkDto) {
@@ -35,8 +39,20 @@ export class HomeworksService {
     return "done";
   }
 
-  async findAll() {
-    return await this.HomeworkEntity.findAll();
+  async findAll(query: FindAllHomeworkDto, page = 0) {
+    const whereOptions: WhereOptions<HomeworkAttributes> = {};
+    for (const key in query) {
+      if (Object.prototype.hasOwnProperty.call(query, key)) {
+        whereOptions[key] = { [Op.regexp]: query[key] };
+      }
+    }
+    return await this.HomeworkEntity.findAll({
+      where: whereOptions,
+      attributes: { exclude: ["teach_id"] },
+      offset: page * 5,
+      limit: 5,
+      order: [["deadline_date", "ASC"]],
+    });
   }
 
   async findOne(options: WhereOptions<HomeworkAttributes>) {
@@ -59,4 +75,12 @@ export class HomeworksService {
     this.HomeworkEntity.destroy({ where: { homework_id } });
     return "done";
   }
+  async findStudentHomeworks(student_id: StudentAttributes['student_id']) {
+    const student = this.studentService.findOne({ student_id });
+    if (!student)
+      throw new NotFoundException("this student doesn't exist ..");
+    const room_id = student['room_id'];
+    return await this.findAll({ room_id });
+  }
+
 }

@@ -5,14 +5,17 @@ import { Homework } from './entities/homework.entity';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { RoomsModule } from '../rooms/rooms.module';
 import { TeachesModule } from '../teaches/teaches.module';
+import { StudentsModule } from '../students/students.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Homework]),
     RoomsModule,
-    TeachesModule
+    TeachesModule,
+    StudentsModule,
   ],
   controllers: [HomeworksController],
-  providers: [HomeworksService]
+  providers: [HomeworksService],
+  exports: [HomeworksService],
 })
 export class HomeworksModule { }
