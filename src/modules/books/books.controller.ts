@@ -8,12 +8,9 @@ import { ParseIntPagePipe } from 'src/core/common/pipes/ParseIntPage.pipe';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BOOK_TAG, PHONE_TAG, WEB_TAG } from 'src/core/swagger/constants/swagger.tags';
 import ManagerGuard from 'src/core/common/guards/manager.guard';
-import StudentGuard from 'src/core/common/guards/student.guard';
-import TeacherGuard from 'src/core/common/guards/teacher.guard';
 import { BookAttributes } from './interfaces/book.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
 
 @ApiTags(BOOK_TAG, WEB_TAG, PHONE_TAG)
 @Controller('books')

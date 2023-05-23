@@ -6,7 +6,7 @@ export interface HomeworkAttributes {
     homework_id?: number;
     teach_id: TeachAttributes['teach_id'];
     room_id: RoomAttributes['room_id'];
-    created_at: string;
+    created_at?: string;
     deadline_date: string;
     description: string;
 }

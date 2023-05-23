@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { UpdateHomeworkDto } from './dto/update-homework.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { Homework } from './entities/homework.entity';
+import { RoomsService } from '../rooms/rooms.service';
+import { TeachesService } from '../teaches/teaches.service';
+import { HomeworkAttributes } from './interfaces/homework.interface';
+import { WhereOptions } from 'sequelize';
+
 
 @Injectable()
 export class HomeworksService {
-  create(createHomeworkDto: CreateHomeworkDto) {
-    return 'This action adds a new homework';
+
+  constructor(
+    @InjectModel(Homework) private readonly HomeworkEntity: typeof Homework,
+    private readonly roomsService: RoomsService,
+    private readonly teachService: TeachesService,
+  ) { }
+
+  async create(createHomeworkDto: CreateHomeworkDto) {
+    const myRoom = await this.roomsService.findOne({
+      room_id: createHomeworkDto.room_id,
+    });
+    if (!myRoom)
+      throw new NotFoundException("room doesn't exist");
+
+    const myTeach = await this.teachService.findOne({
+      teach_id: createHomeworkDto.teach_id,
+    });
+    if (!myTeach)
+      throw new NotFoundException("teach doesn't exist");
+    this.HomeworkEntity.create(createHomeworkDto);
+
+    return "done";
   }
 
-  findAll() {
-    return `This action returns all homeworks`;
+  async findAll() {
+    return await this.HomeworkEntity.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} homework`;
+  async findOne(options: WhereOptions<HomeworkAttributes>) {
+    return this.HomeworkEntity.findOne({
+      where: options,
+      limit: 1
+    });
   }
 
-  update(id: number, updateHomeworkDto: UpdateHomeworkDto) {
-    return `This action updates a #${id} homework`;
+  async update(homework_id: HomeworkAttributes['homework_id'],
+    updateHomeworkDto: UpdateHomeworkDto) {
+    const homework = await this.findOne({ homework_id });
+    if (!homework)
+      throw new NotFoundException("this homework doesn't exist");
+    homework.update(updateHomeworkDto).then((output) => output.save());
+    return "done";
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} homework`;
+  remove(homework_id: HomeworkAttributes['homework_id']) {
+    this.HomeworkEntity.destroy({ where: { homework_id } });
+    return "done";
   }
 }

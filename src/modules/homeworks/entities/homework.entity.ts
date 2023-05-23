@@ -3,6 +3,7 @@ import { BelongsTo, Column, DataType, ForeignKey, PrimaryKey, Table, Model } fro
 import { HomeworkAttributes, HomeworkCreationAttributes } from "../interfaces/homework.interface";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
+import { Sequelize } from "sequelize";
 
 @Table
 export class Homework
@@ -28,7 +29,7 @@ export class Homework
     teach_id: HomeworkAttributes['teach_id'];
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     })
     created_at: HomeworkAttributes['created_at'];
     @Column({
