@@ -15,36 +15,6 @@
         "class_id": 9
     },
     {
-        "name": "Algebra 1",
-        "semester": 1,
-        "class_id": 10
-    },
-    {
-        "name": "Algebra 2",
-        "semester": 1,
-        "class_id": 11
-    },
-    {
-        "name": "Geometry 1",
-        "semester": 1,
-        "class_id": 10
-    },
-    {
-        "name": "Geometry 2",
-        "semester": 1,
-        "class_id": 11
-    },
-    {
-        "name": "Geometry 3",
-        "semester": 1,
-        "class_id": 12
-    },
-    {
-        "name": "Calculus 1",
-        "semester": 1,
-        "class_id": 12
-    },
-    {
         "name": "Physics 1",
         "semester": 2,
         "class_id": 7
@@ -58,21 +28,6 @@
         "name": "Physics 3",
         "semester": 2,
         "class_id": 9
-    },
-    {
-        "name": "Advance Physics 1",
-        "semester": 2,
-        "class_id": 10
-    },
-    {
-        "name": "Advance Physics 2",
-        "semester": 2,
-        "class_id": 11
-    },
-    {
-        "name": "Advance Physics 12",
-        "semester": 2,
-        "class_id": 12
     },
     {
         "name": "Chemistry 1",
