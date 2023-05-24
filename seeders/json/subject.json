@@ -148,5 +148,20 @@
         "name": "English 3",
         "semester": 3,
         "class_id": 9
+    },
+    {
+        "name": "Arabic 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Arabic 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Arabic 3",
+        "semester": 3,
+        "class_id": 9
     }
 ]
