@@ -1,0 +1,197 @@
+[
+    {
+        "name": "Mathematics 7",
+        "semester": 1,
+        "class_id": 7
+    },
+    {
+        "name": "Mathematics 8",
+        "semester": 1,
+        "class_id": 8
+    },
+    {
+        "name": "Mathematics 9",
+        "semester": 1,
+        "class_id": 9
+    },
+    {
+        "name": "Algebra 1",
+        "semester": 1,
+        "class_id": 10
+    },
+    {
+        "name": "Algebra 2",
+        "semester": 1,
+        "class_id": 11
+    },
+    {
+        "name": "Geometry 1",
+        "semester": 1,
+        "class_id": 10
+    },
+    {
+        "name": "Geometry 2",
+        "semester": 1,
+        "class_id": 11
+    },
+    {
+        "name": "Geometry 3",
+        "semester": 1,
+        "class_id": 12
+    },
+    {
+        "name": "Calculus 1",
+        "semester": 1,
+        "class_id": 12
+    },
+    {
+        "name": "Physics 1",
+        "semester": 2,
+        "class_id": 7
+    },
+    {
+        "name": "Physics 2",
+        "semester": 2,
+        "class_id": 8
+    },
+    {
+        "name": "Physics 3",
+        "semester": 2,
+        "class_id": 9
+    },
+    {
+        "name": "Advance Physics 1",
+        "semester": 2,
+        "class_id": 10
+    },
+    {
+        "name": "Advance Physics 2",
+        "semester": 2,
+        "class_id": 11
+    },
+    {
+        "name": "Advance Physics 12",
+        "semester": 2,
+        "class_id": 12
+    },
+    {
+        "name": "Chemistry 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Chemistry 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Chemistry 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "History 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "History 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "History 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Geography 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Geography 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Geography 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Relogin 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Relogin 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Relogin 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Physical Education 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Physical Education 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Physical Education 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Art and Music 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Art and Music 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Art and Music 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "French 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "French 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "French 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "English 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "English 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "English 3",
+        "semester": 3,
+        "class_id": 9
+    }
+]
