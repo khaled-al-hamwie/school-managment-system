@@ -10,9 +10,10 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.useStaticAssets(join(__dirname, "..", "uploads"));
     app.useGlobalPipes(MainValidationPipe);
+    app.enableCors();
     app.use(compression());
     swaggerSetup(app);
-    await app.listen(process.env.PORT || 4000);
+    await app.listen(process.env.PORT || 4000, "0.0.0.0");
     if (module.hot) {
         module.hot.accept();
         module.hot.dispose(() => app.close());
