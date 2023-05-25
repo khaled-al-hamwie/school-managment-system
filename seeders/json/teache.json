@@ -1,0 +1,112 @@
+[
+    {
+        "teach_id": 1,
+        "teacher_id": 1,
+        "subject_id": 29
+    },
+    {
+        "teach_id": 2,
+        "teacher_id": 1,
+        "subject_id": 30
+    },
+    {
+        "teach_id": 3,
+        "teacher_id": 2,
+        "subject_id": 32
+    },
+    {
+        "teach_id": 4,
+        "teacher_id": 2,
+        "subject_id": 33
+    },
+    {
+        "teach_id": 5,
+        "teacher_id": 3,
+        "subject_id": 26
+    },
+    {
+        "teach_id": 6,
+        "teacher_id": 3,
+        "subject_id": 27
+    },
+    {
+        "teach_id": 7,
+        "teacher_id": 4,
+        "subject_id": 24
+    },
+    {
+        "teach_id": 8,
+        "teacher_id": 4,
+        "subject_id": 23
+    },
+    {
+        "teach_id": 9,
+        "teacher_id": 5,
+        "subject_id": 17
+    },
+    {
+        "teach_id": 10,
+        "teacher_id": 5,
+        "subject_id": 18
+    },
+    {
+        "teach_id": 11,
+        "teacher_id": 6,
+        "subject_id": 20
+    },
+    {
+        "teach_id": 12,
+        "teacher_id": 6,
+        "subject_id": 21
+    },
+    {
+        "teach_id": 13,
+        "teacher_id": 7,
+        "subject_id": 14
+    },
+    {
+        "teach_id": 14,
+        "teacher_id": 7,
+        "subject_id": 15
+    },
+    {
+        "teach_id": 15,
+        "teacher_id": 8,
+        "subject_id": 11
+    },
+    {
+        "teach_id": 16,
+        "teacher_id": 8,
+        "subject_id": 12
+    },
+    {
+        "teach_id": 17,
+        "teacher_id": 9,
+        "subject_id": 8
+    },
+    {
+        "teach_id": 18,
+        "teacher_id": 9,
+        "subject_id": 9
+    },
+    {
+        "teach_id": 19,
+        "teacher_id": 10,
+        "subject_id": 5
+    },
+    {
+        "teach_id": 20,
+        "teacher_id": 10,
+        "subject_id": 6
+    },
+    {
+        "teach_id": 21,
+        "teacher_id": 11,
+        "subject_id": 2
+    },
+    {
+        "teach_id": 22,
+        "teacher_id": 11,
+        "subject_id": 3
+    }
+]

@@ -1,0 +1,167 @@
+[
+    {
+        "name": "Mathematics 7",
+        "semester": 1,
+        "class_id": 7
+    },
+    {
+        "name": "Mathematics 8",
+        "semester": 1,
+        "class_id": 8
+    },
+    {
+        "name": "Mathematics 9",
+        "semester": 1,
+        "class_id": 9
+    },
+    {
+        "name": "Physics 1",
+        "semester": 2,
+        "class_id": 7
+    },
+    {
+        "name": "Physics 2",
+        "semester": 2,
+        "class_id": 8
+    },
+    {
+        "name": "Physics 3",
+        "semester": 2,
+        "class_id": 9
+    },
+    {
+        "name": "Chemistry 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Chemistry 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Chemistry 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "History 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "History 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "History 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Geography 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Geography 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Geography 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Relogin 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Relogin 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Relogin 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Physical Education 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Physical Education 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Physical Education 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Art and Music 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Art and Music 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Art and Music 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "French 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "French 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "French 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "English 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "English 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "English 3",
+        "semester": 3,
+        "class_id": 9
+    },
+    {
+        "name": "Arabic 1",
+        "semester": 3,
+        "class_id": 7
+    },
+    {
+        "name": "Arabic 2",
+        "semester": 3,
+        "class_id": 8
+    },
+    {
+        "name": "Arabic 3",
+        "semester": 3,
+        "class_id": 9
+    }
+]

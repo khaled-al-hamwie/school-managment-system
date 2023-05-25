@@ -25,7 +25,7 @@ describe("chreate auth dto", () => {
             expect(erros[0].constraints).toEqual({
                 isString: "password must be a string",
                 isLength:
-                    "password must be longer than or equal to 20 characters",
+                    "password must be longer than or equal to 8 characters",
                 notContains: "password should not contain a space",
             });
         });
@@ -36,7 +36,7 @@ describe("chreate auth dto", () => {
             expect(erros[0].property).toEqual("password");
             expect(erros[0].constraints).toEqual({
                 isLength:
-                    "password must be longer than or equal to 20 characters",
+                    "password must be longer than or equal to 8 characters",
             });
         });
         it("should not allow long password", async () => {
