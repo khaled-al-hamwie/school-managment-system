@@ -7,12 +7,15 @@ export default async function createDatabase(
     name: string,
     host: string
 ) {
-    await createConnection({ user: user_name, password, host }).then(
-        (connection) => {
-            new Logger("SequelizeQuery").verbose(
-                `CREATE DATABASE IF NOT EXISTS ${name};`
-            );
-            connection.query(`CREATE DATABASE IF NOT EXISTS ${name};`);
-        }
-    );
+    await createConnection({
+        user: user_name,
+        password,
+        host,
+        idleTimeout: 10000,
+    }).then((connection) => {
+        new Logger("SequelizeQuery").verbose(
+            `CREATE DATABASE IF NOT EXISTS ${name};`
+        );
+        connection.query(`CREATE DATABASE IF NOT EXISTS ${name};`);
+    });
 }

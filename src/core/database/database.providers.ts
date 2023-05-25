@@ -18,7 +18,8 @@ switch (process.env.NODE_ENV) {
     default:
         config = databaseConfig.development;
 }
-createDatabase(config.username, config.password, config.database, config.host);
+
+//createDatabase(config.username, config.password, config.database, config.host);
 export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
     ...config,
     autoLoadModels: true,
