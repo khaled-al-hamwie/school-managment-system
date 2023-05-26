@@ -94,7 +94,10 @@ export class SchedulesService {
         }
         return schedule;
     }
-    remove(id: number) {
-        return `This action removes a #${id} schedule`;
+    async remove(room_id: ScheduleAttributes["room_id"]) {
+        await this.findOne({ room_id }).then(async (schedule) => {
+            await this.scheduleDaysService.remove(schedule.schedule_id);
+            await schedule.destroy();
+        });
     }
 }
