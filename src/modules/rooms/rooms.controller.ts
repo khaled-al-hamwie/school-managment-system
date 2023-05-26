@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     ParseIntPipe,
@@ -11,6 +12,8 @@ import {
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { ROOM_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
+import { Schedule } from "../schedules/entities/schedule.entity";
+import Student from "../students/entities/student.entity";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { RoomAttributes } from "./interfaces/room.interface";
@@ -30,9 +33,19 @@ export class RoomsController {
 
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
+    @Get()
+    findAll() {
+        return this.roomsService.findAll({ include: Schedule });
+    }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
     @Get(":id")
     findOne(@Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]) {
-        return this.roomsService.findOne({ room_id: room_id });
+        return this.roomsService.findOne({
+            where: { room_id },
+            include: [{ model: Schedule }, { model: Student }],
+        });
     }
 
     @ApiBearerAuth("Authorization")
@@ -44,4 +57,12 @@ export class RoomsController {
     ) {
         return this.roomsService.update(+room_id, updateRoomDto);
     }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Delete(":id")
+    remove(@Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]) {
+        return this.roomsService.remove(+room_id);
+    }
 }
+// remove a student from a room

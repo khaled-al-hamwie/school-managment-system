@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { WhereOptions } from "sequelize";
+import { FindOptions, WhereOptions } from "sequelize";
 import { saveModel } from "src/core/common/transformers/modelSave";
 import { ClassesService } from "../classes/classes.service";
 import { RecordsService } from "../records/records.service";
@@ -56,11 +56,15 @@ export class RoomsService {
         return "done";
     }
 
-    findOne(options: WhereOptions<RoomAttributes>) {
+    findOne(options: FindOptions<RoomAttributes>) {
         return this.RoomEntity.findOne({
-            where: options,
+            ...options,
             limit: 1,
         });
+    }
+
+    findAll(options: FindOptions<RoomAttributes>) {
+        return this.RoomEntity.findAll(options);
     }
 
     async update(
@@ -78,9 +82,24 @@ export class RoomsService {
         return "done";
     }
 
+    async remove(room_id: RoomAttributes["room_id"]) {
+        const room = await this.checkRoom(room_id);
+        this.removeAsync(room);
+        return "done";
+    }
+
+    async removeAsync(room: Room) {
+        console.info(1);
+        await this.studentsService.removeRooms(room.room_id);
+        console.info(2);
+        await this.schedulesService.remove(room.room_id);
+        console.info(3);
+        await room.destroy();
+    }
+
     async checkRoom(room_id: RoomAttributes["room_id"]) {
         const room = await this.findOne({
-            room_id,
+            where: { room_id },
         });
         if (!room) throw new NotFoundException("Room doesn't exists");
         return room;
