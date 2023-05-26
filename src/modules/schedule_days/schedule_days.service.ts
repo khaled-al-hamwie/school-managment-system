@@ -138,11 +138,12 @@ export class ScheduleDaysService {
     }
 
     async remove(schedule_id: ScheduleDayAttributes["schedule_id"]) {
-        await this.findAll({ where: { schedule_id } }).then((records) =>
-            records.forEach(async (schedule_day) => {
+        await this.findAll({ where: { schedule_id } }).then(async (records) => {
+            for (let i = 0; i < records.length; i++) {
+                const schedule_day = records[i];
                 await this.lecturesService.remove(schedule_day.schedule_day_id);
                 await schedule_day.destroy();
-            })
-        );
+            }
+        });
     }
 }
