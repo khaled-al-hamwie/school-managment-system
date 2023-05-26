@@ -106,4 +106,24 @@ export class StudentsService {
             );
         }
     }
+
+    async removeRooms(
+        room_id: StudentAttributes["room_id"],
+        student_ids?: StudentAttributes["student_id"][]
+    ) {
+        if (!student_ids) {
+            await this.StudentEntity.update(
+                { room_id: null },
+                { where: { room_id } }
+            );
+        } else {
+            for (let i = 0; i < student_ids.length; i++) {
+                const student_id = student_ids[i];
+                await this.StudentEntity.update(
+                    { room_id: null },
+                    { where: { student_id } }
+                );
+            }
+        }
+    }
 }
