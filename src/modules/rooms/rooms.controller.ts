@@ -65,4 +65,3 @@ export class RoomsController {
         return this.roomsService.remove(+room_id);
     }
 }
-// remove a student from a room
