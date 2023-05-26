@@ -42,9 +42,6 @@ export class ScheduleDaysService {
         return this.ScheduleDayEntity.findAll(options);
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} scheduleDay`;
-    }
     async update(body: UpdateScheduleDayDto) {
         const scheduleDays = await this.checkDay(body);
         for (let i = 0; i < body.days.length; i++) {
@@ -140,7 +137,12 @@ export class ScheduleDaysService {
         }
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} scheduleDay`;
+    async remove(schedule_id: ScheduleDayAttributes["schedule_id"]) {
+        await this.findAll({ where: { schedule_id } }).then((records) =>
+            records.forEach(async (schedule_day) => {
+                await this.lecturesService.remove(schedule_day.schedule_day_id);
+                await schedule_day.destroy();
+            })
+        );
     }
 }
