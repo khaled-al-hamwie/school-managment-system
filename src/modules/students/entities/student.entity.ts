@@ -8,6 +8,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Bus } from "src/modules/buses/entities/bus.entity";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
@@ -41,7 +42,14 @@ export default class Student
         type: DataType.SMALLINT.UNSIGNED,
         allowNull: true,
     })
-    room_id: StudentAttributes["room_id"];
+    room_id?: StudentAttributes["room_id"];
+
+    @ForeignKey(() => Bus)
+    @Column({
+        type: DataType.SMALLINT.UNSIGNED,
+        allowNull: true,
+    })
+    bus_id?: StudentAttributes["bus_id"];
 
     @Column({
         type: DataType.STRING(16),
@@ -110,6 +118,9 @@ export default class Student
 
     @BelongsTo(() => Room)
     room: Room;
+
+    @BelongsTo(() => Bus)
+    bus: Bus;
 
     @HasMany(() => Record)
     records: Record[];
