@@ -19,7 +19,9 @@ export class TeachesService {
     ) {
         for (let i = 0; i < teacher_ids.length; i++) {
             const teacher_id = teacher_ids[i];
-            const teacher = await this.teachersService.findOne({ teacher_id });
+            const teacher = await this.teachersService.findOne({
+                where: { teacher_id },
+            });
             if (teacher && (await this.teachNotExist(subject_id, teacher_id)))
                 await this.TeachEntity.create({ subject_id, teacher_id });
         }

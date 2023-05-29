@@ -24,6 +24,7 @@ import {
 } from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
 import { Credential } from "../credentials/entities/credential.entity";
+import { Subject } from "../subjects/entities/subject.entity";
 import { Teach } from "../teaches/entities/teach.entity";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
@@ -71,7 +72,7 @@ export class TeachersController {
             where: { teacher_id },
             include: [
                 { model: Credential, attributes: { exclude: ["password"] } },
-                { model: Teach },
+                { model: Teach, include: [{ model: Subject }] },
             ],
         });
     }
@@ -87,7 +88,7 @@ export class TeachersController {
             where: { teacher_id },
             include: [
                 { model: Credential, attributes: { exclude: ["password"] } },
-                { model: Teach },
+                { model: Teach, include: [{ model: Subject }] },
             ],
         });
         if (!teacher) throw new NotFoundException("teacher does'nt exists");
