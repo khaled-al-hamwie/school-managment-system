@@ -44,14 +44,14 @@ describe("StudentsService", () => {
     });
     it("should find", async () => {
         await setTimeout(1000);
-        const output = service.findOne({ father_name: "fdsafdsa" });
+        const output = service.findOne({ where: { father_name: "fdsafdsa" } });
         expect(output).not.toBeNull();
     });
     it("should update", async () => {
         body["first_name"] = "khaled al ha";
         const output = await service.update(
             (
-                await service.findOne({ father_name: "fdsafdsa" })
+                await service.findOne({ where: { father_name: "fdsafdsa" } })
             ).student_id,
             body
         );

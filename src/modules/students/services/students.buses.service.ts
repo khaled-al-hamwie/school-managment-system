@@ -23,7 +23,9 @@ export class StudentsBusesService {
         student_id: StudentAttributes["student_id"],
         bus_id: BusAttributes["bus_id"]
     ) {
-        const student = await this.studentsService.findOne({ student_id });
+        const student = await this.studentsService.findOne({
+            where: { student_id },
+        });
         if (student.bus_id) {
             throw new BadRequestException(
                 "you are subscribed to another bus pleas unsubscribe from it first"
@@ -40,7 +42,9 @@ export class StudentsBusesService {
     }
 
     async checkBusSubscribtion(student_id: number) {
-        const student = await this.studentsService.findOne({ student_id });
+        const student = await this.studentsService.findOne({
+            where: { student_id },
+        });
         if (!student.bus_id) {
             throw new BadRequestException("you have no bus subscribtion");
         }

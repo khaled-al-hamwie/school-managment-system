@@ -4,7 +4,7 @@ import {
     NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { WhereOptions } from "sequelize";
+import { FindOptions, WhereOptions } from "sequelize";
 import removeCredentails from "src/core/common/transformers/removeCredentails.transform";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { AuthService } from "../auth/auth.service";
@@ -42,7 +42,7 @@ export class StudentsService {
     async login(body: CreateAuthDto) {
         const credentail = await this.credentailsService.verify(body);
         const student = await this.findOne({
-            credential_id: credentail.credential_id,
+            where: { credential_id: credentail.credential_id },
         });
         if (!student)
             throw new ForbiddenException("credentials don't match", {
@@ -72,17 +72,15 @@ export class StudentsService {
         });
     }
 
-    findOne(options: WhereOptions<StudentAttributes>) {
-        return this.StudentEntity.findOne({
-            where: options,
-        });
+    findOne(options: FindOptions<StudentAttributes>) {
+        return this.StudentEntity.findOne(options);
     }
 
     async update(
         student_id: StudentAttributes["student_id"],
         updateStudentDto: UpdateStudentDto
     ) {
-        const student = await this.findOne({ student_id });
+        const student = await this.findOne({ where: { student_id } });
         if (!student) throw new NotFoundException("student dosen't exists");
         student.update(updateStudentDto).then((output) => output.save());
         if (updateStudentDto.password)

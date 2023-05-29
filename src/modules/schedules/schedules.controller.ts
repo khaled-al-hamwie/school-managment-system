@@ -49,8 +49,9 @@ export class SchedulesController {
     async findStudentSchedule(
         @User("student_id") student_id: StudentAttributes["student_id"]
     ) {
-        const room_id = (await this.studentsService.findOne({ student_id }))
-            .room_id;
+        const room_id = (
+            await this.studentsService.findOne({ where: { student_id } })
+        ).room_id;
         if (room_id == null) return "you have not been assigned to a room yet";
         return this.schedulesService.findOne(
             { room_id },
