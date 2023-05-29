@@ -10,7 +10,6 @@ export class NumberSmallerThanValue implements ValidatorConstraintInterface {
         value: number,
         validationArguments?: ValidationArguments
     ): boolean | Promise<boolean> {
-        console.info(validationArguments);
         if (
             value &&
             value >
