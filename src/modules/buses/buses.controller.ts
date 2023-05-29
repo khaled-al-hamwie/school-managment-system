@@ -55,13 +55,20 @@ export class BusesController {
         return bus;
     }
 
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
     @Patch(":id")
-    update(@Param("id") id: string, @Body() updateBusDto: UpdateBusDto) {
-        return this.busesService.update(+id, updateBusDto);
+    update(
+        @Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"],
+        @Body() updateBusDto: UpdateBusDto
+    ) {
+        return this.busesService.update(+bus_id, updateBusDto);
     }
 
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
     @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.busesService.remove(+id);
+    remove(@Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"]) {
+        return this.busesService.remove(+bus_id);
     }
 }
