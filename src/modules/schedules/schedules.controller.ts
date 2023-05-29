@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    NotFoundException,
     Param,
     ParseIntPipe,
     Patch,
@@ -52,7 +53,10 @@ export class SchedulesController {
         const room_id = (
             await this.studentsService.findOne({ where: { student_id } })
         ).room_id;
-        if (room_id == null) return "you have not been assigned to a room yet";
+        if (room_id == null)
+            throw new NotFoundException(
+                "you have not been assigned to a room yet"
+            );
         return this.schedulesService.findOne(
             { room_id },
             scheduleAttributes,
