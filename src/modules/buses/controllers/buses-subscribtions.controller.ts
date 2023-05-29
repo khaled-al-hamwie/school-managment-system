@@ -38,6 +38,21 @@ export class BusesSubscribtionsController {
 
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
+    @Get("/mybus")
+    async getMyBus(
+        @User("student_id") student_id: StudentAttributes["student_id"]
+    ) {
+        const student = await this.studentsBusService.checkBusSubscribtion(
+            student_id
+        );
+        return this.busesService.findOne({
+            where: { bus_id: student.bus_id },
+            attributes: { exclude: ["driver_fue"] },
+        });
+    }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
     @Delete()
     unsubscribe(
         @User("student_id") student_id: StudentAttributes["student_id"]
@@ -51,7 +66,7 @@ export class BusesSubscribtionsController {
     async findOne(@Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"]) {
         const bus = await this.busesService.findOne({
             where: { bus_id },
-            attributes: { exclude: ["semester_price"] },
+            attributes: { exclude: ["driver_fue"] },
         });
         if (!bus) throw new NotFoundException("bus doesn't exist");
         return bus;

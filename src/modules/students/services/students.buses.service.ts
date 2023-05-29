@@ -34,11 +34,16 @@ export class StudentsBusesService {
     }
 
     async unsubscribe(student_id: StudentAttributes["student_id"]) {
+        const student = await this.checkBusSubscribtion(student_id);
+        student.update({ bus_id: null });
+        return successRes;
+    }
+
+    async checkBusSubscribtion(student_id: number) {
         const student = await this.studentsService.findOne({ student_id });
         if (!student.bus_id) {
             throw new BadRequestException("you have no bus subscribtion");
         }
-        student.update({ bus_id: null });
-        return successRes;
+        return student;
     }
 }
