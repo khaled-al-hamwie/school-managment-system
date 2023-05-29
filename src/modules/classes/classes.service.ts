@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Op, WhereOptions } from "sequelize";
+import { FindOptions, Op } from "sequelize";
 import { CreateClassDto } from "./dto/create-class.dto";
 import { UpdateClassDto } from "./dto/update-class.dto";
 import { Class } from "./entities/class.entity";
@@ -30,11 +30,8 @@ export class ClassesService {
         });
     }
 
-    async findOne(options: WhereOptions<ClassAttributes>) {
-        return this.ClassEntity.findOne({
-            where: options,
-            limit: 1,
-        });
+    findOne(options: FindOptions<ClassAttributes>) {
+        return this.ClassEntity.findOne(options);
     }
 
     async update(
@@ -53,7 +50,7 @@ export class ClassesService {
 
     async checkClass(class_id: ClassAttributes["class_id"]) {
         const myClass = await this.findOne({
-            class_id,
+            where: { class_id },
         });
         if (!myClass) throw new NotFoundException("class doesn't exists");
         return myClass;
