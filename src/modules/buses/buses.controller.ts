@@ -3,7 +3,9 @@ import {
     Controller,
     Delete,
     Get,
+    NotFoundException,
     Param,
+    ParseIntPipe,
     Patch,
     Post,
     Query,
@@ -14,6 +16,7 @@ import { WhereOptions } from "sequelize";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { BUS_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import whereWrapperTransform from "../../core/common/transformers/whereWrapper.transform";
+import Student from "../students/entities/student.entity";
 import { BusesService } from "./buses.service";
 import { CreateBusDto } from "./dto/create-bus.dto";
 import { UpdateBusDto } from "./dto/update-bus.dto";
@@ -33,16 +36,23 @@ export class BusesController {
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
     @Get()
-    findAll(@Query("name") name: string | null) {
-        let where: WhereOptions<BusAttributes> = name
+    findAll(@Query("name") name: BusAttributes["name"] | null) {
+        const where: WhereOptions<BusAttributes> = name
             ? whereWrapperTransform({ name })
             : {};
         return this.busesService.findAll({ where });
     }
 
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
     @Get(":id")
-    findOne(@Param("id") id: string) {
-        return this.busesService.findOne(+id);
+    async findOne(@Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"]) {
+        const bus = await this.busesService.findOne({
+            where: { bus_id },
+            include: Student,
+        });
+        if (!bus) throw new NotFoundException("bus doesn't exist");
+        return bus;
     }
 
     @Patch(":id")

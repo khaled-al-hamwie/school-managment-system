@@ -22,8 +22,8 @@ export class BusesService {
         return this.BusEntity.findAll(options);
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} bus`;
+    findOne(options: FindOptions<BusAttributes>) {
+        return this.BusEntity.findOne(options);
     }
 
     update(id: number, updateBusDto: UpdateBusDto) {
