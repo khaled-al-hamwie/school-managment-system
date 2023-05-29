@@ -14,7 +14,7 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
-import { BusesModule } from './modules/buses/buses.module';
+import { BusesModule } from "./modules/buses/buses.module";
 
 @Module({
     imports: [
