@@ -72,10 +72,9 @@ export class StudentsService {
         });
     }
 
-    async findOne(options: WhereOptions<StudentAttributes>) {
+    findOne(options: WhereOptions<StudentAttributes>) {
         return this.StudentEntity.findOne({
             where: options,
-            limit: 1,
         });
     }
 

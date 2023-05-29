@@ -44,7 +44,7 @@ describe("StudentsService", () => {
     });
     it("should find", async () => {
         await setTimeout(1000);
-        const output = await service.findOne({ father_name: "fdsafdsa" });
+        const output = service.findOne({ father_name: "fdsafdsa" });
         expect(output).not.toBeNull();
     });
     it("should update", async () => {
