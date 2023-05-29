@@ -87,9 +87,4 @@ export class SchedulesController {
     ) {
         return this.schedulesService.updateSchedule(schedule_id, body);
     }
-
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.schedulesService.remove(+id);
-    }
 }
