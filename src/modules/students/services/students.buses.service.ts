@@ -1,5 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { successRes } from "src/core/common/responses/success.response";
+import { BusAttributes } from "src/modules/buses/interfaces/bus.interface";
 import Student from "../entities/student.entity";
 import { StudentAttributes } from "../interfaces/student.interface";
 import { StudentsService } from "../students.service";
@@ -15,5 +17,28 @@ export class StudentsBusesService {
             { bus_id: null },
             { where: { bus_id } }
         );
+    }
+
+    async subscribe(
+        student_id: StudentAttributes["student_id"],
+        bus_id: BusAttributes["bus_id"]
+    ) {
+        const student = await this.studentsService.findOne({ student_id });
+        if (student.bus_id) {
+            throw new BadRequestException(
+                "you are subscribed to another bus pleas unsubscribe from it first"
+            );
+        }
+        student.update({ bus_id });
+        return successRes;
+    }
+
+    async unsubscribe(student_id: StudentAttributes["student_id"]) {
+        const student = await this.studentsService.findOne({ student_id });
+        if (!student.bus_id) {
+            throw new BadRequestException("you have no bus subscribtion");
+        }
+        student.update({ bus_id: null });
+        return successRes;
     }
 }

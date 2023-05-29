@@ -1,37 +1,30 @@
 import {
-    Body,
     Controller,
     Delete,
     Get,
     NotFoundException,
     Param,
     ParseIntPipe,
-    Post,
+    Put,
     Query,
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { WhereOptions } from "sequelize";
+import { User } from "src/core/common/decorators/user.decorator";
 import StudentGuard from "src/core/common/guards/student.guard";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
+import { StudentAttributes } from "src/modules/students/interfaces/student.interface";
+import { StudentsBusesService } from "src/modules/students/services/students.buses.service";
 import { BusesService } from "../buses.service";
 import { BusAttributes } from "../interfaces/bus.interface";
-import { BusesSubscribtionsService } from "./buses-subscribtions.service";
-import { CreateBusesSubscribtionDto } from "./dto/create-buses-subscribtion.dto";
 
 @Controller("buses-subscribtions")
 export class BusesSubscribtionsController {
     constructor(
-        private readonly busesSubscribtionsService: BusesSubscribtionsService,
-        private readonly busesService: BusesService
+        private readonly busesService: BusesService,
+        private readonly studentsBusService: StudentsBusesService
     ) {}
-
-    @Post()
-    create(@Body() createBusesSubscribtionDto: CreateBusesSubscribtionDto) {
-        return this.busesSubscribtionsService.create(
-            createBusesSubscribtionDto
-        );
-    }
 
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
@@ -45,18 +38,37 @@ export class BusesSubscribtionsController {
 
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
+    @Delete()
+    unsubscribe(
+        @User("student_id") student_id: StudentAttributes["student_id"]
+    ) {
+        return this.studentsBusService.unsubscribe(student_id);
+    }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
     @Get(":id")
     async findOne(@Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"]) {
         const bus = await this.busesService.findOne({
             where: { bus_id },
-            attributes: { exclude: ["semester_price", "driver_fue"] },
+            attributes: { exclude: ["semester_price"] },
         });
         if (!bus) throw new NotFoundException("bus doesn't exist");
         return bus;
     }
 
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.busesSubscribtionsService.remove(+id);
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Put(":id")
+    async subscribe(
+        @User("student_id") student_id: StudentAttributes["student_id"],
+        @Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"]
+    ) {
+        const bus = await this.busesService.findOne({
+            where: { bus_id },
+            attributes: { exclude: ["semester_price"] },
+        });
+        if (!bus) throw new NotFoundException("bus doesn't exist");
+        return this.studentsBusService.subscribe(student_id, bus_id);
     }
 }
