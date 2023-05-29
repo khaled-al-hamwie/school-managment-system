@@ -1,34 +1,62 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { BusesSubscribtionsService } from './buses-subscribtions.service';
-import { CreateBusesSubscribtionDto } from './dto/create-buses-subscribtion.dto';
-import { UpdateBusesSubscribtionDto } from './dto/update-buses-subscribtion.dto';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    NotFoundException,
+    Param,
+    ParseIntPipe,
+    Post,
+    Query,
+    UseGuards,
+} from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
+import { WhereOptions } from "sequelize";
+import StudentGuard from "src/core/common/guards/student.guard";
+import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
+import { BusesService } from "../buses.service";
+import { BusAttributes } from "../interfaces/bus.interface";
+import { BusesSubscribtionsService } from "./buses-subscribtions.service";
+import { CreateBusesSubscribtionDto } from "./dto/create-buses-subscribtion.dto";
 
-@Controller('buses-subscribtions')
+@Controller("buses-subscribtions")
 export class BusesSubscribtionsController {
-  constructor(private readonly busesSubscribtionsService: BusesSubscribtionsService) {}
+    constructor(
+        private readonly busesSubscribtionsService: BusesSubscribtionsService,
+        private readonly busesService: BusesService
+    ) {}
 
-  @Post()
-  create(@Body() createBusesSubscribtionDto: CreateBusesSubscribtionDto) {
-    return this.busesSubscribtionsService.create(createBusesSubscribtionDto);
-  }
+    @Post()
+    create(@Body() createBusesSubscribtionDto: CreateBusesSubscribtionDto) {
+        return this.busesSubscribtionsService.create(
+            createBusesSubscribtionDto
+        );
+    }
 
-  @Get()
-  findAll() {
-    return this.busesSubscribtionsService.findAll();
-  }
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Get()
+    findAll(@Query("name") name: BusAttributes["name"] | null) {
+        const where: WhereOptions<BusAttributes> = name
+            ? whereWrapperTransform({ name })
+            : {};
+        return this.busesService.findAll({ where });
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.busesSubscribtionsService.findOne(+id);
-  }
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Get(":id")
+    async findOne(@Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"]) {
+        const bus = await this.busesService.findOne({
+            where: { bus_id },
+            attributes: { exclude: ["semester_price", "driver_fue"] },
+        });
+        if (!bus) throw new NotFoundException("bus doesn't exist");
+        return bus;
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBusesSubscribtionDto: UpdateBusesSubscribtionDto) {
-    return this.busesSubscribtionsService.update(+id, updateBusesSubscribtionDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.busesSubscribtionsService.remove(+id);
-  }
+    @Delete(":id")
+    remove(@Param("id") id: string) {
+        return this.busesSubscribtionsService.remove(+id);
+    }
 }
