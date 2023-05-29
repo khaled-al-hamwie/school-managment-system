@@ -23,6 +23,8 @@ import {
     WEB_TAG,
 } from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
+import { Credential } from "../credentials/entities/credential.entity";
+import { Teach } from "../teaches/entities/teach.entity";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
@@ -65,7 +67,13 @@ export class TeachersController {
     showProfile(
         @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"]
     ) {
-        return this.teachersService.findOne({ teacher_id });
+        return this.teachersService.findOne({
+            where: { teacher_id },
+            include: [
+                { model: Credential, attributes: { exclude: ["password"] } },
+                { model: Teach },
+            ],
+        });
     }
 
     @ApiTags(WEB_TAG)
@@ -75,7 +83,13 @@ export class TeachersController {
     async findOne(
         @Param("id", ParseIntPipe) teacher_id: TeacherAttributes["teacher_id"]
     ) {
-        const teacher = await this.teachersService.findOne({ teacher_id });
+        const teacher = await this.teachersService.findOne({
+            where: { teacher_id },
+            include: [
+                { model: Credential, attributes: { exclude: ["password"] } },
+                { model: Teach },
+            ],
+        });
         if (!teacher) throw new NotFoundException("teacher does'nt exists");
         return teacher;
     }
