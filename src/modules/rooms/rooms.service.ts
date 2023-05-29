@@ -89,11 +89,8 @@ export class RoomsService {
     }
 
     async removeAsync(room: Room) {
-        console.info(1);
         await this.studentsService.removeRooms(room.room_id);
-        console.info(2);
         await this.schedulesService.remove(room.room_id);
-        console.info(3);
         await room.destroy();
     }
 
