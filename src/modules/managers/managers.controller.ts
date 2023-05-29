@@ -58,7 +58,7 @@ export class ManagersController {
         @Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"]
     ) {
         const manager = await this.managersService.findOne({ manager_id });
-        if (!manager) throw new NotFoundException("teacher does'nt exists");
+        if (!manager) throw new NotFoundException("manager does'nt exists");
         return manager;
     }
 
