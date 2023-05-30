@@ -55,7 +55,6 @@ export class SubjectsService {
         });
     }
 
-    // TO-DO add the book of the subject , and teacher
     findOne(
         where: WhereOptions<SubjectAttributes>,
         options?: FindOptions<SubjectAttributes>

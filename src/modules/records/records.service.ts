@@ -21,7 +21,7 @@ export class RecordsService {
         for (let i = 0; i < student_ids.length; i++) {
             const student_id = student_ids[i];
             const student = await this.studentsService.findOne({
-                student_id,
+                where: { student_id },
             });
             if (
                 student &&

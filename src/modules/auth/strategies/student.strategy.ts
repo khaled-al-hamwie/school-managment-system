@@ -24,7 +24,7 @@ export default class StudentStrategy extends PassportStrategy(
             throw new UnauthorizedException();
         }
         const student = await this.studentsService.findOne({
-            student_id: payload.student_id,
+            where: { student_id: payload.student_id },
         });
         if (!student) {
             throw new UnauthorizedException();

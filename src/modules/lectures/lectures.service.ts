@@ -79,8 +79,8 @@ export class LecturesService {
         }
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} lecture`;
+    async remove(schedule_day_id: LectureAttributes["schedule_day_id"]) {
+        await this.LectureEntity.destroy({ where: { schedule_day_id } });
     }
 
     async checkLecture(lecture_id: LectureAttributes["lecture_id"]) {

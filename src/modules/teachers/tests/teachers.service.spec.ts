@@ -43,7 +43,7 @@ describe("TeachersService", () => {
         body["first_name"] = "khaled al ha";
         const output = await service.update(
             (
-                await service.findOne({ salary: 100 })
+                await service.findOne({ where: { salary: 100 } })
             ).teacher_id,
             body
         );

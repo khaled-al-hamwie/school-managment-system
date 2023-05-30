@@ -19,7 +19,7 @@ switch (process.env.NODE_ENV) {
         config = databaseConfig.development;
 }
 
-//createDatabase(config.username, config.password, config.database, config.host);
+createDatabase(config.username, config.password, config.database, config.host);
 export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
     ...config,
     autoLoadModels: true,
@@ -28,7 +28,4 @@ export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
         new Logger("SequelizeQuery").verbose(
             "\n" + Entity.split("Executing (default): ")[1]
         ),
-    // sync: {
-    // force: true,
-    // },
 });

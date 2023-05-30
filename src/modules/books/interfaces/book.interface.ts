@@ -9,7 +9,4 @@ export interface BookAttributes {
     description?: string;
     pdf_link?: string;
 }
-export type BookCreationAttributes = Optional<
-    BookAttributes,
-    "book_id"
->;
+export type BookCreationAttributes = Optional<BookAttributes, "book_id">;

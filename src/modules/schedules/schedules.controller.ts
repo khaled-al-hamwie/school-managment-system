@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    NotFoundException,
     Param,
     ParseIntPipe,
     Patch,
@@ -49,9 +50,13 @@ export class SchedulesController {
     async findStudentSchedule(
         @User("student_id") student_id: StudentAttributes["student_id"]
     ) {
-        const room_id = (await this.studentsService.findOne({ student_id }))
-            .room_id;
-        if (room_id == null) return "you have not been assigned to a room yet";
+        const room_id = (
+            await this.studentsService.findOne({ where: { student_id } })
+        ).room_id;
+        if (room_id == null)
+            throw new NotFoundException(
+                "you have not been assigned to a room yet"
+            );
         return this.schedulesService.findOne(
             { room_id },
             scheduleAttributes,
@@ -86,10 +91,5 @@ export class SchedulesController {
         @Body() body: UpdateScheduleDto
     ) {
         return this.schedulesService.updateSchedule(schedule_id, body);
-    }
-
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.schedulesService.remove(+id);
     }
 }

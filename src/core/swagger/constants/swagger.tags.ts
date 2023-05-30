@@ -6,6 +6,7 @@ export const ROOM_TAG = "room";
 export const SUBJECT_TAG = "subject";
 export const BOOK_TAG = "book";
 export const SCHEDULE_TAG = "schedule";
+export const BUS_TAG = "bus";
 
 export const WEB_TAG = "web";
 export const PHONE_TAG = "phone";

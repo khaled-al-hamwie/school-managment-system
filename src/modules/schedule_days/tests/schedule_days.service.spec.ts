@@ -67,6 +67,16 @@ describe("ScheduleDaysService", () => {
             []
         );
     });
+
+    it("should destroy", async () => {
+        await ScheduleDay.create({
+            day: "sat",
+            lecture_number: 4,
+            schedule_id: 3,
+            start_time: "00:00:11",
+        });
+        await service.remove(3);
+    });
     afterAll(async () => {
         await Lecture.destroy({ where: {} });
         await Teach.destroy({ where: {} });

@@ -5,7 +5,6 @@ import { IsOptional, IsPositive } from "class-validator";
 import { Transform, TransformFnParams } from "class-transformer";
 
 export class CreateBookDto {
-
     @Transform(({ value }: TransformFnParams) => Number(value))
     @NumberValidator(1, 65535)
     subject_id: BookAttributes["subject_id"];
@@ -33,5 +32,4 @@ export class CreateBookDto {
     @IsOptional()
     @NameValidator(1, 200)
     pdf_link: BookAttributes["pdf_link"];
-
 }

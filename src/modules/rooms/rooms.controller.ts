@@ -1,7 +1,9 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
+    NotFoundException,
     Param,
     ParseIntPipe,
     Patch,
@@ -11,6 +13,9 @@ import {
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { ROOM_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
+import { Class } from "../classes/entities/class.entity";
+import { Schedule } from "../schedules/entities/schedule.entity";
+import Student from "../students/entities/student.entity";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { RoomAttributes } from "./interfaces/room.interface";
@@ -30,9 +35,29 @@ export class RoomsController {
 
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
+    @Get()
+    findAll() {
+        return this.roomsService.findAll({
+            include: [{ model: Class }, { model: Schedule }],
+        });
+    }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
     @Get(":id")
-    findOne(@Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]) {
-        return this.roomsService.findOne({ room_id: room_id });
+    async findOne(
+        @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]
+    ) {
+        const room = await this.roomsService.findOne({
+            where: { room_id },
+            include: [
+                { model: Class },
+                { model: Schedule },
+                { model: Student },
+            ],
+        });
+        if (!room) throw new NotFoundException("room don't exist ");
+        return room;
     }
 
     @ApiBearerAuth("Authorization")
@@ -43,5 +68,12 @@ export class RoomsController {
         @Body() updateRoomDto: UpdateRoomDto
     ) {
         return this.roomsService.update(+room_id, updateRoomDto);
+    }
+
+    @ApiBearerAuth("Authorization")
+    @UseGuards(ManagerGuard)
+    @Delete(":id")
+    remove(@Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]) {
+        return this.roomsService.remove(+room_id);
     }
 }

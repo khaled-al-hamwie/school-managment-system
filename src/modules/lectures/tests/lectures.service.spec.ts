@@ -65,7 +65,18 @@ describe("LecturesService", () => {
             expect(error).toBeNull();
         }
     });
-    // afterAll(async () => {
-    //     await Lecture.destroy({ where: {} });
-    // });
+    it("should remove", async () => {
+        await Lecture.create({
+            lecture_id: 122,
+            schedule_day_id: 1,
+            lecture_number: 4,
+            start_time: "04:30",
+            teach_id: 2,
+        });
+        await service.remove(1);
+        expect(await service.findOne({ schedule_day_id: 1 })).toBeNull();
+    });
+    afterAll(async () => {
+        await Lecture.destroy({ where: {} });
+    });
 });

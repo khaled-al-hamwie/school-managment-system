@@ -23,6 +23,10 @@ import {
     WEB_TAG,
 } from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
+import { Bus } from "../buses/entities/bus.entity";
+import { Credential } from "../credentials/entities/credential.entity";
+import { Record } from "../records/entities/record.entity";
+import { Room } from "../rooms/entities/room.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { FindAllStudentDto } from "./dto/findAll-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
@@ -67,7 +71,14 @@ export class StudentsController {
     showProfile(
         @User("student_id") student_id: StudentAttributes["student_id"]
     ) {
-        return this.studentsService.findOne({ student_id });
+        return this.studentsService.findOne({
+            where: { student_id },
+            include: [
+                { model: Credential, attributes: { exclude: ["password"] } },
+                { model: Bus },
+                { model: Room },
+            ],
+        });
     }
 
     @ApiTags(WEB_TAG)
@@ -75,7 +86,15 @@ export class StudentsController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(@Param("id", ParseIntPipe) student_id: string) {
-        const student = await this.studentsService.findOne({ student_id });
+        const student = await this.studentsService.findOne({
+            where: { student_id },
+            include: [
+                { model: Credential },
+                { model: Bus },
+                { model: Room },
+                { model: Record },
+            ],
+        });
         if (!student) throw new NotFoundException("student dosen't exists");
         return student;
     }
