@@ -5,6 +5,8 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { databaseProvider } from "./core/database/database.providers";
 import { BooksModule } from "./modules/books/books.module";
+import { BusesModule } from "./modules/buses/buses.module";
+import { ChatsModule } from "./modules/chats/chats.module";
 import { ClassesModule } from "./modules/classes/classes.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { RecordsModule } from "./modules/records/records.module";
@@ -14,7 +16,7 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
-import { BusesModule } from "./modules/buses/buses.module";
+import { GroupsModule } from './modules/groups/groups.module';
 
 @Module({
     imports: [
@@ -33,6 +35,8 @@ import { BusesModule } from "./modules/buses/buses.module";
         SchedulesModule,
         RecordsModule,
         BusesModule,
+        ChatsModule,
+        GroupsModule,
     ],
     providers: [
         {

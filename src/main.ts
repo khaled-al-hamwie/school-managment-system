@@ -12,6 +12,9 @@ async function bootstrap() {
     app.useGlobalPipes(MainValidationPipe);
     app.enableCors();
     app.use(compression());
+    app.useStaticAssets(join(__dirname, "..", "static"));
+    app.setBaseViewsDir(join(__dirname, "..", "views"));
+    app.setViewEngine("ejs");
     swaggerSetup(app);
     await app.listen(process.env.PORT || 4000, "0.0.0.0");
     if (module.hot) {
