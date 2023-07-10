@@ -41,7 +41,7 @@ export class Group
         type: DataType.STRING(500),
         allowNull: true,
     })
-    picture_url: string;
+    picture_url?: string;
 
     @BelongsTo(() => Room)
     room: Room;
