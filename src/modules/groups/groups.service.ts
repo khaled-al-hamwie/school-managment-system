@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { FindOptions } from "sequelize";
 import { Group } from "./entities/group.entity";
 import { GroupAttributes } from "./interfaces/group.interface";
 
@@ -12,12 +13,14 @@ export class GroupsService {
         return this.groupEntity.create(group);
     }
 
-    findAll() {
-        return `This action returns all groups`;
+    async findAll(options: FindOptions<GroupAttributes>) {
+        return this.groupEntity.findAll(options);
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} group`;
+    async findOne(options: FindOptions<GroupAttributes>) {
+        return this.groupEntity.findOne({
+            ...options,
+        });
     }
     async remove(room_id: GroupAttributes["room_id"]) {
         await this.groupEntity.destroy({ where: { room_id } });
