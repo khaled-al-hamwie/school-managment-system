@@ -3,10 +3,12 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Message } from "src/modules/messages/entities/message.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import {
     GroupAttributes,
@@ -45,4 +47,7 @@ export class Group
 
     @BelongsTo(() => Room)
     room: Room;
+
+    @HasMany(() => Message)
+    messages: Message[];
 }

@@ -16,6 +16,8 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
+// import { AppGateway } from './app/app.gateway';
+import { MessagesModule } from "./modules/messages/messages.module";
 
 @Module({
     imports: [
@@ -35,12 +37,14 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         RecordsModule,
         BusesModule,
         GroupsModule,
+        MessagesModule,
     ],
     providers: [
         {
             provide: APP_INTERCEPTOR,
             useClass: CacheInterceptor,
         },
+        // AppGateway,
     ],
 })
 export class AppModule {}
