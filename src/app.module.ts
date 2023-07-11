@@ -17,6 +17,8 @@ import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
 // import { AppGateway } from './app/app.gateway';
+import { ChatGateway } from "./core/getway/chat.gateway";
+import { GetwayModule } from "./core/getway/getway.module";
 import { MessagesModule } from "./modules/messages/messages.module";
 
 @Module({
@@ -38,6 +40,7 @@ import { MessagesModule } from "./modules/messages/messages.module";
         BusesModule,
         GroupsModule,
         MessagesModule,
+        GetwayModule,
     ],
     providers: [
         {
