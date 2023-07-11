@@ -24,20 +24,6 @@ export class GroupsController {
         private readonly studentsService: StudentsService
     ) {}
 
-    @Get()
-    findAll() {
-        return this.groupsService.findAll({});
-    }
-
-    @Get(":id")
-    async findOne(
-        @Param("id", ParseIntPipe) group_id: GroupAttributes["group_id"]
-    ) {
-        const group = await this.groupsService.findOne({ where: { group_id } });
-        if (!group) throw new NotFoundException("group don't exist ");
-        return group;
-    }
-
     @ApiBearerAuth("Authorization")
     @UseGuards(TeacherGuard)
     @Get("/teachers")
@@ -59,5 +45,14 @@ export class GroupsController {
                 "you have not been assigned to a room yet"
             );
         return this.groupsService.findAll({ where: { room_id } });
+    }
+
+    @Get(":id")
+    async findOne(
+        @Param("id", ParseIntPipe) group_id: GroupAttributes["group_id"]
+    ) {
+        const group = await this.groupsService.findOne({ where: { group_id } });
+        if (!group) throw new NotFoundException("group don't exist ");
+        return group;
     }
 }
