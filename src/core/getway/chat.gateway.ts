@@ -1,4 +1,4 @@
-import { Logger } from "@nestjs/common";
+import { Logger, OnModuleInit } from "@nestjs/common";
 import {
     MessageBody,
     OnGatewayConnection,
@@ -9,19 +9,22 @@ import {
     WebSocketServer,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
+import { MessagesService } from "src/modules/messages/messages.service";
 
-@WebSocketGateway({
-    cors: {
-        origin: "*",
-    },
-    credentials: true,
-})
-export class ChatGateway {
+@WebSocketGateway()
+export class ChatGateway implements OnModuleInit {
+    constructor(private readonly messagesService: MessagesService) {}
     @WebSocketServer()
     server: Server;
-    private logger: Logger = new Logger("AppGateway");
-    @SubscribeMessage("message")
+    onModuleInit() {
+        this.server.on("connection", (socket) => {
+            console.log(socket.id);
+            console.log("connection");
+        });
+    }
+    @SubscribeMessage("sendMessage")
     handleMessage(@MessageBody() message: string) {
-        this.server.emit("message", message);
+        console.log(message);
+        this.server.emit("reciveMessage", message);
     }
 }
