@@ -6,8 +6,9 @@ import {
     Param,
     Patch,
     Post,
-    Render,
+    UseGuards,
 } from "@nestjs/common";
+import { PhoneGuard } from "src/core/common/guards/phone.guard";
 import { CreateMessageDto } from "./dto/create-message.dto";
 import { UpdateMessageDto } from "./dto/update-message.dto";
 import { MessagesService } from "./messages.service";
@@ -16,6 +17,7 @@ import { MessagesService } from "./messages.service";
 export class MessagesController {
     constructor(private readonly messagesService: MessagesService) {}
 
+    @UseGuards(PhoneGuard)
     @Post()
     create(@Body() createMessageDto: CreateMessageDto) {
         return this.messagesService.create(createMessageDto);
@@ -34,7 +36,7 @@ export class MessagesController {
     @Patch(":id")
     update(
         @Param("id") id: string,
-        @Body() updateMessageDto: UpdateMessageDto
+        @Body() updateMessageDto: UpdateMessageDto,
     ) {
         return this.messagesService.update(+id, updateMessageDto);
     }
