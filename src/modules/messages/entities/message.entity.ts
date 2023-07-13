@@ -16,9 +16,11 @@ import {
 } from "../interfaces/message.interface";
 
 @Table({
+    timestamps: true,
+    paranoid: true,
     createdAt: "created_at",
-    updatedAt: "updated_at",
     deletedAt: "deleted_at",
+    updatedAt: "updated_at",
 })
 export class Message
     extends Model<MessageAttributes, MessageCreationAttributes>
