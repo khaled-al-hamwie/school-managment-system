@@ -7,7 +7,7 @@ import { GroupAttributes } from "./interfaces/group.interface";
 @Injectable()
 export class GroupsService {
     constructor(
-        @InjectModel(Group) private readonly groupEntity: typeof Group
+        @InjectModel(Group) private readonly groupEntity: typeof Group,
     ) {}
     create(group: GroupAttributes) {
         return this.groupEntity.create(group);
@@ -24,5 +24,10 @@ export class GroupsService {
     }
     async remove(room_id: GroupAttributes["room_id"]) {
         await this.groupEntity.destroy({ where: { room_id } });
+    }
+    async checkGroup(group_id: GroupAttributes["group_id"]): Promise<Boolean> {
+        const group = await this.findOne({ where: { group_id } });
+        if (group) return true;
+        return false;
     }
 }

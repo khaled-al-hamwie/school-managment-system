@@ -13,7 +13,6 @@ import { MessagesService } from "src/modules/messages/messages.service";
 
 @WebSocketGateway()
 export class ChatGateway implements OnModuleInit {
-    constructor(private readonly messagesService: MessagesService) {}
     @WebSocketServer()
     server: Server;
     onModuleInit() {
