@@ -1,4 +1,4 @@
-import { IsOptional } from "class-validator";
+import { Transform } from "class-transformer";
 import NameValidator from "src/core/common/validators/name.validator";
 import NumberValidator from "src/core/common/validators/number.validator";
 import { MessageAttributes } from "../interfaces/message.interface";
@@ -10,11 +10,9 @@ export class CreateMessageDto {
     @NumberValidator(1, 65535)
     group_id!: MessageAttributes["group_id"];
 
-    @IsOptional()
-    @NumberValidator(1, 65535)
+    @Transform(() => null)
     teacher_id?: MessageAttributes["teacher_id"];
 
-    @IsOptional()
-    @NumberValidator(1, 65535)
+    @Transform(() => null)
     student_id?: MessageAttributes["student_id"];
 }
