@@ -1,9 +1,4 @@
-import {
-    ForbiddenException,
-    HttpCode,
-    HttpStatus,
-    Injectable,
-} from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { FindOptions } from "sequelize";
 import { ChatGateway } from "src/core/getway/chat.gateway";
@@ -28,7 +23,7 @@ export class MessagesService {
             throw new ForbiddenException("Group doesn't exists");
         }
         const message = await this.MessageEntity.create(createMessageDto);
-        this.chatGateway.sendMessage(message.message, message.group_id);
+        this.chatGateway.sendMessage(message);
         return "done";
     }
 
