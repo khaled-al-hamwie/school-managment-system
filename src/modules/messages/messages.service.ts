@@ -1,10 +1,17 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import {
+    ForbiddenException,
+    HttpCode,
+    HttpStatus,
+    Injectable,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { FindOptions } from "sequelize";
 import { ChatGateway } from "src/core/getway/chat.gateway";
 import { GroupsService } from "../groups/groups.service";
 import { CreateMessageDto } from "./dto/create-message.dto";
 import { UpdateMessageDto } from "./dto/update-message.dto";
 import { Message } from "./entities/message.entity";
+import { MessageAttributes } from "./interfaces/message.interface";
 
 @Injectable()
 export class MessagesService {
@@ -20,11 +27,13 @@ export class MessagesService {
         if (!group_exists) {
             throw new ForbiddenException("Group doesn't exists");
         }
-        await this.MessageEntity.create(createMessageDto);
+        const message = await this.MessageEntity.create(createMessageDto);
+        this.chatGateway.sendMessage(message.message, message.group_id);
+        return "done";
     }
 
-    findAll() {
-        return `This action returns all messages`;
+    findAll(options: FindOptions<MessageAttributes>) {
+        return this.MessageEntity.findAll(options);
     }
 
     findOne(id: number) {

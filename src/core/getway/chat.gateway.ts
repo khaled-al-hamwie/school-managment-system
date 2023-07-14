@@ -1,29 +1,15 @@
-import { Logger, OnModuleInit } from "@nestjs/common";
-import {
-    MessageBody,
-    OnGatewayConnection,
-    OnGatewayDisconnect,
-    OnGatewayInit,
-    SubscribeMessage,
-    WebSocketGateway,
-    WebSocketServer,
-} from "@nestjs/websockets";
-import { Server, Socket } from "socket.io";
-import { MessagesService } from "src/modules/messages/messages.service";
+import { WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { Server } from "socket.io";
+import { MessageAttributes } from "src/modules/messages/interfaces/message.interface";
 
 @WebSocketGateway()
-export class ChatGateway implements OnModuleInit {
+export class ChatGateway {
     @WebSocketServer()
     server: Server;
-    onModuleInit() {
-        this.server.on("connection", (socket) => {
-            console.log(socket.id);
-            console.log("connection");
-        });
-    }
-    @SubscribeMessage("sendMessage")
-    handleMessage(@MessageBody() message: string) {
-        console.log(message);
-        this.server.emit("reciveMessage", message);
+    sendMessage(
+        message: MessageAttributes["message"],
+        group_id: MessageAttributes["group_id"],
+    ) {
+        this.server.emit(`group-${group_id}`, message);
     }
 }
