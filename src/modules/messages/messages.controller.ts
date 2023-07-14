@@ -51,12 +51,20 @@ export class MessagesController {
             order: [["created_at", "DESC"]],
             offset: page * 50,
             limit: 50,
-            attributes: {
-                exclude: student_id ? ["teacher_id"] : ["student_id"],
-            },
             include: [
                 {
-                    model: student_id ? Student : Teacher,
+                    model: Teacher,
+                    attributes: ["first_name", "last_name"],
+
+                    include: [
+                        {
+                            model: Credential,
+                            attributes: ["user_name"],
+                        },
+                    ],
+                },
+                {
+                    model: Student,
                     attributes: ["first_name", "last_name"],
 
                     include: [
