@@ -1,22 +1,19 @@
 import {
-    Delete,
+    ForbiddenException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
-    Param,
 } from "@nestjs/common";
-import { CreateBookDto } from "./dto/create-book.dto";
-import { UpdateBookDto } from "./dto/update-book.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { Book } from "./entities/book.entity";
-import { SubjectsService } from "../subjects/subjects.service";
-import { BookAttributes } from "./interfaces/book.interface";
-import { WhereOptions } from "sequelize";
-import { Op } from "sequelize";
-import { Subject } from "../subjects/entities/subject.entity";
-import { FindAllBookDto } from "./dto/findAll-book.dto";
-import { error } from "console";
 import * as fs from "fs";
+import { Op, WhereOptions } from "sequelize";
+import { Subject } from "../subjects/entities/subject.entity";
+import { SubjectsService } from "../subjects/subjects.service";
+import { CreateBookDto } from "./dto/create-book.dto";
+import { FindAllBookDto } from "./dto/findAll-book.dto";
+import { UpdateBookDto } from "./dto/update-book.dto";
+import { Book } from "./entities/book.entity";
+import { BookAttributes } from "./interfaces/book.interface";
 
 @Injectable()
 export class BooksService {
@@ -82,7 +79,7 @@ export class BooksService {
                 return "done";
             })
             .catch(() => {
-                throw new error("the book couldn't be deleted..");
+                throw new ForbiddenException("the book couldn't be deleted..");
             });
     }
 
