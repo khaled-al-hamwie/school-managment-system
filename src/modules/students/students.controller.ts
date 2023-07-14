@@ -59,7 +59,7 @@ export class StudentsController {
     @Get()
     findAll(
         @Query() query: FindAllStudentDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.studentsService.findAll(query, page);
     }
@@ -69,7 +69,7 @@ export class StudentsController {
     @UseGuards(StudentGuard)
     @Get("profile")
     showProfile(
-        @User("student_id") student_id: StudentAttributes["student_id"]
+        @User("student_id") student_id: StudentAttributes["student_id"],
     ) {
         return this.studentsService.findOne({
             where: { student_id },
@@ -105,7 +105,7 @@ export class StudentsController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) student_id: string,
-        @Body() updateStudentDto: UpdateStudentDto
+        @Body() updateStudentDto: UpdateStudentDto,
     ) {
         return this.studentsService.update(+student_id, updateStudentDto);
     }

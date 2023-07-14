@@ -12,7 +12,7 @@ import { BusAttributes } from "./interfaces/bus.interface";
 export class BusesService {
     constructor(
         @InjectModel(Bus) private readonly BusEntity: typeof Bus,
-        private readonly studentsbusesService: StudentsBusesService
+        private readonly studentsbusesService: StudentsBusesService,
     ) {}
     async create(createBusDto: CreateBusDto) {
         this.BusEntity.create({

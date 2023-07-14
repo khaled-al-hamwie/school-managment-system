@@ -7,7 +7,7 @@ import { ManagersService } from "src/modules/managers/managers.service";
 @Injectable()
 export default class ManagerStrategy extends PassportStrategy(
     Strategy,
-    "manager"
+    "manager",
 ) {
     constructor(private readonly managersService: ManagersService) {
         super({

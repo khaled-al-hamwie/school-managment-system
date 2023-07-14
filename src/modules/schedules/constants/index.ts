@@ -31,16 +31,16 @@ export const scheduleInclude: Includeable | Includeable[] = [
                                 Sequelize.fn(
                                     "ADDTIME",
                                     Sequelize.col(
-                                        "schedule_days->lectures.start_time"
+                                        "schedule_days->lectures.start_time",
                                     ),
                                     Sequelize.fn(
                                         "IF",
                                         Sequelize.col("is_rest"),
                                         "00:15:00",
-                                        "00:45:00"
-                                    )
+                                        "00:45:00",
+                                    ),
                                 ),
-                                "%H:%i:%s"
+                                "%H:%i:%s",
                             ),
                             "end_time",
                         ],
@@ -68,7 +68,7 @@ export const scheduleInclude: Includeable | Includeable[] = [
                                     include: [
                                         [
                                             Sequelize.literal(
-                                                'CONCAT(first_name, " ", last_name)'
+                                                'CONCAT(first_name, " ", last_name)',
                                             ),
                                             "full_name",
                                         ],

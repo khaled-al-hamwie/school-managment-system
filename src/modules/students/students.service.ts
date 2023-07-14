@@ -22,7 +22,7 @@ export class StudentsService {
     constructor(
         @InjectModel(Student) private readonly StudentEntity: typeof Student,
         private readonly credentailsService: CredentialsService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
     ) {}
 
     async create(createStudentDto: CreateStudentDto) {
@@ -78,7 +78,7 @@ export class StudentsService {
 
     async update(
         student_id: StudentAttributes["student_id"],
-        updateStudentDto: UpdateStudentDto
+        updateStudentDto: UpdateStudentDto,
     ) {
         const student = await this.findOne({ where: { student_id } });
         if (!student) throw new NotFoundException("student dosen't exists");
@@ -86,39 +86,39 @@ export class StudentsService {
         if (updateStudentDto.password)
             this.credentailsService.update(
                 student.credential_id,
-                updateStudentDto.password
+                updateStudentDto.password,
             );
         return "done";
     }
 
     async addRooms(
         room_id: StudentAttributes["room_id"],
-        student_ids: StudentAttributes["student_id"][]
+        student_ids: StudentAttributes["student_id"][],
     ) {
         for (let i = 0; i < student_ids.length; i++) {
             const student_id = student_ids[i];
             await this.StudentEntity.update(
                 { room_id },
-                { where: { student_id } }
+                { where: { student_id } },
             );
         }
     }
 
     async removeRooms(
         room_id: StudentAttributes["room_id"],
-        student_ids?: StudentAttributes["student_id"][]
+        student_ids?: StudentAttributes["student_id"][],
     ) {
         if (!student_ids) {
             await this.StudentEntity.update(
                 { room_id: null },
-                { where: { room_id } }
+                { where: { room_id } },
             );
         } else {
             for (let i = 0; i < student_ids.length; i++) {
                 const student_id = student_ids[i];
                 await this.StudentEntity.update(
                     { room_id: null },
-                    { where: { student_id } }
+                    { where: { student_id } },
                 );
             }
         }

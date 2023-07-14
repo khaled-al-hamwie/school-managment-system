@@ -50,10 +50,8 @@ describe("ManagersService", () => {
     it("should update", async () => {
         body["first_name"] = "khaled al ha";
         const output = await service.update(
-            (
-                await service.findOne({ salary: 100 })
-            ).manager_id,
-            body
+            (await service.findOne({ salary: 100 })).manager_id,
+            body,
         );
         expect(output).toBe("done");
     });

@@ -10,7 +10,10 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.useStaticAssets(join(__dirname, "..", "uploads"));
     app.useGlobalPipes(MainValidationPipe);
-    app.enableCors();
+    app.enableCors({
+        origin: true,
+        credentials: true,
+    });
     app.use(compression());
     swaggerSetup(app);
     await app.listen(process.env.PORT || 4000, "0.0.0.0");

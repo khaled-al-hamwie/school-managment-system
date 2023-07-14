@@ -57,7 +57,7 @@ export class TeachersController {
     @Get()
     findAll(
         @Query() query: FindAllTeacherDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.teachersService.findAll(query, page);
     }
@@ -66,7 +66,7 @@ export class TeachersController {
     @UseGuards(TeacherGuard)
     @Get("profile")
     showProfile(
-        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"]
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
     ) {
         return this.teachersService.findOne({
             where: { teacher_id },
@@ -82,7 +82,7 @@ export class TeachersController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) teacher_id: TeacherAttributes["teacher_id"]
+        @Param("id", ParseIntPipe) teacher_id: TeacherAttributes["teacher_id"],
     ) {
         const teacher = await this.teachersService.findOne({
             where: { teacher_id },
@@ -101,7 +101,7 @@ export class TeachersController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) teacher_id: string,
-        @Body() updateTeacherDto: UpdateTeacherDto
+        @Body() updateTeacherDto: UpdateTeacherDto,
     ) {
         return this.teachersService.update(+teacher_id, updateTeacherDto);
     }

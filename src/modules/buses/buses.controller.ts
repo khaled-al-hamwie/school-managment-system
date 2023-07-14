@@ -60,7 +60,7 @@ export class BusesController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) bus_id: BusAttributes["bus_id"],
-        @Body() updateBusDto: UpdateBusDto
+        @Body() updateBusDto: UpdateBusDto,
     ) {
         return this.busesService.update(+bus_id, updateBusDto);
     }

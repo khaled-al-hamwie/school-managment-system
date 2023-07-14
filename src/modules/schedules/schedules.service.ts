@@ -16,12 +16,12 @@ import {
 export class SchedulesService {
     constructor(
         @InjectModel(Schedule) private readonly ScheduleEntity: typeof Schedule,
-        private readonly scheduleDaysService: ScheduleDaysService
+        private readonly scheduleDaysService: ScheduleDaysService,
     ) {}
     async create(
         room_id: ScheduleAttributes["room_id"],
         title: ScheduleAttributes["title"],
-        createScheduleDto: CreateScheduleDto
+        createScheduleDto: CreateScheduleDto,
     ) {
         const { days, lecture_number, rests, school_start } = createScheduleDto;
 
@@ -44,7 +44,7 @@ export class SchedulesService {
 
     findAll(
         where: WhereOptions<ScheduleAttributes>,
-        attributes?: (keyof ScheduleCreationAttributes)[]
+        attributes?: (keyof ScheduleCreationAttributes)[],
     ) {
         return this.ScheduleEntity.findAll({
             where,
@@ -56,7 +56,7 @@ export class SchedulesService {
         where: WhereOptions<ScheduleAttributes>,
         attributes?: (keyof ScheduleCreationAttributes)[],
         include?: Includeable | Includeable[],
-        order?: Order
+        order?: Order,
     ) {
         return this.ScheduleEntity.findOne({
             where,
@@ -68,7 +68,7 @@ export class SchedulesService {
 
     async update(
         room_id: RoomAttributes["room_id"],
-        title: ScheduleAttributes["title"]
+        title: ScheduleAttributes["title"],
     ) {
         const schedule = await this.findOne({ room_id });
         schedule.update({ title }).then(saveModel);
@@ -76,7 +76,7 @@ export class SchedulesService {
 
     async updateSchedule(
         schedule_id: ScheduleAttributes["schedule_id"],
-        updateScheduleDto: UpdateScheduleDto
+        updateScheduleDto: UpdateScheduleDto,
     ) {
         const schedule = await this.checkSchedule(schedule_id);
         await this.scheduleDaysService.update({

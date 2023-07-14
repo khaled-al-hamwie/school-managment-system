@@ -9,6 +9,7 @@ import {
     Table,
 } from "sequelize-typescript";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
+import { Message } from "src/modules/messages/entities/message.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
     TeacherAttributes,
@@ -95,4 +96,7 @@ export default class Teacher
 
     @HasMany(() => Teach)
     teaches: Teach[];
+
+    @HasMany(() => Message)
+    messages: Message[];
 }

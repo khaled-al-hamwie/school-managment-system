@@ -10,10 +10,10 @@ import TeacherPayload from "./interfaces/teacher.payload.interface";
 export class AuthService {
     constructor(
         private configService: ConfigService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
     ) {}
     signToken(
-        payload: ManagerPayload | TeacherPayload | StudentPayload
+        payload: ManagerPayload | TeacherPayload | StudentPayload,
     ): JwtAttributes {
         const option = {
             secret: this.configService.get("JWTKEY"),

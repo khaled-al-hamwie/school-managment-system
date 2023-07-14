@@ -10,25 +10,25 @@ import { StudentsService } from "../students.service";
 export class StudentsBusesService {
     constructor(
         @InjectModel(Student) private readonly StudentEntity: typeof Student,
-        private readonly studentsService: StudentsService
+        private readonly studentsService: StudentsService,
     ) {}
     async removeStudentBus(bus_id: StudentAttributes["bus_id"]) {
         await this.StudentEntity.update(
             { bus_id: null },
-            { where: { bus_id } }
+            { where: { bus_id } },
         );
     }
 
     async subscribe(
         student_id: StudentAttributes["student_id"],
-        bus_id: BusAttributes["bus_id"]
+        bus_id: BusAttributes["bus_id"],
     ) {
         const student = await this.studentsService.findOne({
             where: { student_id },
         });
         if (student.bus_id) {
             throw new BadRequestException(
-                "you are subscribed to another bus pleas unsubscribe from it first"
+                "you are subscribed to another bus pleas unsubscribe from it first",
             );
         }
         student.update({ bus_id });

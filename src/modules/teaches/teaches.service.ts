@@ -11,11 +11,11 @@ import { TeachAttributes } from "./interfaces/teach.interface";
 export class TeachesService {
     constructor(
         @InjectModel(Teach) private readonly TeachEntity: typeof Teach,
-        private readonly teachersService: TeachersService
+        private readonly teachersService: TeachersService,
     ) {}
     async create(
         subject_id: SubjectAttributes["subject_id"],
-        teacher_ids: TeacherAttributes["teacher_id"][]
+        teacher_ids: TeacherAttributes["teacher_id"][],
     ) {
         for (let i = 0; i < teacher_ids.length; i++) {
             const teacher_id = teacher_ids[i];
@@ -42,7 +42,7 @@ export class TeachesService {
 
     async teachNotExist(
         subject_id: SubjectAttributes["subject_id"],
-        teacher_id: TeacherAttributes["teacher_id"]
+        teacher_id: TeacherAttributes["teacher_id"],
     ) {
         return (await this.findOne({ subject_id, teacher_id })) == null;
     }

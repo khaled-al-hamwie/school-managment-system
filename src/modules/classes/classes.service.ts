@@ -9,7 +9,7 @@ import { ClassAttributes } from "./interfaces/class.interface";
 @Injectable()
 export class ClassesService {
     constructor(
-        @InjectModel(Class) private readonly ClassEntity: typeof Class
+        @InjectModel(Class) private readonly ClassEntity: typeof Class,
     ) {}
     create(createClassDto: CreateClassDto) {
         this.ClassEntity.create(createClassDto);
@@ -36,7 +36,7 @@ export class ClassesService {
 
     async update(
         class_id: ClassAttributes["class_id"],
-        updateClassDto: UpdateClassDto
+        updateClassDto: UpdateClassDto,
     ) {
         const myClass = await this.checkClass(class_id);
         myClass.update(updateClassDto).then((output) => output.save());

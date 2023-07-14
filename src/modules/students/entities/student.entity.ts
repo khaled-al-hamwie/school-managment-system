@@ -10,6 +10,7 @@ import {
 } from "sequelize-typescript";
 import { Bus } from "src/modules/buses/entities/bus.entity";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
+import { Message } from "src/modules/messages/entities/message.entity";
 import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import {
@@ -124,4 +125,7 @@ export default class Student
 
     @HasMany(() => Record)
     records: Record[];
+
+    @HasMany(() => Message)
+    messages: Message[];
 }

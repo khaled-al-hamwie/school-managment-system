@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { ROOM_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
 import { Class } from "../classes/entities/class.entity";
+import { Group } from "../groups/entities/group.entity";
 import { Schedule } from "../schedules/entities/schedule.entity";
 import Student from "../students/entities/student.entity";
 import { CreateRoomDto } from "./dto/create-room.dto";
@@ -46,7 +47,7 @@ export class RoomsController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]
+        @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"],
     ) {
         const room = await this.roomsService.findOne({
             where: { room_id },
@@ -54,6 +55,7 @@ export class RoomsController {
                 { model: Class },
                 { model: Schedule },
                 { model: Student },
+                { model: Group },
             ],
         });
         if (!room) throw new NotFoundException("room don't exist ");
@@ -65,7 +67,7 @@ export class RoomsController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"],
-        @Body() updateRoomDto: UpdateRoomDto
+        @Body() updateRoomDto: UpdateRoomDto,
     ) {
         return this.roomsService.update(+room_id, updateRoomDto);
     }
