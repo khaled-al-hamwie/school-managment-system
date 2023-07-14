@@ -9,12 +9,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const students = await JSON.parse(
       readFileSync(resolve("seeders", "json", "teacher.json")),
-      { encoding: "utf8" }
+      { encoding: "utf8" },
     );
     for (let i = 100; i < 100 + students.length; i++) {
-      console.info(i);
       const student = students[i - 100];
-      console.info(student);
       await queryInterface.bulkInsert("Credentials", [
         {
           credential_id: i,

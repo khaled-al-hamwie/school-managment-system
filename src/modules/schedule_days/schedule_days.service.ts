@@ -72,7 +72,6 @@ export class ScheduleDaysService {
                 );
             await this.checkLecturesLength(day_object, scheduleDays, error);
         }
-        console.info("here the errror iarr", error);
         if (error.length >= 1) throw new ForbiddenException(error);
         return scheduleDays;
     }

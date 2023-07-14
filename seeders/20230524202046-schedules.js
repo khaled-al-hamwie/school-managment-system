@@ -8,11 +8,11 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const rooms = await JSON.parse(
       readFileSync(resolve("seeders", "json", "room.json")),
-      { encoding: "utf8" }
+      { encoding: "utf8" },
     );
     const lecturess = await JSON.parse(
       readFileSync(resolve("seeders", "json", "lecture.json")),
-      { encoding: "utf8" }
+      { encoding: "utf8" },
     );
     let count1 = 1;
     let count2 = 1;
@@ -57,7 +57,6 @@ module.exports = {
             time = addTimes(time, "00:15");
             count2++;
           } else {
-            console.info(count3);
             await queryInterface.bulkInsert("Lectures", [
               {
                 lecture_id: count2,
