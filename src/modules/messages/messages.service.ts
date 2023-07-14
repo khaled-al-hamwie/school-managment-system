@@ -4,7 +4,6 @@ import { FindOptions } from "sequelize";
 import { ChatGateway } from "src/core/getway/chat.gateway";
 import { GroupsService } from "../groups/groups.service";
 import { CreateMessageDto } from "./dto/create-message.dto";
-import { UpdateMessageDto } from "./dto/update-message.dto";
 import { Message } from "./entities/message.entity";
 import { MessageAttributes } from "./interfaces/message.interface";
 
@@ -29,17 +28,5 @@ export class MessagesService {
 
     findAll(options: FindOptions<MessageAttributes>) {
         return this.MessageEntity.findAll(options);
-    }
-
-    findOne(id: number) {
-        return `This action returns a #${id} message`;
-    }
-
-    update(id: number, updateMessageDto: UpdateMessageDto) {
-        return `This action updates a #${id} message`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} message`;
     }
 }
