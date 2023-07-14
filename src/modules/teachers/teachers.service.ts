@@ -22,7 +22,7 @@ export class TeachersService {
     constructor(
         @InjectModel(Teacher) private readonly TeacherEntity: typeof Teacher,
         private readonly credentailsService: CredentialsService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
     ) {}
     async create(createTeacherDto: CreateTeacherDto) {
         const credentail = await this.credentailsService.create({
@@ -77,7 +77,7 @@ export class TeachersService {
 
     async update(
         teacher_id: TeacherAttributes["teacher_id"],
-        updateTeacherDto: UpdateTeacherDto
+        updateTeacherDto: UpdateTeacherDto,
     ) {
         const teacher = await this.findOne({ where: { teacher_id } });
         if (!teacher) throw new NotFoundException("teacher dosen't exists");
@@ -85,7 +85,7 @@ export class TeachersService {
         if (updateTeacherDto.password)
             this.credentailsService.update(
                 teacher.credential_id,
-                updateTeacherDto.password
+                updateTeacherDto.password,
             );
         return "done";
     }

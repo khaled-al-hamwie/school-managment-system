@@ -38,7 +38,7 @@ describe("ScheduleDaysService", () => {
                     lecture_number: 1,
                     teach_id: 1,
                 },
-                []
+                [],
             );
         } catch (error) {
             expect(error.name).toBe("NotFoundException");
@@ -64,7 +64,7 @@ describe("ScheduleDaysService", () => {
                 lecture_number: 1,
                 teach_id: 12,
             },
-            []
+            [],
         );
     });
 

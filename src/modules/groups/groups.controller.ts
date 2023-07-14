@@ -21,7 +21,7 @@ import { GroupAttributes } from "./interfaces/group.interface";
 export class GroupsController {
     constructor(
         private readonly groupsService: GroupsService,
-        private readonly studentsService: StudentsService
+        private readonly studentsService: StudentsService,
     ) {}
 
     @ApiBearerAuth("Authorization")
@@ -35,21 +35,21 @@ export class GroupsController {
     @UseGuards(StudentGuard)
     @Get("/student")
     async findStudentGroup(
-        @User("student_id") student_id: StudentAttributes["student_id"]
+        @User("student_id") student_id: StudentAttributes["student_id"],
     ) {
         const room_id = (
             await this.studentsService.findOne({ where: { student_id } })
         ).room_id;
         if (room_id == null)
             throw new NotFoundException(
-                "you have not been assigned to a room yet"
+                "you have not been assigned to a room yet",
             );
         return this.groupsService.findAll({ where: { room_id } });
     }
 
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) group_id: GroupAttributes["group_id"]
+        @Param("id", ParseIntPipe) group_id: GroupAttributes["group_id"],
     ) {
         const group = await this.groupsService.findOne({ where: { group_id } });
         if (!group) throw new NotFoundException("group don't exist ");

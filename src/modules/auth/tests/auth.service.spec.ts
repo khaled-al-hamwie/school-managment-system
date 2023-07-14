@@ -36,15 +36,15 @@ describe("AuthService", () => {
             });
             expect(
                 "credentail_id" in decoded &&
-                    decoded.credentail_id == managerPayload.credentail_id
+                    decoded.credentail_id == managerPayload.credentail_id,
             ).toBeTruthy();
             expect(
                 "manager_id" in decoded &&
-                    decoded.manager_id == managerPayload.manager_id
+                    decoded.manager_id == managerPayload.manager_id,
             ).toBeTruthy();
             expect(
                 "user_name" in decoded &&
-                    decoded.user_name == managerPayload.user_name
+                    decoded.user_name == managerPayload.user_name,
             ).toBeTruthy();
         });
         it("should create with teacher payload", async () => {
@@ -60,15 +60,15 @@ describe("AuthService", () => {
             });
             expect(
                 "credentail_id" in decoded &&
-                    decoded.credentail_id == teacherPayload.credentail_id
+                    decoded.credentail_id == teacherPayload.credentail_id,
             ).toBeTruthy();
             expect(
                 "teacher_id" in decoded &&
-                    decoded.teacher_id == teacherPayload.teacher_id
+                    decoded.teacher_id == teacherPayload.teacher_id,
             ).toBeTruthy();
             expect(
                 "user_name" in decoded &&
-                    decoded.user_name == teacherPayload.user_name
+                    decoded.user_name == teacherPayload.user_name,
             ).toBeTruthy();
         });
         it("should create with student payload", async () => {
@@ -84,15 +84,15 @@ describe("AuthService", () => {
             });
             expect(
                 "credentail_id" in decoded &&
-                    decoded.credentail_id == studentPayload.credentail_id
+                    decoded.credentail_id == studentPayload.credentail_id,
             ).toBeTruthy();
             expect(
                 "student_id" in decoded &&
-                    decoded.student_id == studentPayload.student_id
+                    decoded.student_id == studentPayload.student_id,
             ).toBeTruthy();
             expect(
                 "user_name" in decoded &&
-                    decoded.user_name == studentPayload.user_name
+                    decoded.user_name == studentPayload.user_name,
             ).toBeTruthy();
         });
     });

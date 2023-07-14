@@ -72,7 +72,7 @@ describe("CredentialsService", () => {
             expect(credentail).not.toBeNull();
             expect(credentail.user_name).toEqual(createCredentialDto.user_name);
             expect(createCredentialDto.email).toEqual(
-                createCredentialDto.email
+                createCredentialDto.email,
             );
         });
         it("should return null", async () => {
@@ -124,7 +124,7 @@ describe("CredentialsService", () => {
             });
             await service.update(
                 credentail.credential_id,
-                "thisisrandompassword"
+                "thisisrandompassword",
             );
             try {
                 await service.verify(createCredentialDto);
@@ -148,7 +148,7 @@ describe("CredentialsService", () => {
             const credentail = await service.create(createCredentialDto);
             await service.remove(credentail.credential_id);
             expect(
-                await Credential.findByPk(credentail.credential_id)
+                await Credential.findByPk(credentail.credential_id),
             ).toBeNull();
         });
     });

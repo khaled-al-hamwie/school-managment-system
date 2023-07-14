@@ -26,6 +26,6 @@ export const databaseProvider: DynamicModule = SequelizeModule.forRoot({
     synchronize: true,
     logging: (Entity) =>
         new Logger("SequelizeQuery").verbose(
-            "\n" + Entity.split("Executing (default): ")[1]
+            "\n" + Entity.split("Executing (default): ")[1],
         ),
 });

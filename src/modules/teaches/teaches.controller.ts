@@ -30,7 +30,7 @@ export class TeachesController {
     @UseGuards(TeacherGuard)
     @Get("/teacher")
     async findTeacherTeach(
-        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"]
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
     ) {
         const teach = await this.teachesService.findAll({
             where: {
@@ -48,7 +48,7 @@ export class TeachesController {
                         start_time: lec.start_time,
                         lecture_number: lec.lecture_number,
                     };
-                })
+                }),
             )
             .filter((arr) => arr.length > 1)[0];
         return t;

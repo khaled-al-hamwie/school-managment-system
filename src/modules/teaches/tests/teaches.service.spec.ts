@@ -54,7 +54,7 @@ describe("TeachesService", () => {
     it("should not exist", async () => {
         const teach = await service.teachNotExist(
             subject_id1 + 345,
-            teacher_id1
+            teacher_id1,
         );
         expect(teach).toBeTruthy();
     });

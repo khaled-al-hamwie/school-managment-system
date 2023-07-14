@@ -22,7 +22,7 @@ import * as fs from "fs";
 export class BooksService {
     constructor(
         @InjectModel(Book) private readonly BookEntity: typeof Book,
-        private readonly subjectsService: SubjectsService
+        private readonly subjectsService: SubjectsService,
     ) {}
     async create(createBookDto: CreateBookDto, file?: Express.Multer.File) {
         const mySubject = await this.subjectsService.findOne({

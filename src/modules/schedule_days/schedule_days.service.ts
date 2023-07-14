@@ -16,7 +16,7 @@ export class ScheduleDaysService {
         @InjectModel(ScheduleDay)
         private readonly ScheduleDayEntity: typeof ScheduleDay,
         private readonly lecturesService: LecturesService,
-        private readonly teachesService: TeachesService
+        private readonly teachesService: TeachesService,
     ) {}
     async create(createScheduleDayDto: CreateScheduleDayDto) {
         const { days, lecture_number, rests, schedule_id, start_time } =
@@ -33,7 +33,7 @@ export class ScheduleDaysService {
                 start_time,
                 lecture_number,
                 schedule_day.schedule_day_id,
-                rests
+                rests,
             );
         }
     }
@@ -47,7 +47,7 @@ export class ScheduleDaysService {
         for (let i = 0; i < body.days.length; i++) {
             const schedule_day = scheduleDays.find(
                 (schedule_day_object) =>
-                    schedule_day_object.day == body.days[i].day
+                    schedule_day_object.day == body.days[i].day,
             );
             await this.lecturesService.updateLectures({
                 schedule_day_id: schedule_day.schedule_day_id,
@@ -68,7 +68,7 @@ export class ScheduleDaysService {
             const day_object = body.days[i];
             if (this.scheduleNotIncludeDay(days, day_object))
                 error.push(
-                    `the day ${day_object.day} is not allowed provied a day from ${days}`
+                    `the day ${day_object.day} is not allowed provied a day from ${days}`,
                 );
             await this.checkLecturesLength(day_object, scheduleDays, error);
         }
@@ -80,26 +80,26 @@ export class ScheduleDaysService {
     private async checkLecturesLength(
         day_object: DayDto,
         scheduleDays: ScheduleDay[],
-        error: any[]
+        error: any[],
     ) {
         for (let i = 0; i < day_object.lectures.length; i++) {
             const lecture = day_object.lectures[i];
 
             if (lecture.lecture_number > scheduleDays[0].lecture_number)
                 error.push(
-                    `the lecture_number ${lecture.lecture_number} on the day ${day_object.day} is not allowed please provide a value <=${scheduleDays[0].lecture_number}`
+                    `the lecture_number ${lecture.lecture_number} on the day ${day_object.day} is not allowed please provide a value <=${scheduleDays[0].lecture_number}`,
                 );
             await this.checkTeacherTeachOnSameDay(
                 day_object.day,
                 lecture,
-                error
+                error,
             );
         }
     }
 
     private scheduleNotIncludeDay(
         days: ("sat" | "sun" | "mon" | "tue" | "wed" | "thu" | "fri")[],
-        day_object: DayDto
+        day_object: DayDto,
     ) {
         return !days.includes(day_object.day);
     }
@@ -107,7 +107,7 @@ export class ScheduleDaysService {
     async checkTeacherTeachOnSameDay(
         day: "sat" | "sun" | "mon" | "tue" | "wed" | "thu" | "fri",
         lecture: LectureDto,
-        error: any[]
+        error: any[],
     ) {
         if (lecture.teach_id == 0) return;
         const teacher_id = (
@@ -132,7 +132,7 @@ export class ScheduleDaysService {
         });
         if (lecture_in_time.length >= 1) {
             error.push(
-                `the teach on day ${day} on lecture_number ${lecture.lecture_number} with the teach ${lecture.teach_id} has a conflict with other lecture with id ${lecture_in_time[0].lectures[0].lecture_id}`
+                `the teach on day ${day} on lecture_number ${lecture.lecture_number} with the teach ${lecture.teach_id} has a conflict with other lecture with id ${lecture_in_time[0].lectures[0].lecture_id}`,
             );
         }
     }

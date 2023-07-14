@@ -31,7 +31,7 @@ describe("RecordsService", () => {
                 record_id: 1,
                 student_id: 1,
                 year: "2020/2021",
-            })
+            }),
         ).not.toBeNull();
         expect(
             await service.findOne({
@@ -39,7 +39,7 @@ describe("RecordsService", () => {
                 record_id: 1,
                 student_id: 1,
                 year: "2020/2021",
-            })
+            }),
         ).toBeNull();
     });
 
@@ -64,14 +64,14 @@ describe("RecordsService", () => {
         });
         await service.create(2, [1, 2, 2]);
         expect(
-            await service.findOne({ class_id: 2, student_id: 1 })
+            await service.findOne({ class_id: 2, student_id: 1 }),
         ).toBeNull();
         expect(
-            await service.findOne({ class_id: 2, student_id: 2 })
+            await service.findOne({ class_id: 2, student_id: 2 }),
         ).not.toBeNull();
         expect(
             (await Record.findAll({ where: { class_id: 2, student_id: 2 } }))
-                .length
+                .length,
         ).toBe(1);
     });
 

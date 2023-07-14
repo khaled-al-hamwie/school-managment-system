@@ -23,7 +23,7 @@ describe("create credential dto", () => {
         expect(erros[0].property).toEqual("email");
         expect(
             "isEmail" in erros[0].constraints &&
-                erros[0].constraints.isEmail == "email must be an email"
+                erros[0].constraints.isEmail == "email must be an email",
         ).toBeTruthy();
     });
     describe("password", () => {

@@ -39,7 +39,7 @@ export class SubjectsController {
     @Get()
     findAll(
         @Query() query: FindAllSubjectDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.subjectsService.findAll(query, page);
     }
@@ -48,13 +48,13 @@ export class SubjectsController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"]
+        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
     ) {
         const subject = await this.subjectsService.findOne(
             { subject_id },
             {
                 include,
-            }
+            },
         );
         if (!subject) throw new NotFoundException("subject doesn't exist");
         return subject;
@@ -65,7 +65,7 @@ export class SubjectsController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
-        @Body() updateSubjectDto: UpdateSubjectDto
+        @Body() updateSubjectDto: UpdateSubjectDto,
     ) {
         return this.subjectsService.update(+subject_id, updateSubjectDto);
     }
@@ -74,7 +74,7 @@ export class SubjectsController {
     @UseGuards(ManagerGuard)
     @Delete(":id")
     remove(
-        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"]
+        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
     ) {
         return this.subjectsService.remove(+subject_id);
     }
@@ -84,11 +84,11 @@ export class SubjectsController {
     @Delete(":id/teacher")
     removeTeachers(
         @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
-        @Body() deleteSubjectDto: DeleteSubjectDto
+        @Body() deleteSubjectDto: DeleteSubjectDto,
     ) {
         return this.subjectsService.removeTeachers(
             +subject_id,
-            deleteSubjectDto
+            deleteSubjectDto,
         );
     }
 }

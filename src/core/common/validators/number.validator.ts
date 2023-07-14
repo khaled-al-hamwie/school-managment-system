@@ -7,6 +7,6 @@ export default function NumberValidator(min: number, max: number) {
         ApiProperty({ minimum: min, maximum: max }),
         IsInt(),
         Min(min),
-        Max(max)
+        Max(max),
     );
 }

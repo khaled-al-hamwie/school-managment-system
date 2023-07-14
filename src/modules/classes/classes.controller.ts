@@ -43,7 +43,7 @@ export class ClassesController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) class_id: ClassAttributes["class_id"]
+        @Param("id", ParseIntPipe) class_id: ClassAttributes["class_id"],
     ) {
         const myClass = await this.classesService.findOne({
             where: { class_id },
@@ -58,7 +58,7 @@ export class ClassesController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) id: ClassAttributes["class_id"],
-        @Body() updateClassDto: UpdateClassDto
+        @Body() updateClassDto: UpdateClassDto,
     ) {
         return this.classesService.update(+id, updateClassDto);
     }

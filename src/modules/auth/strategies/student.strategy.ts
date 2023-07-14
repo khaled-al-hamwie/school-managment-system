@@ -8,7 +8,7 @@ import StudentPayload from "../interfaces/student.payload.interface";
 @Injectable()
 export default class StudentStrategy extends PassportStrategy(
     Strategy,
-    STUDENT_TYPE
+    STUDENT_TYPE,
 ) {
     constructor(private readonly studentsService: StudentsService) {
         super({

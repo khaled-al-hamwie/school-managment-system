@@ -50,10 +50,9 @@ describe("StudentsService", () => {
     it("should update", async () => {
         body["first_name"] = "khaled al ha";
         const output = await service.update(
-            (
-                await service.findOne({ where: { father_name: "fdsafdsa" } })
-            ).student_id,
-            body
+            (await service.findOne({ where: { father_name: "fdsafdsa" } }))
+                .student_id,
+            body,
         );
         expect(output).toBe("done");
     });
@@ -80,7 +79,7 @@ describe("StudentsService", () => {
         });
         await service.addRooms(1, [1, 2, 44]);
         expect(
-            await Student.findOne({ where: { student_id: 44, room_id: 1 } })
+            await Student.findOne({ where: { student_id: 44, room_id: 1 } }),
         ).not.toBeNull();
     });
     afterAll(async () => {

@@ -51,7 +51,7 @@ export class BooksController {
                     callback(null, filename);
                 },
             }),
-        })
+        }),
     )
     create(
         @Body() createBookDto: CreateBookDto,
@@ -61,9 +61,9 @@ export class BooksController {
                     new MaxFileSizeValidator({ maxSize: 100000000 }),
                     new FileTypeValidator({ fileType: "pdf" }),
                 ],
-            })
+            }),
         )
-        file?: Express.Multer.File
+        file?: Express.Multer.File,
     ) {
         if (file) {
             createBookDto.pdf_link = file.path;
@@ -74,7 +74,7 @@ export class BooksController {
     @Get()
     findAll(
         @Query() query: FindAllBookDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.booksService.findAll(query, page);
     }
@@ -89,7 +89,7 @@ export class BooksController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) book_id: BookAttributes["book_id"],
-        @Body() updateBookDto: UpdateBookDto
+        @Body() updateBookDto: UpdateBookDto,
     ) {
         //return updateBookDto;
         return this.booksService.update(+book_id, updateBookDto);

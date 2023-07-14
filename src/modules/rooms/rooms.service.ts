@@ -20,7 +20,7 @@ export class RoomsService {
         private readonly schedulesService: SchedulesService,
         private readonly recordsService: RecordsService,
         private readonly studentsService: StudentsService,
-        private readonly groupsService: GroupsService
+        private readonly groupsService: GroupsService,
     ) {}
 
     async create(createRoomDto: CreateRoomDto) {
@@ -49,11 +49,11 @@ export class RoomsService {
         if (createRoomDto.student_ids) {
             this.recordsService.create(
                 createRoomDto.class_id,
-                createRoomDto.student_ids
+                createRoomDto.student_ids,
             );
             this.studentsService.addRooms(
                 room.room_id,
-                createRoomDto.student_ids
+                createRoomDto.student_ids,
             );
         }
         return "done";
@@ -72,7 +72,7 @@ export class RoomsService {
 
     async update(
         room_id: RoomAttributes["room_id"],
-        updateRoomDto: UpdateRoomDto
+        updateRoomDto: UpdateRoomDto,
     ) {
         const room = await this.checkRoom(room_id);
         if (updateRoomDto.class_id)

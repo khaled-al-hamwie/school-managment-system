@@ -47,7 +47,7 @@ export class RoomsController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"]
+        @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"],
     ) {
         const room = await this.roomsService.findOne({
             where: { room_id },
@@ -67,7 +67,7 @@ export class RoomsController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) room_id: RoomAttributes["room_id"],
-        @Body() updateRoomDto: UpdateRoomDto
+        @Body() updateRoomDto: UpdateRoomDto,
     ) {
         return this.roomsService.update(+room_id, updateRoomDto);
     }

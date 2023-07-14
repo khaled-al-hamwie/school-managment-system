@@ -8,7 +8,7 @@ import {
 export class NumberSmallerThanValue implements ValidatorConstraintInterface {
     validate(
         value: number,
-        validationArguments?: ValidationArguments
+        validationArguments?: ValidationArguments,
     ): boolean | Promise<boolean> {
         if (
             value &&
