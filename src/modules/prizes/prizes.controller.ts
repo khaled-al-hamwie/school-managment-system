@@ -4,16 +4,20 @@ import {
     Delete,
     Get,
     NotFoundException,
+    Optional,
     Param,
     ParseIntPipe,
     Patch,
     Post,
+    UploadedFile,
     UseGuards,
+    UseInterceptors,
 } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { CreatePrizeDto } from "./dto/create-prize.dto";
 import { UpdatePrizeDto } from "./dto/update-prize.dto";
+import { PrizeInterceptor } from "./interceptors/prize.interceptor";
 import { PriseAttributes } from "./interfaces/prise.interface";
 import { PrizesService } from "./prizes.service";
 
@@ -24,8 +28,12 @@ export class PrizesController {
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
     @Post()
-    create(@Body() createPrizeDto: CreatePrizeDto) {
-        return this.prizesService.create(createPrizeDto);
+    @UseInterceptors(PrizeInterceptor)
+    create(
+        @Body() createPrizeDto: CreatePrizeDto,
+        @UploadedFile() image?: Express.Multer.File,
+    ) {
+        return this.prizesService.create(createPrizeDto, image.filename);
     }
 
     @Get()

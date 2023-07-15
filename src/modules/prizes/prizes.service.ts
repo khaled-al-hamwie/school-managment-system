@@ -11,8 +11,11 @@ export class PrizesService {
     constructor(
         @InjectModel(Prise) private readonly PriseEntity: typeof Prise,
     ) {}
-    async create(createPrizeDto: CreatePrizeDto) {
-        const prize = await this.PriseEntity.create(createPrizeDto);
+    async create(createPrizeDto: CreatePrizeDto, image_path: string) {
+        const prize = await this.PriseEntity.create({
+            ...createPrizeDto,
+            picture: image_path ? `/prizes/${image_path}` : null,
+        });
         return prize.toJSON();
     }
 
