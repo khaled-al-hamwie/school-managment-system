@@ -11,12 +11,12 @@ export class PrizesService {
     constructor(
         @InjectModel(Prise) private readonly PriseEntity: typeof Prise,
     ) {}
-    async create(createPrizeDto: CreatePrizeDto, image_path: string) {
-        const prize = await this.PriseEntity.create({
+    create(createPrizeDto: CreatePrizeDto, image_path: string) {
+        this.PriseEntity.create({
             ...createPrizeDto,
             picture: image_path ? image_path : null,
         });
-        return prize.toJSON();
+        return "done";
     }
 
     async findAll() {
@@ -33,18 +33,18 @@ export class PrizesService {
         prise_id: PriseAttributes["prise_id"],
         updatePrizeDto: UpdatePrizeDto,
     ) {
-        const prise = await this.checkprise(prise_id);
+        const prise = await this.checkPrise(prise_id);
         prise.update(updatePrizeDto).then(saveModel);
         return "done";
     }
 
     async remove(prise_id: PriseAttributes["prise_id"]) {
-        const prise = await this.checkprise(prise_id);
-        await prise.destroy();
+        const prise = await this.checkPrise(prise_id);
+        prise.destroy();
         return "done";
     }
 
-    async checkprise(prise_id: PriseAttributes["prise_id"]) {
+    async checkPrise(prise_id: PriseAttributes["prise_id"]) {
         const prise = await this.findOne(prise_id);
         if (!prise) throw new NotFoundException("prise doesn't exist");
         return prise;

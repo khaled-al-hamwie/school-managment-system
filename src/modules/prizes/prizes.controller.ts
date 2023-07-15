@@ -34,7 +34,6 @@ export class PrizesController {
         @Body() createPrizeDto: CreatePrizeDto,
         @UploadedFile() image?: Express.Multer.File,
     ) {
-        console.info();
         return this.prizesService.create(
             createPrizeDto,
             `${request.protocol}://${request.hostname}:4000${request.originalUrl}/${image.filename}`,
@@ -50,7 +49,7 @@ export class PrizesController {
     async findOne(
         @Param("id", ParseIntPipe) prise_id: PriseAttributes["prise_id"],
     ) {
-        return this.prizesService.checkprise(prise_id);
+        return this.prizesService.checkPrise(prise_id);
     }
 
     @ApiBearerAuth("Authorization")
