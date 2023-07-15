@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { Prise } from "./entities/prize.entity";
+import { Prise } from "./entities/prise.entity";
 import { PrizesController } from "./prizes.controller";
 import { PrizesService } from "./prizes.service";
 
