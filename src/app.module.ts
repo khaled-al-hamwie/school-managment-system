@@ -20,6 +20,7 @@ import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
 import { TransactionsModule } from './modules/transactions/transactions.module';
+import { PrizesModule } from './modules/prizes/prizes.module';
 
 @Module({
     imports: [
@@ -43,6 +44,7 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
         MessagesModule,
         GetewayModule,
         TransactionsModule,
+        PrizesModule,
     ],
     providers: [
         {
