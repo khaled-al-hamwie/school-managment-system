@@ -19,6 +19,7 @@ export interface StudentAttributes {
     phone_number: string;
     location: string;
     registration_date?: Date | string;
+    points: number;
 }
 
 export type StudentCreationAttributes = Optional<

@@ -114,6 +114,13 @@ export default class Student
     })
     registration_date?: Date;
 
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    })
+    points: StudentAttributes["points"];
+
     @BelongsTo(() => Credential)
     credentail: Credential;
 
