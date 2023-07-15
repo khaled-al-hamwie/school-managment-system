@@ -14,7 +14,7 @@ export class PrizesService {
     async create(createPrizeDto: CreatePrizeDto, image_path: string) {
         const prize = await this.PriseEntity.create({
             ...createPrizeDto,
-            picture: image_path ? `/prizes/${image_path}` : null,
+            picture: image_path ? image_path : null,
         });
         return prize.toJSON();
     }

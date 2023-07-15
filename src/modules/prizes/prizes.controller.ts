@@ -9,11 +9,13 @@ import {
     ParseIntPipe,
     Patch,
     Post,
+    Req,
     UploadedFile,
     UseGuards,
     UseInterceptors,
 } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { Request } from "express";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { CreatePrizeDto } from "./dto/create-prize.dto";
 import { UpdatePrizeDto } from "./dto/update-prize.dto";
@@ -30,10 +32,15 @@ export class PrizesController {
     @Post()
     @UseInterceptors(PrizeInterceptor)
     create(
+        @Req() request: Request,
         @Body() createPrizeDto: CreatePrizeDto,
         @UploadedFile() image?: Express.Multer.File,
     ) {
-        return this.prizesService.create(createPrizeDto, image.filename);
+        console.info();
+        return this.prizesService.create(
+            createPrizeDto,
+            `${request.protocol}://${request.hostname}:4000${request.originalUrl}/${image.filename}`,
+        );
     }
 
     @Get()
