@@ -4,7 +4,7 @@ import {
     PriseCreationAttributes,
 } from "../interfaces/prise.interface";
 
-@Table
+@Table({ tableName: "Prizes" })
 export class Prise
     extends Model<PriseAttributes, PriseCreationAttributes>
     implements PriseCreationAttributes

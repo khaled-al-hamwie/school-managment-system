@@ -1,9 +1,12 @@
-import { Module } from '@nestjs/common';
-import { PrizesService } from './prizes.service';
-import { PrizesController } from './prizes.controller';
+import { Module } from "@nestjs/common";
+import { SequelizeModule } from "@nestjs/sequelize";
+import { Prise } from "./entities/prize.entity";
+import { PrizesController } from "./prizes.controller";
+import { PrizesService } from "./prizes.service";
 
 @Module({
-  controllers: [PrizesController],
-  providers: [PrizesService]
+    imports: [SequelizeModule.forFeature([Prise])],
+    controllers: [PrizesController],
+    providers: [PrizesService],
 })
 export class PrizesModule {}
