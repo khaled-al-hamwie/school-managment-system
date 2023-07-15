@@ -3,8 +3,6 @@ import {
     Controller,
     Delete,
     Get,
-    NotFoundException,
-    Optional,
     Param,
     ParseIntPipe,
     Patch,
