@@ -8,6 +8,7 @@ export const BOOK_TAG = "book";
 export const SCHEDULE_TAG = "schedule";
 export const BUS_TAG = "bus";
 export const GROUP_TAG = "group";
+export const TRANSACTION_TAG = "transaction";
 
 export const WEB_TAG = "web";
 export const PHONE_TAG = "phone";
