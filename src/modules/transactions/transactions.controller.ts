@@ -18,6 +18,11 @@ import Teacher from "../teachers/entities/teacher.entity";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { findAllTransactionDto } from "./dto/findAll-transaction.dto";
+import {
+    studentInclude,
+    studentIncludeAttribute,
+    teacherIncludeAttribute,
+} from "./options/findAll.include.option";
 import { TransactionsService } from "./transactions.service";
 
 @ApiTags(TRANSACTION_TAG)
@@ -45,9 +50,7 @@ export class TransactionsController {
         @Query() query: findAllTransactionDto,
         @Query("page", ParseIntPagePipe) page: number,
     ) {
-        console.info(query);
-        let whereWrapperObject = whereWrapperTransform(query);
-        console.info(whereWrapperObject);
+        const whereWrapperObject = whereWrapperTransform(query);
         return this.transactionsService.findAll({
             where: {
                 value: query["points"] ? query["points"] : { [Op.ne]: null },
@@ -61,17 +64,7 @@ export class TransactionsController {
             include: [
                 {
                     model: Student,
-                    attributes: [
-                        "student_id",
-                        "first_name",
-                        "last_name",
-                        "father_name",
-                        "mother_name",
-                        "gender",
-                        "birth_day",
-                        "phone_number",
-                        "nationality",
-                    ],
+                    attributes: studentIncludeAttribute,
                     where: {
                         first_name: query["student_first_name"]
                             ? { [Op.regexp]: query["student_first_name"] }
@@ -80,31 +73,11 @@ export class TransactionsController {
                             ? { [Op.regexp]: query["student_last_name"] }
                             : { [Op.ne]: null },
                     },
-                    include: [
-                        {
-                            model: Room,
-                            attributes: ["name", "room_id"],
-                            include: [
-                                {
-                                    model: Class,
-                                    attributes: ["name", "class_id"],
-                                },
-                            ],
-                        },
-                    ],
+                    include: [studentInclude],
                 },
                 {
                     model: Teacher,
-                    attributes: [
-                        "teacher_id",
-                        "first_name",
-                        "last_name",
-                        "middle_name",
-                        "gender",
-                        "birth_day",
-                        "phone_number",
-                        "nationality",
-                    ],
+                    attributes: teacherIncludeAttribute,
                     where: {
                         first_name: query["teacher_first_name"]
                             ? { [Op.regexp]: query["teacher_first_name"] }
