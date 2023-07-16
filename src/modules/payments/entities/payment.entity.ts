@@ -47,6 +47,12 @@ export class Payment
     })
     created_at!: PaymentAttributes["created_at"];
 
+    @Column({
+        type: DataType.INTEGER.UNSIGNED,
+        allowNull: false,
+    })
+    price!: PaymentAttributes["price"];
+
     @BelongsTo(() => Student)
     student: Student;
 

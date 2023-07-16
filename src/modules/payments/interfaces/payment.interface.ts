@@ -6,6 +6,7 @@ export interface PaymentAttributes {
     payment_id?: number;
     prise_id: PriseAttributes["prise_id"];
     student_id: StudentAttributes["student_id"];
+    price: number;
     created_at?: Date;
 }
 
