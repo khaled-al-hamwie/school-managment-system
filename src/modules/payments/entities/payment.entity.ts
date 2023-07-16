@@ -40,8 +40,8 @@ export class Payment
     })
     student_id!: PaymentAttributes["student_id"];
 
-    @Column
     @Column({
+        type: DataType.DATE,
         allowNull: false,
         defaultValue: new Date(),
     })
