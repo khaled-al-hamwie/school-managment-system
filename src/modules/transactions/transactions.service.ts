@@ -1,10 +1,25 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { StudentsService } from "../students/students.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
+import { Transaction } from "./entities/transaction.entity";
 
 @Injectable()
 export class TransactionsService {
-    create(createTransactionDto: CreateTransactionDto) {
-        return "This action adds a new transaction";
+    constructor(
+        @InjectModel(Transaction)
+        private readonly TransactionEntity: typeof Transaction,
+        private readonly studentsService: StudentsService,
+    ) {}
+    async create(createTransactionDto: CreateTransactionDto) {
+        const student = await this.studentsService.findOne({
+            where: { student_id: createTransactionDto.student_id },
+        });
+        if (!student) {
+            throw new NotFoundException("student dosen't exists");
+        }
+        this.TransactionEntity.create(createTransactionDto);
+        return "done";
     }
 
     findAll() {
