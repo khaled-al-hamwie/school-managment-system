@@ -13,6 +13,7 @@ import { Credential } from "src/modules/credentials/entities/credential.entity";
 import { Message } from "src/modules/messages/entities/message.entity";
 import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
+import { Transaction } from "src/modules/transactions/entities/transaction.entity";
 import {
     StudentAttributes,
     StudentCreationAttributes,
@@ -135,4 +136,7 @@ export default class Student
 
     @HasMany(() => Message)
     messages: Message[];
+
+    @HasMany(() => Transaction)
+    transactions: Transaction[];
 }

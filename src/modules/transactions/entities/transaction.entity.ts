@@ -1,4 +1,13 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import {
+    BelongsTo,
+    Column,
+    DataType,
+    ForeignKey,
+    Model,
+    Table,
+} from "sequelize-typescript";
+import Student from "src/modules/students/entities/student.entity";
+import Teacher from "src/modules/teachers/entities/teacher.entity";
 import {
     TransactionAttributes,
     TransactionCreationAttributes,
@@ -16,20 +25,22 @@ export class Transaction
     })
     transaction_id?: TransactionAttributes["transaction_id"];
 
+    @ForeignKey(() => Teacher)
     @Column({
-        type: DataType.INTEGER.UNSIGNED,
+        type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
     })
     teacher_id!: TransactionAttributes["teacher_id"];
 
+    @ForeignKey(() => Student)
     @Column({
-        type: DataType.INTEGER.UNSIGNED,
+        type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
     })
     student_id!: TransactionAttributes["student_id"];
 
     @Column({
-        type: DataType.FLOAT.UNSIGNED,
+        type: DataType.INTEGER,
         allowNull: false,
     })
     value!: TransactionAttributes["value"];
@@ -46,4 +57,10 @@ export class Transaction
         defaultValue: DataType.NOW,
     })
     created_at?: TransactionAttributes["created_at"];
+
+    @BelongsTo(() => Teacher)
+    teacher: Teacher;
+
+    @BelongsTo(() => Student)
+    student: Student;
 }
