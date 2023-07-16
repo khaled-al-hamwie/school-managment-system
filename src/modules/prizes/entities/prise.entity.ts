@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { Payment } from "src/modules/payments/entities/payment.entity";
 import {
     PriseAttributes,
     PriseCreationAttributes,
@@ -52,4 +53,7 @@ export class Prise
         allowNull: true,
     })
     picture?: PriseAttributes["picture"];
+
+    @HasMany(() => Payment)
+    payments: Payment[];
 }
