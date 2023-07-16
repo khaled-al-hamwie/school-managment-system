@@ -1,34 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PaymentsService } from './payments.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { User } from "src/core/common/decorators/user.decorator";
+import StudentGuard from "src/core/common/guards/student.guard";
+import {
+    PAYMENT_TAG,
+    PHONE_TAG,
+} from "src/core/swagger/constants/swagger.tags";
+import { StudentAttributes } from "../students/interfaces/student.interface";
+import { CreatePaymentDto } from "./dto/create-payment.dto";
+import { PaymentsService } from "./payments.service";
 
-@Controller('payments')
+@Controller("payments")
+@ApiTags(PAYMENT_TAG)
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+    constructor(private readonly paymentsService: PaymentsService) {}
 
-  @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentsService.create(createPaymentDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.paymentsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentsService.update(+id, updatePaymentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
-  }
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Post()
+    create(
+        @Body() createPaymentDto: CreatePaymentDto,
+        @User("student_id") student_id: StudentAttributes["student_id"],
+    ) {
+        createPaymentDto.student_id = student_id;
+        return this.paymentsService.create(createPaymentDto);
+    }
+    // student / manager
+    @Get()
+    findAll() {
+        return this.paymentsService.findAll();
+    }
 }
