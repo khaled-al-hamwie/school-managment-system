@@ -16,6 +16,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/common/decorators/user.decorator";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import StudentGuard from "src/core/common/guards/student.guard";
+import TeacherGuard from "src/core/common/guards/teacher.guard";
 import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import {
     PHONE_TAG,
@@ -58,6 +59,17 @@ export class StudentsController {
     @UseGuards(ManagerGuard)
     @Get()
     findAll(
+        @Query() query: FindAllStudentDto,
+        @Query("page", ParseIntPagePipe) page: number,
+    ) {
+        return this.studentsService.findAll(query, page);
+    }
+
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(TeacherGuard)
+    @Get("teacher")
+    findAllForTeacher(
         @Query() query: FindAllStudentDto,
         @Query("page", ParseIntPagePipe) page: number,
     ) {

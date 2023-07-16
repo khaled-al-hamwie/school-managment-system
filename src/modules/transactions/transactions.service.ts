@@ -19,6 +19,8 @@ export class TransactionsService {
             throw new NotFoundException("student dosen't exists");
         }
         this.TransactionEntity.create(createTransactionDto);
+        student.points += createTransactionDto.value;
+        student.save();
         return "done";
     }
 
