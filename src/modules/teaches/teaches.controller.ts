@@ -7,6 +7,8 @@ import {
     TEACHE_TAG,
     WEB_TAG,
 } from "src/core/swagger/constants/swagger.tags";
+import { Class } from "../classes/entities/class.entity";
+import { Room } from "../rooms/entities/room.entity";
 import { Subject } from "../subjects/entities/subject.entity";
 import Teacher from "../teachers/entities/teacher.entity";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
@@ -58,5 +60,23 @@ export class TeachesController {
             )
             .filter((arr) => arr.length > 1)[0];
         return t;
+    }
+
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(TeacherGuard)
+    @Get("/teacher/subjects")
+    findTeacherSubjec(
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
+    ) {
+        return this.teachesService.findAll({
+            where: { teacher_id },
+            include: [
+                {
+                    model: Subject,
+                    include: [{ model: Class, include: [{ model: Room }] }],
+                },
+            ],
+        });
     }
 }
