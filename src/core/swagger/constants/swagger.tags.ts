@@ -10,6 +10,7 @@ export const SCHEDULE_TAG = "schedule";
 export const BUS_TAG = "bus";
 export const BUS_SUBSCIBTION_TAG = "bus_subscribtion";
 export const GROUP_TAG = "group";
+export const MESSAGE_TAG = "message";
 export const TRANSACTION_TAG = "transaction";
 export const PAYMENT_TAG = "payment";
 export const PRISE_TAG = "prise";
