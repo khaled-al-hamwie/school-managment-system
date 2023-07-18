@@ -72,10 +72,26 @@ export class HomeworksService {
         homework_id: HomeworkAttributes["homework_id"],
         updateHomeworkDto: UpdateHomeworkDto,
     ) {
+        let updatedDto = updateHomeworkDto;
         const homework = await this.findOne({ homework_id });
         if (!homework)
             throw new NotFoundException("this homework doesn't exist");
-        homework.update(updateHomeworkDto).then((output) => output.save());
+        if (updateHomeworkDto.room_id)
+            await this.roomsService.checkRoom(updateHomeworkDto.room_id);
+        if (updateHomeworkDto.subject_id) {
+            const teach = await this.teachService.findOne({
+                subject_id: updateHomeworkDto.subject_id,
+                teacher_id: updateHomeworkDto.teacher_id,
+            });
+            if (!teach)
+                throw new NotFoundException(
+                    "teacher doesn't teache the subject",
+                );
+            delete updateHomeworkDto["subject_id"];
+            delete updateHomeworkDto["teacher_id"];
+            updatedDto["teach_id"] = teach.teach_id;
+        }
+        homework.update(updatedDto).then((output) => output.save());
         return "done";
     }
 

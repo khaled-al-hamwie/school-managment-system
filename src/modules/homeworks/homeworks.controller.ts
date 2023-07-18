@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    NotFoundException,
     Param,
     ParseIntPipe,
     Patch,
@@ -60,11 +61,13 @@ export class HomeworksController {
     @ApiBearerAuth("Authorization")
     @UseGuards(TeacherGuard)
     @Get(":id")
-    findOne(
+    async findOne(
         @Param("id", ParseIntPipe)
         homework_id: HomeworkAttributes["homework_id"],
     ) {
-        return this.homeworksService.findOne({ homework_id });
+        const homework = await this.homeworksService.findOne({ homework_id });
+        if (!homework) throw new NotFoundException("home work doesn't exists");
+        return homework;
     }
 
     @ApiTags(PHONE_TAG)
@@ -75,7 +78,9 @@ export class HomeworksController {
         @Param("id", ParseIntPipe)
         homework_id: HomeworkAttributes["homework_id"],
         @Body() updateHomeworkDto: UpdateHomeworkDto,
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
     ) {
+        updateHomeworkDto["teacher_id"] = teacher_id;
         return this.homeworksService.update(homework_id, updateHomeworkDto);
     }
 
