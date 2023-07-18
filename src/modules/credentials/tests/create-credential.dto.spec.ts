@@ -23,7 +23,7 @@ describe("create credential dto", () => {
         expect(erros[0].property).toEqual("email");
         expect(
             "isEmail" in erros[0].constraints &&
-                erros[0].constraints.isEmail == "email must be an email"
+                erros[0].constraints.isEmail == "email must be an email",
         ).toBeTruthy();
     });
     describe("password", () => {
@@ -35,7 +35,7 @@ describe("create credential dto", () => {
             expect(erros[0].constraints).toEqual({
                 isString: "password must be a string",
                 isLength:
-                    "password must be longer than or equal to 20 characters",
+                    "password must be longer than or equal to 8 characters",
                 notContains: "password should not contain a space",
             });
         });
@@ -46,7 +46,7 @@ describe("create credential dto", () => {
             expect(erros[0].property).toEqual("password");
             expect(erros[0].constraints).toEqual({
                 isLength:
-                    "password must be longer than or equal to 20 characters",
+                    "password must be longer than or equal to 8 characters",
             });
         });
         it("should not allow long password", async () => {

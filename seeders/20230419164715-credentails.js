@@ -9,12 +9,6 @@ module.exports = {
         user_name: "testseeder1",
         password: await bcryptjs.hash("12312121212121212345", 12),
       },
-      {
-        credential_id: 2,
-        email: "testseeder2@test.com",
-        user_name: "testseeder2",
-        password: await bcryptjs.hash("12312121212121212345", 12),
-      },
     ]);
 
     await queryInterface.bulkInsert("Managers", [
@@ -32,26 +26,9 @@ module.exports = {
         salary: 40.2,
       },
     ]);
-
-    await queryInterface.bulkInsert("Teachers", [
-      {
-        teacher_id: 1,
-        credential_id: 2,
-        first_name: "khaled",
-        middle_name: "middle",
-        last_name: "Teacher",
-        birth_day: "2000-01-20",
-        gender: "m",
-        nationality: "UK",
-        phone_number: "0963351256",
-        location: "some where in UK",
-        salary: 20.2,
-      },
-    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Managers", null, {});
-    await queryInterface.bulkDelete("Teachers", null, {});
     await queryInterface.bulkDelete("Credentials", null, {});
   },
 };

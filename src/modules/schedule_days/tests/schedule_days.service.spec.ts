@@ -38,7 +38,7 @@ describe("ScheduleDaysService", () => {
                     lecture_number: 1,
                     teach_id: 1,
                 },
-                []
+                [],
             );
         } catch (error) {
             expect(error.name).toBe("NotFoundException");
@@ -64,8 +64,18 @@ describe("ScheduleDaysService", () => {
                 lecture_number: 1,
                 teach_id: 12,
             },
-            []
+            [],
         );
+    });
+
+    it("should destroy", async () => {
+        await ScheduleDay.create({
+            day: "sat",
+            lecture_number: 4,
+            schedule_id: 3,
+            start_time: "00:00:11",
+        });
+        await service.remove(3);
     });
     afterAll(async () => {
         await Lecture.destroy({ where: {} });

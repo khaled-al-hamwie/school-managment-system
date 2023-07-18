@@ -4,7 +4,7 @@ import {
     NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { WhereOptions } from "sequelize";
+import { FindOptions, WhereOptions } from "sequelize";
 import removeCredentails from "src/core/common/transformers/removeCredentails.transform";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { AuthService } from "../auth/auth.service";
@@ -22,7 +22,7 @@ export class StudentsService {
     constructor(
         @InjectModel(Student) private readonly StudentEntity: typeof Student,
         private readonly credentailsService: CredentialsService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
     ) {}
 
     async create(createStudentDto: CreateStudentDto) {
@@ -42,7 +42,7 @@ export class StudentsService {
     async login(body: CreateAuthDto) {
         const credentail = await this.credentailsService.verify(body);
         const student = await this.findOne({
-            credential_id: credentail.credential_id,
+            where: { credential_id: credentail.credential_id },
         });
         if (!student)
             throw new ForbiddenException("credentials don't match", {
@@ -72,38 +72,55 @@ export class StudentsService {
         });
     }
 
-    async findOne(options: WhereOptions<StudentAttributes>) {
-        return this.StudentEntity.findOne({
-            where: options,
-            limit: 1,
-        });
+    findOne(options: FindOptions<StudentAttributes>) {
+        return this.StudentEntity.findOne(options);
     }
 
     async update(
         student_id: StudentAttributes["student_id"],
-        updateStudentDto: UpdateStudentDto
+        updateStudentDto: UpdateStudentDto,
     ) {
-        const student = await this.findOne({ student_id });
+        const student = await this.findOne({ where: { student_id } });
         if (!student) throw new NotFoundException("student dosen't exists");
         student.update(updateStudentDto).then((output) => output.save());
         if (updateStudentDto.password)
             this.credentailsService.update(
                 student.credential_id,
-                updateStudentDto.password
+                updateStudentDto.password,
             );
         return "done";
     }
 
     async addRooms(
         room_id: StudentAttributes["room_id"],
-        student_ids: StudentAttributes["student_id"][]
+        student_ids: StudentAttributes["student_id"][],
     ) {
         for (let i = 0; i < student_ids.length; i++) {
             const student_id = student_ids[i];
             await this.StudentEntity.update(
                 { room_id },
-                { where: { student_id } }
+                { where: { student_id } },
             );
+        }
+    }
+
+    async removeRooms(
+        room_id: StudentAttributes["room_id"],
+        student_ids?: StudentAttributes["student_id"][],
+    ) {
+        if (!student_ids) {
+            await this.StudentEntity.update(
+                { room_id: null },
+                { where: { room_id } },
+            );
+        } else {
+            for (let i = 0; i < student_ids.length; i++) {
+                const student_id = student_ids[i];
+                await this.StudentEntity.update(
+                    { room_id: null },
+                    { where: { student_id } },
+                );
+            }
         }
     }
 }

@@ -8,9 +8,13 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Bus } from "src/modules/buses/entities/bus.entity";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
+import { Message } from "src/modules/messages/entities/message.entity";
+import { Payment } from "src/modules/payments/entities/payment.entity";
 import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
+import { Transaction } from "src/modules/transactions/entities/transaction.entity";
 import {
     StudentAttributes,
     StudentCreationAttributes,
@@ -41,7 +45,14 @@ export default class Student
         type: DataType.SMALLINT.UNSIGNED,
         allowNull: true,
     })
-    room_id: StudentAttributes["room_id"];
+    room_id?: StudentAttributes["room_id"];
+
+    @ForeignKey(() => Bus)
+    @Column({
+        type: DataType.SMALLINT.UNSIGNED,
+        allowNull: true,
+    })
+    bus_id?: StudentAttributes["bus_id"];
 
     @Column({
         type: DataType.STRING(16),
@@ -105,12 +116,31 @@ export default class Student
     })
     registration_date?: Date;
 
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    })
+    points: StudentAttributes["points"];
+
     @BelongsTo(() => Credential)
     credentail: Credential;
 
     @BelongsTo(() => Room)
     room: Room;
 
+    @BelongsTo(() => Bus)
+    bus: Bus;
+
     @HasMany(() => Record)
     records: Record[];
+
+    @HasMany(() => Message)
+    messages: Message[];
+
+    @HasMany(() => Transaction)
+    transactions: Transaction[];
+
+    @HasMany(() => Payment)
+    payments: Payment[];
 }

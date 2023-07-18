@@ -46,7 +46,7 @@ export class ManagersController {
     @Get()
     findAll(
         @Query() query: FindAllManagerDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.managersService.findAll(query, page);
     }
@@ -55,10 +55,10 @@ export class ManagersController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"]
+        @Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"],
     ) {
         const manager = await this.managersService.findOne({ manager_id });
-        if (!manager) throw new NotFoundException("teacher does'nt exists");
+        if (!manager) throw new NotFoundException("manager does'nt exists");
         return manager;
     }
 
@@ -67,7 +67,7 @@ export class ManagersController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) manager_id: ManagerAttributes["manager_id"],
-        @Body() updateManagerDto: UpdateManagerDto
+        @Body() updateManagerDto: UpdateManagerDto,
     ) {
         return this.managersService.update(+manager_id, updateManagerDto);
     }

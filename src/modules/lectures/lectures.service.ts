@@ -14,7 +14,7 @@ import { LectureAttributes } from "./interfaces/lecture.interface";
 export class LecturesService {
     constructor(
         @InjectModel(Lecture) private readonly LectureEntity: typeof Lecture,
-        private readonly teachesService: TeachesService
+        private readonly teachesService: TeachesService,
     ) {}
     async create(createLectureDto: CreateLectureDto) {
         await this.LectureEntity.create(createLectureDto);
@@ -24,7 +24,7 @@ export class LecturesService {
         start_time: LectureAttributes["start_time"],
         lecture_length: number,
         schedule_day_id: LectureAttributes["schedule_day_id"],
-        rests: number[]
+        rests: number[],
     ) {
         let time = start_time;
         for (
@@ -79,8 +79,8 @@ export class LecturesService {
         }
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} lecture`;
+    async remove(schedule_day_id: LectureAttributes["schedule_day_id"]) {
+        await this.LectureEntity.destroy({ where: { schedule_day_id } });
     }
 
     async checkLecture(lecture_id: LectureAttributes["lecture_id"]) {

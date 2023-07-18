@@ -1,18 +1,29 @@
-import { BelongsTo, Column, DataType, ForeignKey, PrimaryKey, Table, Model } from "sequelize-typescript";
-import { BookAttributes, BookCreationAttributes } from "../interfaces/book.interface";
+import {
+    BelongsTo,
+    Column,
+    DataType,
+    ForeignKey,
+    PrimaryKey,
+    Table,
+    Model,
+} from "sequelize-typescript";
+import {
+    BookAttributes,
+    BookCreationAttributes,
+} from "../interfaces/book.interface";
 import { Subject } from "src/modules/subjects/entities/subject.entity";
 
 @Table
 export class Book
     extends Model<BookAttributes, BookCreationAttributes>
-    implements BookCreationAttributes {
-
+    implements BookCreationAttributes
+{
     @PrimaryKey
     @Column({
         type: DataType.SMALLINT.UNSIGNED,
         autoIncrement: true,
     })
-    book_id?: BookAttributes['book_id'];
+    book_id?: BookAttributes["book_id"];
 
     @ForeignKey(() => Subject)
     @Column({

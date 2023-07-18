@@ -19,25 +19,25 @@ export class SubjectsService {
         @InjectModel(Subject) private readonly SubjectEntity: typeof Subject,
         @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
         private readonly classesService: ClassesService,
-        private readonly teachesService: TeachesService
+        private readonly teachesService: TeachesService,
     ) {}
     async create(createSubjectDto: CreateSubjectDto) {
         const classExist = await this.cacheManager.get(
-            `class:${createSubjectDto.class_id}:exist`
+            `class:${createSubjectDto.class_id}:exist`,
         );
         if (!classExist) {
             await this.classesService.checkClass(createSubjectDto.class_id);
             await this.cacheManager.set(
                 `class:${createSubjectDto.class_id}:exist`,
                 true,
-                10 * 60 * 60 * 60
+                10 * 60 * 60 * 60,
             );
         }
         const subject = await this.SubjectEntity.create(createSubjectDto);
         if (createSubjectDto.teacher_ids) {
             this.teachesService.create(
                 subject.subject_id,
-                createSubjectDto.teacher_ids
+                createSubjectDto.teacher_ids,
             );
         }
         return "done";
@@ -55,10 +55,9 @@ export class SubjectsService {
         });
     }
 
-    // TO-DO add the book of the subject , and teacher
     findOne(
         where: WhereOptions<SubjectAttributes>,
-        options?: FindOptions<SubjectAttributes>
+        options?: FindOptions<SubjectAttributes>,
     ) {
         return this.SubjectEntity.findOne({
             where,
@@ -69,7 +68,7 @@ export class SubjectsService {
 
     async update(
         subject_id: SubjectAttributes["subject_id"],
-        updateSubjectDto: UpdateSubjectDto
+        updateSubjectDto: UpdateSubjectDto,
     ) {
         const { class_id, teacher_ids } = updateSubjectDto;
         const subject = await this.findOne({ subject_id });
@@ -93,7 +92,7 @@ export class SubjectsService {
 
     removeTeachers(
         subject_id: SubjectAttributes["subject_id"],
-        deleteSubjectDto: DeleteSubjectDto
+        deleteSubjectDto: DeleteSubjectDto,
     ) {
         this.teachesService.remove({
             subject_id,

@@ -16,7 +16,7 @@ export class CreateCredentialDto {
         default: "12312121212121212345",
     })
     @NotContains(" ", { message: "password should not contain a space" })
-    @NameValidator(20, 40)
+    @NameValidator(8, 40)
     password: CredentialAttributes["password"];
 
     @ApiProperty({

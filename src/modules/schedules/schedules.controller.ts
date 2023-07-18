@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    NotFoundException,
     Param,
     ParseIntPipe,
     Patch,
@@ -29,7 +30,7 @@ import { SchedulesService } from "./schedules.service";
 export class SchedulesController {
     constructor(
         private readonly schedulesService: SchedulesService,
-        private readonly studentsService: StudentsService
+        private readonly studentsService: StudentsService,
     ) {}
 
     @ApiTags(WEB_TAG)
@@ -39,7 +40,7 @@ export class SchedulesController {
     findAll() {
         return this.schedulesService.findAll(
             { is_current: true },
-            scheduleAttributes
+            scheduleAttributes,
         );
     }
     @ApiTags(WEB_TAG)
@@ -47,16 +48,20 @@ export class SchedulesController {
     @UseGuards(StudentGuard)
     @Get("schedules/student")
     async findStudentSchedule(
-        @User("student_id") student_id: StudentAttributes["student_id"]
+        @User("student_id") student_id: StudentAttributes["student_id"],
     ) {
-        const room_id = (await this.studentsService.findOne({ student_id }))
-            .room_id;
-        if (room_id == null) return "you have not been assigned to a room yet";
+        const room_id = (
+            await this.studentsService.findOne({ where: { student_id } })
+        ).room_id;
+        if (room_id == null)
+            throw new NotFoundException(
+                "you have not been assigned to a room yet",
+            );
         return this.schedulesService.findOne(
             { room_id },
             scheduleAttributes,
             scheduleInclude,
-            scheduleOrder
+            scheduleOrder,
         );
     }
 
@@ -66,13 +71,13 @@ export class SchedulesController {
     @Get("schedules/:id")
     findOne(
         @Param("id", ParseIntPipe)
-        schedule_id: ScheduleAttributes["schedule_id"]
+        schedule_id: ScheduleAttributes["schedule_id"],
     ) {
         return this.schedulesService.findOne(
             { schedule_id },
             scheduleAttributes,
             scheduleInclude,
-            scheduleOrder
+            scheduleOrder,
         );
     }
 
@@ -83,13 +88,8 @@ export class SchedulesController {
     update(
         @Param("id", ParseIntPipe)
         schedule_id: ScheduleAttributes["schedule_id"],
-        @Body() body: UpdateScheduleDto
+        @Body() body: UpdateScheduleDto,
     ) {
         return this.schedulesService.updateSchedule(schedule_id, body);
-    }
-
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.schedulesService.remove(+id);
     }
 }

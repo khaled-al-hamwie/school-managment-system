@@ -9,11 +9,11 @@ import { RecordAttributes } from "./interfaces/record.interface";
 export class RecordsService {
     constructor(
         @InjectModel(Record) private readonly RecordEntity: typeof Record,
-        private readonly studentsService: StudentsService
+        private readonly studentsService: StudentsService,
     ) {}
     async create(
         class_id: RecordAttributes["class_id"],
-        student_ids: RecordAttributes["student_id"][]
+        student_ids: RecordAttributes["student_id"][],
     ) {
         const year = `${new Date().getFullYear()}/${
             new Date().getFullYear() + 1
@@ -21,7 +21,7 @@ export class RecordsService {
         for (let i = 0; i < student_ids.length; i++) {
             const student_id = student_ids[i];
             const student = await this.studentsService.findOne({
-                student_id,
+                where: { student_id },
             });
             if (
                 student &&
@@ -45,7 +45,7 @@ export class RecordsService {
     async recordNotExist(
         class_id: RecordAttributes["class_id"],
         student_id: RecordAttributes["student_id"],
-        year: RecordAttributes["year"]
+        year: RecordAttributes["year"],
     ) {
         return (await this.findOne({ class_id, student_id, year })) == null;
     }

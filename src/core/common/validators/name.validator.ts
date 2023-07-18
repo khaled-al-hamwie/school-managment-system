@@ -9,6 +9,6 @@ export default function NameValidator(min: number, max: number) {
         ApiProperty({ minimum: min, maximum: max }),
         IsString(),
         Transform(trimTransform),
-        Length(min, max)
+        Length(min, max),
     );
 }

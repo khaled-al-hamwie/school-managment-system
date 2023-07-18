@@ -8,7 +8,7 @@ import TeacherPayload from "../interfaces/teacher.payload.interface";
 @Injectable()
 export default class TeacherStrategy extends PassportStrategy(
     Strategy,
-    TEACHER_TYPE
+    TEACHER_TYPE,
 ) {
     constructor(private readonly teachersService: TeachersService) {
         super({
@@ -24,7 +24,7 @@ export default class TeacherStrategy extends PassportStrategy(
             throw new UnauthorizedException();
         }
         const teacher = await this.teachersService.findOne({
-            teacher_id: payload.teacher_id,
+            where: { teacher_id: payload.teacher_id },
         });
         if (!teacher) {
             throw new UnauthorizedException();

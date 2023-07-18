@@ -17,7 +17,7 @@ import { CredentialAttributes } from "./interfaces/credential.interface";
 export class CredentialsService {
     constructor(
         @InjectModel(Credential)
-        private readonly CredentailEntity: typeof Credential
+        private readonly CredentailEntity: typeof Credential,
     ) {}
     async create(createCredentialDto: CreateCredentialDto) {
         const deplicateCredentails = await this.findOne({
@@ -64,7 +64,7 @@ export class CredentialsService {
 
     async update(
         credential_id: CredentialAttributes["credential_id"],
-        password: UpdateCredentialDto["password"]
+        password: UpdateCredentialDto["password"],
     ) {
         return (await this.findOne({ credential_id }))
             .set("password", await hash(password, 12))

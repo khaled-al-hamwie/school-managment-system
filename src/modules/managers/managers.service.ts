@@ -22,7 +22,7 @@ export class ManagersService {
     constructor(
         @InjectModel(Manager) private readonly ManagerEntity: typeof Manager,
         private readonly credentailsService: CredentialsService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
     ) {}
     async create(createManagerDto: CreateManagerDto) {
         const credentail = await this.credentailsService.create({
@@ -81,7 +81,7 @@ export class ManagersService {
 
     async update(
         manager_id: ManagerAttributes["manager_id"],
-        updateManagerDto: UpdateManagerDto
+        updateManagerDto: UpdateManagerDto,
     ) {
         const manager = await this.findOne({ manager_id });
         if (!manager) throw new NotFoundException("manager dosen't exists");
@@ -89,7 +89,7 @@ export class ManagersService {
         if (updateManagerDto.password)
             this.credentailsService.update(
                 manager.credential_id,
-                updateManagerDto.password
+                updateManagerDto.password,
             );
         return "done";
     }

@@ -7,5 +7,5 @@ export class UpdateRoomDto extends PartialType(
         "student_count",
         "class_id",
         "student_ids",
-    ])
+    ]),
 ) {}

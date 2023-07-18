@@ -23,6 +23,9 @@ import {
     WEB_TAG,
 } from "src/core/swagger/constants/swagger.tags";
 import { CreateAuthDto } from "../auth/dto/create-auth.dto";
+import { Credential } from "../credentials/entities/credential.entity";
+import { Subject } from "../subjects/entities/subject.entity";
+import { Teach } from "../teaches/entities/teach.entity";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { FindAllTeacherDto } from "./dto/findAll-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
@@ -54,7 +57,7 @@ export class TeachersController {
     @Get()
     findAll(
         @Query() query: FindAllTeacherDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.teachersService.findAll(query, page);
     }
@@ -63,9 +66,15 @@ export class TeachersController {
     @UseGuards(TeacherGuard)
     @Get("profile")
     showProfile(
-        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"]
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
     ) {
-        return this.teachersService.findOne({ teacher_id });
+        return this.teachersService.findOne({
+            where: { teacher_id },
+            include: [
+                { model: Credential, attributes: { exclude: ["password"] } },
+                { model: Teach, include: [{ model: Subject }] },
+            ],
+        });
     }
 
     @ApiTags(WEB_TAG)
@@ -73,9 +82,15 @@ export class TeachersController {
     @UseGuards(ManagerGuard)
     @Get(":id")
     async findOne(
-        @Param("id", ParseIntPipe) teacher_id: TeacherAttributes["teacher_id"]
+        @Param("id", ParseIntPipe) teacher_id: TeacherAttributes["teacher_id"],
     ) {
-        const teacher = await this.teachersService.findOne({ teacher_id });
+        const teacher = await this.teachersService.findOne({
+            where: { teacher_id },
+            include: [
+                { model: Credential, attributes: { exclude: ["password"] } },
+                { model: Teach, include: [{ model: Subject }] },
+            ],
+        });
         if (!teacher) throw new NotFoundException("teacher does'nt exists");
         return teacher;
     }
@@ -86,7 +101,7 @@ export class TeachersController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) teacher_id: string,
-        @Body() updateTeacherDto: UpdateTeacherDto
+        @Body() updateTeacherDto: UpdateTeacherDto,
     ) {
         return this.teachersService.update(+teacher_id, updateTeacherDto);
     }

@@ -3,6 +3,7 @@ import {
     Controller,
     Delete,
     Get,
+    NotFoundException,
     Param,
     ParseIntPipe,
     Patch,
@@ -14,9 +15,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import ManagerGuard from "src/core/common/guards/manager.guard";
 import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import { SUBJECT_TAG, WEB_TAG } from "src/core/swagger/constants/swagger.tags";
-import { Class } from "../classes/entities/class.entity";
-import Teacher from "../teachers/entities/teacher.entity";
-import { Teach } from "../teaches/entities/teach.entity";
+import { include } from "./constants";
 import { CreateSubjectDto } from "./dto/create-subject.dto";
 import { DeleteSubjectDto } from "./dto/delete-subject.dto";
 import { FindAllSubjectDto } from "./dto/findAll-subject.dto";
@@ -40,38 +39,25 @@ export class SubjectsController {
     @Get()
     findAll(
         @Query() query: FindAllSubjectDto,
-        @Query("page", ParseIntPagePipe) page: number
+        @Query("page", ParseIntPagePipe) page: number,
     ) {
         return this.subjectsService.findAll(query, page);
     }
 
-    // TO-DO one for the manager, will get all the subject for a specific class
     @ApiBearerAuth("Authorization")
     @UseGuards(ManagerGuard)
     @Get(":id")
-    findOne(
-        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"]
+    async findOne(
+        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
     ) {
-        return this.subjectsService.findOne(
+        const subject = await this.subjectsService.findOne(
             { subject_id },
             {
-                include: [
-                    {
-                        model: Class,
-                    },
-                    {
-                        model: Teach,
-                        include: [
-                            {
-                                model: Teacher,
-                                attributes: { exclude: ["credential_id"] },
-                            },
-                        ],
-                        attributes: { exclude: ["teacher_id", "subject_id"] },
-                    },
-                ],
-            }
+                include,
+            },
         );
+        if (!subject) throw new NotFoundException("subject doesn't exist");
+        return subject;
     }
 
     @ApiBearerAuth("Authorization")
@@ -79,7 +65,7 @@ export class SubjectsController {
     @Patch(":id")
     update(
         @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
-        @Body() updateSubjectDto: UpdateSubjectDto
+        @Body() updateSubjectDto: UpdateSubjectDto,
     ) {
         return this.subjectsService.update(+subject_id, updateSubjectDto);
     }
@@ -88,7 +74,7 @@ export class SubjectsController {
     @UseGuards(ManagerGuard)
     @Delete(":id")
     remove(
-        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"]
+        @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
     ) {
         return this.subjectsService.remove(+subject_id);
     }
@@ -98,11 +84,11 @@ export class SubjectsController {
     @Delete(":id/teacher")
     removeTeachers(
         @Param("id", ParseIntPipe) subject_id: SubjectAttributes["subject_id"],
-        @Body() deleteSubjectDto: DeleteSubjectDto
+        @Body() deleteSubjectDto: DeleteSubjectDto,
     ) {
         return this.subjectsService.removeTeachers(
             +subject_id,
-            deleteSubjectDto
+            deleteSubjectDto,
         );
     }
 }
