@@ -9,23 +9,28 @@ import {
     Query,
     UseGuards,
 } from "@nestjs/common";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { WhereOptions } from "sequelize";
 import { User } from "src/core/common/decorators/user.decorator";
 import StudentGuard from "src/core/common/guards/student.guard";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
+import {
+    BUS_SUBSCIBTION_TAG,
+    PHONE_TAG,
+} from "src/core/swagger/constants/swagger.tags";
 import { StudentAttributes } from "src/modules/students/interfaces/student.interface";
 import { StudentsBusesService } from "src/modules/students/services/students.buses.service";
 import { BusesService } from "../buses.service";
 import { BusAttributes } from "../interfaces/bus.interface";
 
+@ApiTags(BUS_SUBSCIBTION_TAG)
 @Controller("buses-subscribtions")
 export class BusesSubscribtionsController {
     constructor(
         private readonly busesService: BusesService,
         private readonly studentsBusService: StudentsBusesService,
     ) {}
-
+    @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
     @Get()
@@ -36,6 +41,7 @@ export class BusesSubscribtionsController {
         return this.busesService.findAll({ where });
     }
 
+    @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
     @Get("/mybus")
@@ -51,6 +57,7 @@ export class BusesSubscribtionsController {
         });
     }
 
+    @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
     @Delete()
@@ -60,6 +67,7 @@ export class BusesSubscribtionsController {
         return this.studentsBusService.unsubscribe(student_id);
     }
 
+    @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
     @Get(":id")
@@ -72,6 +80,7 @@ export class BusesSubscribtionsController {
         return bus;
     }
 
+    @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
     @UseGuards(StudentGuard)
     @Put(":id")
