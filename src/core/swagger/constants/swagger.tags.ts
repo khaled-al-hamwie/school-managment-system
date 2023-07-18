@@ -10,6 +10,7 @@ export const BUS_TAG = "bus";
 export const GROUP_TAG = "group";
 export const TRANSACTION_TAG = "transaction";
 export const PAYMENT_TAG = "payment";
+export const PRISE_TAG = "prise";
 
 export const WEB_TAG = "web";
 export const PHONE_TAG = "phone";
