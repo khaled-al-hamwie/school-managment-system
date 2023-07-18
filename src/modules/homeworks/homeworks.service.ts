@@ -4,6 +4,8 @@ import { Op, WhereOptions } from "sequelize";
 import { RoomsService } from "../rooms/rooms.service";
 import { StudentAttributes } from "../students/interfaces/student.interface";
 import { StudentsService } from "../students/students.service";
+import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
+import { Teach } from "../teaches/entities/teach.entity";
 import { TeachesService } from "../teaches/teaches.service";
 import { CreateHomeworkDto } from "./dto/create-homework.dto";
 import { FindAllHomeworkDto } from "./dto/findAll-homework.dto";
@@ -38,7 +40,11 @@ export class HomeworksService {
         return "done";
     }
 
-    async findAll(query: FindAllHomeworkDto, page = 0) {
+    async findAll(
+        query: FindAllHomeworkDto,
+        teacher_id: TeacherAttributes["teacher_id"],
+        page = 0,
+    ) {
         const whereOptions: WhereOptions<HomeworkAttributes> = {};
         for (const key in query) {
             if (Object.prototype.hasOwnProperty.call(query, key)) {
@@ -51,6 +57,7 @@ export class HomeworksService {
             offset: page * 5,
             limit: 5,
             order: [["deadline_date", "ASC"]],
+            include: [{ model: Teach, where: { teacher_id } }],
         });
     }
 
@@ -81,6 +88,6 @@ export class HomeworksService {
         if (!student)
             throw new NotFoundException("this student doesn't exist ..");
         const room_id = student["room_id"];
-        return await this.findAll({ room_id });
+        // return await this.findAll({ room_id });
     }
 }

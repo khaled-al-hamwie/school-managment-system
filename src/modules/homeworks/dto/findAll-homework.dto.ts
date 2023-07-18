@@ -1,7 +1,12 @@
 import { PartialType } from "@nestjs/swagger";
-import { CreateHomeworkDto } from "./create-homework.dto";
+import { Transform } from "class-transformer";
+import { IsInt, IsOptional } from "class-validator";
 import { HomeworkAttributes } from "../interfaces/homework.interface";
+import { CreateHomeworkDto } from "./create-homework.dto";
 
 export class FindAllHomeworkDto extends PartialType(CreateHomeworkDto) {
-    room_id?: HomeworkAttributes['room_id'];
+    @IsOptional()
+    @Transform(({ value }) => +value)
+    @IsInt()
+    room_id?: HomeworkAttributes["room_id"];
 }

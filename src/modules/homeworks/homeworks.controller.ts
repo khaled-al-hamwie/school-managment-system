@@ -49,10 +49,11 @@ export class HomeworksController {
     @UseGuards(TeacherGuard)
     @Get()
     findAll(
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
         @Query() query: FindAllHomeworkDto,
         @Query("page", ParseIntPagePipe) page: number,
     ) {
-        return this.homeworksService.findAll(query, page);
+        return this.homeworksService.findAll(query, teacher_id, page);
     }
 
     @ApiTags(PHONE_TAG)
