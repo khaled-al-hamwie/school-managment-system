@@ -11,8 +11,10 @@ import {
 import { Bus } from "src/modules/buses/entities/bus.entity";
 import { Credential } from "src/modules/credentials/entities/credential.entity";
 import { Message } from "src/modules/messages/entities/message.entity";
+import { Payment } from "src/modules/payments/entities/payment.entity";
 import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
+import { Transaction } from "src/modules/transactions/entities/transaction.entity";
 import {
     StudentAttributes,
     StudentCreationAttributes,
@@ -114,6 +116,13 @@ export default class Student
     })
     registration_date?: Date;
 
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    })
+    points: StudentAttributes["points"];
+
     @BelongsTo(() => Credential)
     credentail: Credential;
 
@@ -128,4 +137,10 @@ export default class Student
 
     @HasMany(() => Message)
     messages: Message[];
+
+    @HasMany(() => Transaction)
+    transactions: Transaction[];
+
+    @HasMany(() => Payment)
+    payments: Payment[];
 }

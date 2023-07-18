@@ -8,9 +8,14 @@ import {
     Query,
     UseGuards,
 } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/common/decorators/user.decorator";
 import { PhoneGuard } from "src/core/common/guards/phone.guard";
 import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
+import {
+    MESSAGE_TAG,
+    PHONE_TAG,
+} from "src/core/swagger/constants/swagger.tags";
 import { Credential } from "../credentials/entities/credential.entity";
 import Student from "../students/entities/student.entity";
 import { StudentAttributes } from "../students/interfaces/student.interface";
@@ -20,10 +25,12 @@ import { CreateMessageDto } from "./dto/create-message.dto";
 import { MessageAttributes } from "./interfaces/message.interface";
 import { MessagesService } from "./messages.service";
 
+@ApiTags(MESSAGE_TAG)
 @Controller("messages")
 export class MessagesController {
     constructor(private readonly messagesService: MessagesService) {}
 
+    @ApiTags(PHONE_TAG)
     @UseGuards(PhoneGuard)
     @Post()
     create(
@@ -37,6 +44,7 @@ export class MessagesController {
         return this.messagesService.create(createMessageDto);
     }
 
+    @ApiTags(PHONE_TAG)
     @UseGuards(PhoneGuard)
     @Get(":group_id")
     findAll(

@@ -19,6 +19,9 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
+import { TransactionsModule } from './modules/transactions/transactions.module';
+import { PrizesModule } from './modules/prizes/prizes.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
     imports: [
@@ -41,6 +44,9 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
         GroupsModule,
         MessagesModule,
         GetewayModule,
+        TransactionsModule,
+        PrizesModule,
+        PaymentsModule,
     ],
     providers: [
         {
