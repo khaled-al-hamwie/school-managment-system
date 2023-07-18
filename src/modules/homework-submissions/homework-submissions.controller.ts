@@ -1,4 +1,9 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { User } from "src/core/common/decorators/user.decorator";
+import StudentGuard from "src/core/common/guards/student.guard";
+import { PHONE_TAG } from "src/core/swagger/constants/swagger.tags";
+import { StudentAttributes } from "../students/interfaces/student.interface";
 import { CreateHomeworkSubmissionDto } from "./dto/create-homework-submission.dto";
 import { HomeworkSubmissionsService } from "./homework-submissions.service";
 
@@ -8,9 +13,15 @@ export class HomeworkSubmissionsController {
         private readonly homeworkSubmissionsService: HomeworkSubmissionsService,
     ) {}
 
-    // student
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
     @Post()
-    create(@Body() createHomeworkSubmissionDto: CreateHomeworkSubmissionDto) {
+    create(
+        @Body() createHomeworkSubmissionDto: CreateHomeworkSubmissionDto,
+        @User("student_id") student_id: StudentAttributes["student_id"],
+    ) {
+        createHomeworkSubmissionDto["student_id"] = student_id;
         return this.homeworkSubmissionsService.create(
             createHomeworkSubmissionDto,
         );
