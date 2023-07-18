@@ -23,6 +23,7 @@ import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
 import { TransactionsModule } from "./modules/transactions/transactions.module";
+import { HomeworkSubmissionsModule } from './modules/homework-submissions/homework-submissions.module';
 
 @Module({
     imports: [
@@ -49,6 +50,7 @@ import { TransactionsModule } from "./modules/transactions/transactions.module";
         TransactionsModule,
         PrizesModule,
         PaymentsModule,
+        HomeworkSubmissionsModule,
     ],
     providers: [
         {
