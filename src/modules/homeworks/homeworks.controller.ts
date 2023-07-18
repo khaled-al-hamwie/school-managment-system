@@ -59,6 +59,16 @@ export class HomeworksController {
 
     @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Get("/student")
+    findStudentHomeworks(
+        @User("student_id") student_id: StudentAttributes["student_id"],
+    ) {
+        return this.homeworksService.findStudentHomeworks(student_id);
+    }
+
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
     @UseGuards(TeacherGuard)
     @Get(":id")
     async findOne(
@@ -82,25 +92,5 @@ export class HomeworksController {
     ) {
         updateHomeworkDto["teacher_id"] = teacher_id;
         return this.homeworksService.update(homework_id, updateHomeworkDto);
-    }
-
-    @ApiTags(PHONE_TAG)
-    @ApiBearerAuth("Authorization")
-    @UseGuards(TeacherGuard)
-    @Delete(":id")
-    remove(
-        @Param("id", ParseIntPipe)
-        homework_id: HomeworkAttributes["homework_id"],
-    ) {
-        return this.homeworksService.remove(+homework_id);
-    }
-    @ApiTags(PHONE_TAG)
-    @ApiBearerAuth("Authorization")
-    @UseGuards(StudentGuard)
-    @Get("/student/:id")
-    findStudentHomeworks(
-        @Param("id", ParseIntPipe) student_id: StudentAttributes["student_id"],
-    ) {
-        return this.homeworksService.findStudentHomeworks(+student_id);
     }
 }

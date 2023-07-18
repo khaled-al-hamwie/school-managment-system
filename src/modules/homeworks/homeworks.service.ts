@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+    ForbiddenException,
+    Injectable,
+    NotFoundException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, WhereOptions } from "sequelize";
 import { RoomsService } from "../rooms/rooms.service";
 import { StudentAttributes } from "../students/interfaces/student.interface";
 import { StudentsService } from "../students/students.service";
+import { Subject } from "../subjects/entities/subject.entity";
+import Teacher from "../teachers/entities/teacher.entity";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { Teach } from "../teaches/entities/teach.entity";
 import { TeachesService } from "../teaches/teaches.service";
@@ -94,16 +100,37 @@ export class HomeworksService {
         homework.update(updatedDto).then((output) => output.save());
         return "done";
     }
-
-    remove(homework_id: HomeworkAttributes["homework_id"]) {
-        this.HomeworkEntity.destroy({ where: { homework_id } });
-        return "done";
-    }
     async findStudentHomeworks(student_id: StudentAttributes["student_id"]) {
-        const student = this.studentService.findOne({ where: { student_id } });
-        if (!student)
-            throw new NotFoundException("this student doesn't exist ..");
-        const room_id = student["room_id"];
-        // return await this.findAll({ room_id });
+        const room_id = (
+            await this.studentService.findOne({ where: { student_id } })
+        ).room_id;
+        if (!room_id) {
+            throw new ForbiddenException("student is not assign to a room yet");
+        }
+        return this.HomeworkEntity.findAll({
+            where: { room_id },
+            include: [
+                {
+                    model: Teach,
+                    include: [
+                        {
+                            model: Teacher,
+                            attributes: {
+                                exclude: [
+                                    "salary",
+                                    "birth_day",
+                                    "phone_number",
+                                    "location",
+                                    "nationality",
+                                ],
+                            },
+                        },
+                        {
+                            model: Subject,
+                        },
+                    ],
+                },
+            ],
+        });
     }
 }
