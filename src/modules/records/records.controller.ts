@@ -5,10 +5,10 @@ import { RecordsService } from "./records.service";
 export class RecordsController {
     constructor(private readonly recordsService: RecordsService) {}
 
-    @Get()
-    findAll() {
-        return this.recordsService.findAll();
-    }
+    // @Get()
+    // findAll() {
+    //     return this.recordsService.findAll();
+    // }
 
     // @Get(":id")
     // findOne(@Param("id") id: string) {
