@@ -6,6 +6,7 @@ export const CLASS_TAG = "class";
 export const ROOM_TAG = "room";
 export const SUBJECT_TAG = "subject";
 export const BOOK_TAG = "book";
+export const HOMEWORK_TAG = "homework";
 export const SCHEDULE_TAG = "schedule";
 export const BUS_TAG = "bus";
 export const BUS_SUBSCIBTION_TAG = "bus_subscribtion";

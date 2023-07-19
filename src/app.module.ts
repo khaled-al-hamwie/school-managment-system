@@ -10,8 +10,11 @@ import { BooksModule } from "./modules/books/books.module";
 import { BusesModule } from "./modules/buses/buses.module";
 import { ClassesModule } from "./modules/classes/classes.module";
 import { GroupsModule } from "./modules/groups/groups.module";
+import { HomeworksModule } from "./modules/homeworks/homeworks.module";
 import { ManagersModule } from "./modules/managers/managers.module";
 import { MessagesModule } from "./modules/messages/messages.module";
+import { PaymentsModule } from "./modules/payments/payments.module";
+import { PrizesModule } from "./modules/prizes/prizes.module";
 import { RecordsModule } from "./modules/records/records.module";
 import { RoomsModule } from "./modules/rooms/rooms.module";
 import { SchedulesModule } from "./modules/schedules/schedules.module";
@@ -19,9 +22,8 @@ import { StudentsModule } from "./modules/students/students.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
-import { TransactionsModule } from './modules/transactions/transactions.module';
-import { PrizesModule } from './modules/prizes/prizes.module';
-import { PaymentsModule } from './modules/payments/payments.module';
+import { TransactionsModule } from "./modules/transactions/transactions.module";
+import { HomeworkSubmissionsModule } from './modules/homework-submissions/homework-submissions.module';
 
 @Module({
     imports: [
@@ -40,6 +42,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
         TeachesModule,
         SchedulesModule,
         RecordsModule,
+        HomeworksModule,
         BusesModule,
         GroupsModule,
         MessagesModule,
@@ -47,6 +50,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
         TransactionsModule,
         PrizesModule,
         PaymentsModule,
+        HomeworkSubmissionsModule,
     ],
     providers: [
         {

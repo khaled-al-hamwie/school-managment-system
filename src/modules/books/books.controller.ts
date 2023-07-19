@@ -1,38 +1,35 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    Patch,
-    Param,
+    Controller,
     Delete,
-    UseGuards,
-    ParseIntPipe,
-    UseInterceptors,
-    UploadedFile,
-    ParseFilePipe,
-    MaxFileSizeValidator,
     FileTypeValidator,
+    Get,
+    MaxFileSizeValidator,
+    Param,
+    ParseFilePipe,
+    ParseIntPipe,
+    Patch,
+    Post,
+    Query,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
 } from "@nestjs/common";
-import { BooksService } from "./books.service";
-import { CreateBookDto } from "./dto/create-book.dto";
-import { UpdateBookDto } from "./dto/update-book.dto";
-import { Query } from "@nestjs/common";
-import { FindAllBookDto } from "./dto/findAll-book.dto";
-import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { diskStorage } from "multer";
+import ManagerGuard from "src/core/common/guards/manager.guard";
+import { ParseIntPagePipe } from "src/core/common/pipes/ParseIntPage.pipe";
 import {
     BOOK_TAG,
     PHONE_TAG,
     WEB_TAG,
 } from "src/core/swagger/constants/swagger.tags";
-import ManagerGuard from "src/core/common/guards/manager.guard";
-import StudentGuard from "src/core/common/guards/student.guard";
-import TeacherGuard from "src/core/common/guards/teacher.guard";
+import { BooksService } from "./books.service";
+import { CreateBookDto } from "./dto/create-book.dto";
+import { FindAllBookDto } from "./dto/findAll-book.dto";
+import { UpdateBookDto } from "./dto/update-book.dto";
 import { BookAttributes } from "./interfaces/book.interface";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
-import { extname } from "path";
 
 @ApiTags(BOOK_TAG, WEB_TAG, PHONE_TAG)
 @Controller("books")

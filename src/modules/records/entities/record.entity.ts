@@ -3,11 +3,13 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
+import { HomeworkSubmission } from "src/modules/homework-submissions/entities/homework-submission.entity";
 import Student from "src/modules/students/entities/student.entity";
 import {
     RecordAttributes,
@@ -51,4 +53,7 @@ export class Record
 
     @BelongsTo(() => Student)
     student: Student;
+
+    @HasMany(() => HomeworkSubmission)
+    homework_submissions: HomeworkSubmission[];
 }
