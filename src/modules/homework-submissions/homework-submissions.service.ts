@@ -8,10 +8,13 @@ import { FindOptions } from "sequelize";
 import { Homework } from "../homeworks/entities/homework.entity";
 import { HomeworksService } from "../homeworks/homeworks.service";
 import { Record } from "../records/entities/record.entity";
+import { Room } from "../rooms/entities/room.entity";
+import Student from "../students/entities/student.entity";
 import { StudentAttributes } from "../students/interfaces/student.interface";
 import { StudentsService } from "../students/students.service";
 import { Subject } from "../subjects/entities/subject.entity";
 import Teacher from "../teachers/entities/teacher.entity";
+import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { Teach } from "../teaches/entities/teach.entity";
 import { CreateHomeworkSubmissionDto } from "./dto/create-homework-submission.dto";
 import { HomeworkSubmission } from "./entities/homework-submission.entity";
@@ -95,7 +98,30 @@ export class HomeworkSubmissionsService {
         });
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} homeworkSubmission`;
+    findHomewordSubmission(
+        homework_id: HomeworkSubmissionAttributes["homework_id"],
+        teacher_id: TeacherAttributes["teacher_id"],
+    ) {
+        return this.findAll({
+            where: { homework_id, "$homework.teach.teacher_id$": teacher_id },
+            include: [
+                {
+                    model: Homework,
+                    include: [
+                        {
+                            model: Teach,
+                            include: [{ model: Subject }],
+                        },
+                        {
+                            model: Room,
+                        },
+                    ],
+                },
+                {
+                    model: Record,
+                    include: [{ model: Student }],
+                },
+            ],
+        });
     }
 }
