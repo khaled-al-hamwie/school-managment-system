@@ -6,6 +6,7 @@ import {
     Param,
     ParseIntPipe,
     Post,
+    Put,
     UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
@@ -17,6 +18,7 @@ import { Record } from "../records/entities/record.entity";
 import { StudentAttributes } from "../students/interfaces/student.interface";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { CreateHomeworkSubmissionDto } from "./dto/create-homework-submission.dto";
+import { PutHomeworkSubmissionDto } from "./dto/put-homework-submission.dto";
 import { HomeworkSubmissionsService } from "./homework-submissions.service";
 import { HomeworkSubmissionAttributes } from "./interfaces/homework-submission.interface";
 
@@ -66,12 +68,28 @@ export class HomeworkSubmissionsController {
         homework_id: HomeworkSubmissionAttributes["homework_id"],
         @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
     ) {
-        console.info("hi");
         const submissions =
             await this.homeworkSubmissionsService.findHomewordSubmission(
                 homework_id,
                 teacher_id,
             );
         return submissions;
+    }
+
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(TeacherGuard)
+    @Put(":id")
+    async put(
+        @Param("id", ParseIntPipe)
+        homework_submission_id: HomeworkSubmissionAttributes["homework_id"],
+        @User("teacher_id") teacher_id: TeacherAttributes["teacher_id"],
+        @Body() putHomeworkSubmissionDto: PutHomeworkSubmissionDto,
+    ) {
+        putHomeworkSubmissionDto["teacher_id"] = teacher_id;
+        return this.homeworkSubmissionsService.put(
+            homework_submission_id,
+            putHomeworkSubmissionDto,
+        );
     }
 }

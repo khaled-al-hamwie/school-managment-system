@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { FindOptions } from "sequelize";
+import { saveModel } from "src/core/common/transformers/modelSave";
 import { Homework } from "../homeworks/entities/homework.entity";
 import { HomeworksService } from "../homeworks/homeworks.service";
 import { Record } from "../records/entities/record.entity";
@@ -17,6 +18,7 @@ import Teacher from "../teachers/entities/teacher.entity";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { Teach } from "../teaches/entities/teach.entity";
 import { CreateHomeworkSubmissionDto } from "./dto/create-homework-submission.dto";
+import { PutHomeworkSubmissionDto } from "./dto/put-homework-submission.dto";
 import { HomeworkSubmission } from "./entities/homework-submission.entity";
 import { HomeworkSubmissionAttributes } from "./interfaces/homework-submission.interface";
 
@@ -123,5 +125,34 @@ export class HomeworkSubmissionsService {
                 },
             ],
         });
+    }
+
+    async put(
+        homework_submission_id: HomeworkSubmissionAttributes["homework_id"],
+        putHomeworkSubmissionDto: PutHomeworkSubmissionDto,
+    ) {
+        const homework_submission =
+            await this.homeworksSubmissionEntity.findOne({
+                where: {
+                    homework_submission_id,
+                    "$homework.teach.teacher_id$":
+                        putHomeworkSubmissionDto.teacher_id,
+                },
+                include: [
+                    {
+                        model: Homework,
+                        include: [
+                            {
+                                model: Teach,
+                            },
+                        ],
+                    },
+                ],
+            });
+        if (!homework_submission) {
+            throw new NotFoundException("homework submission doesn't existst");
+        }
+        homework_submission.update(putHomeworkSubmissionDto).then(saveModel);
+        return "done";
     }
 }
