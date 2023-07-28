@@ -8,6 +8,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Attendance } from "src/modules/attendances/entities/attendance.entity";
 import { Class } from "src/modules/classes/entities/class.entity";
 import { HomeworkSubmission } from "src/modules/homework-submissions/entities/homework-submission.entity";
 import Student from "src/modules/students/entities/student.entity";
@@ -56,4 +57,7 @@ export class Record
 
     @HasMany(() => HomeworkSubmission)
     homework_submissions: HomeworkSubmission[];
+
+    @HasMany(() => Attendance)
+    attendances: Attendance[];
 }
