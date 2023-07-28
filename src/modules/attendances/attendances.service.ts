@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { FindOptions } from "sequelize";
 import { Record } from "../records/entities/record.entity";
 import { StudentsService } from "../students/students.service";
 import { CreateAttendanceDto } from "./dto/create-attendance.dto";
 import { Attendance } from "./entities/attendance.entity";
+import { AttendanceAttributes } from "./interfaces/attendance.interface";
 
 @Injectable()
 export class AttendancesService {
@@ -24,8 +26,7 @@ export class AttendancesService {
         });
         return "done";
     }
-
-    findAll() {
-        return `This action returns all attendances`;
+    findAll(options: FindOptions<AttendanceAttributes>) {
+        return this.AttendanceEntity.findAll(options);
     }
 }
