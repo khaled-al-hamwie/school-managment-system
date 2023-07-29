@@ -4,10 +4,12 @@ import {
     NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { Op } from "sequelize";
 import { RoomsService } from "../rooms/rooms.service";
 import { SubjectsService } from "../subjects/subjects.service";
 import { TeachesService } from "../teaches/teaches.service";
 import { CreateExamDto } from "./dto/create-exam.dto";
+import { FindAllExamDto } from "./dto/findAll-homework.dto";
 import { Exam } from "./entities/exam.entity";
 
 @Injectable()
@@ -41,7 +43,20 @@ export class ExamsService {
         return "done";
     }
 
-    findAll() {
-        return `This action returns all exams`;
+    async findAll(dto: FindAllExamDto) {
+        const teaches = await this.teachService.findAll({
+            where: {
+                teacher_id: dto.teacher_id,
+                subject_id: dto.subject_id ? dto.subject_id : { [Op.ne]: null },
+            },
+        });
+        const teaches_id = teaches.map((teach) => teach.teach_id);
+        console.info(teaches_id);
+        return this.ExamEntity.findAll({
+            where: {
+                teach_id: { [Op.in]: teaches_id },
+                room_id: dto.room_id ? dto.room_id : { [Op.ne]: null },
+            },
+        });
     }
 }
