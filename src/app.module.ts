@@ -25,6 +25,7 @@ import { TeachesModule } from "./modules/teaches/teaches.module";
 import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { HomeworkSubmissionsModule } from './modules/homework-submissions/homework-submissions.module';
 import { AttendancesModule } from './modules/attendances/attendances.module';
+import { ExamsModule } from './modules/exams/exams.module';
 
 @Module({
     imports: [
@@ -53,6 +54,7 @@ import { AttendancesModule } from './modules/attendances/attendances.module';
         PaymentsModule,
         HomeworkSubmissionsModule,
         AttendancesModule,
+        ExamsModule,
     ],
     providers: [
         {
