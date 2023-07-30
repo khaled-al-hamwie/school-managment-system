@@ -3,10 +3,12 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Grade } from "src/modules/grades/entities/grade.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
 import {
@@ -52,4 +54,7 @@ export class Exam
     room: Room;
     @BelongsTo(() => Teach)
     teach: Teach;
+
+    @HasMany(() => Grade)
+    grades: Grade[];
 }
