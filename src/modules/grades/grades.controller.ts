@@ -19,8 +19,6 @@ import { GradeAttributes } from "./interfaces/grade.interface";
 @Controller("grades")
 export class GradesController {
     constructor(private readonly gradesService: GradesService) {}
-    // teacher put grade
-    // student get grades
 
     @ApiTags(PHONE_TAG)
     @ApiBearerAuth("Authorization")
