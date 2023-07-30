@@ -1,9 +1,18 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { FindOptions } from "sequelize";
+import { saveModel } from "src/core/common/transformers/modelSave";
+import { Exam } from "../exams/entities/exam.entity";
+import { Record } from "../records/entities/record.entity";
 import { RecordsService } from "../records/records.service";
+import Student from "../students/entities/student.entity";
+import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
+import { Teach } from "../teaches/entities/teach.entity";
+import { TeachAttributes } from "../teaches/interfaces/teach.interface";
 import { CreateGradeDto } from "./dto/create-grade.dto";
-import { UpdateGradeDto } from "./dto/update-grade.dto";
+import { PutGradeDto } from "./dto/put-grade.dto";
 import { Grade } from "./entities/grade.entity";
+import { GradeAttributes } from "./interfaces/grade.interface";
 
 @Injectable()
 export class GradesService {
@@ -24,19 +33,36 @@ export class GradesService {
         });
     }
 
-    findAll() {
-        return `This action returns all grades`;
+    findAll(options: FindOptions<GradeAttributes>) {
+        return this.GradeEntity.findAll(options);
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} grade`;
+    findForTeacher(
+        exam_id: GradeAttributes["exam_id"],
+        teacher_id: TeachAttributes["teach_id"],
+    ) {
+        return this.findAll({
+            where: { exam_id, "$exam.teach.teacher_id$": teacher_id },
+            include: [
+                { model: Exam, include: [{ model: Teach }] },
+                { model: Record, include: [{ model: Student }] },
+            ],
+        });
     }
 
-    update(id: number, updateGradeDto: UpdateGradeDto) {
-        return `This action updates a #${id} grade`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} grade`;
+    async put(
+        id: GradeAttributes["grade_id"],
+        putGradeDto: PutGradeDto,
+        teacher_id: TeacherAttributes["teacher_id"],
+    ) {
+        const grade = await this.GradeEntity.findOne({
+            where: { grade_id: id, "$exam.teach.teacher_id$": teacher_id },
+            include: [{ model: Exam, include: [{ model: Teach }] }],
+        });
+        if (!grade) {
+            throw new NotFoundException("grade doesn't exists");
+        }
+        grade.update(putGradeDto).then(saveModel);
+        return "done";
     }
 }
