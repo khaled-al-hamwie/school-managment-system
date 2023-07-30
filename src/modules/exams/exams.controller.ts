@@ -5,7 +5,7 @@ import TeacherGuard from "src/core/common/guards/teacher.guard";
 import { PHONE_TAG } from "src/core/swagger/constants/swagger.tags";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { CreateExamDto } from "./dto/create-exam.dto";
-import { FindAllExamDto } from "./dto/findAll-homework.dto";
+import { FindAllExamDto } from "./dto/findAll-exam.dto";
 import { ExamsService } from "./exams.service";
 
 @Controller("exams")

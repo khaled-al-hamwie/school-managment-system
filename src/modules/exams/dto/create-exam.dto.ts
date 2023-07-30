@@ -6,7 +6,7 @@ import { ExamAttributes } from "../interfaces/exam.interface";
 
 export class CreateExamDto {
     @NumberValidator(1, 65535)
-    room_id: ExamAttributes["room_id"];
+    class_id: ExamAttributes["class_id"];
     @NumberValidator(1, 65535)
     subject_id: SubjectAttributes["subject_id"];
     @IsISO8601()

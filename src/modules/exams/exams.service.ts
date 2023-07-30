@@ -5,23 +5,20 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
-import { RoomsService } from "../rooms/rooms.service";
 import { SubjectsService } from "../subjects/subjects.service";
 import { TeachesService } from "../teaches/teaches.service";
 import { CreateExamDto } from "./dto/create-exam.dto";
-import { FindAllExamDto } from "./dto/findAll-homework.dto";
+import { FindAllExamDto } from "./dto/findAll-exam.dto";
 import { Exam } from "./entities/exam.entity";
 
 @Injectable()
 export class ExamsService {
     constructor(
         @InjectModel(Exam) private readonly ExamEntity: typeof Exam,
-        private readonly roomsService: RoomsService,
         private readonly teachService: TeachesService,
         private readonly subjectService: SubjectsService,
     ) {}
     async create(createExamDto: CreateExamDto) {
-        const room = await this.roomsService.checkRoom(createExamDto.room_id);
         const teach = await this.teachService.findOne({
             subject_id: createExamDto.subject_id,
             teacher_id: createExamDto.teacher_id,
@@ -31,7 +28,7 @@ export class ExamsService {
         const subject = await this.subjectService.findOne({
             subject_id: createExamDto.subject_id,
         });
-        if (subject.class_id !== room.class_id)
+        if (subject.class_id !== createExamDto.class_id)
             throw new ForbiddenException("subject is not taught to this room");
         delete createExamDto["subject_id"];
         delete createExamDto["teacher_id"];
@@ -55,7 +52,7 @@ export class ExamsService {
         return this.ExamEntity.findAll({
             where: {
                 teach_id: { [Op.in]: teaches_id },
-                room_id: dto.room_id ? dto.room_id : { [Op.ne]: null },
+                class_id: dto.class_id ? dto.class_id : { [Op.ne]: null },
             },
         });
     }

@@ -8,7 +8,7 @@ export class FindAllExamDto {
     @IsOptional()
     @Transform(({ value }) => +value)
     @IsInt()
-    room_id?: ExamAttributes["room_id"];
+    class_id?: ExamAttributes["class_id"];
 
     @IsOptional()
     @Transform(({ value }) => +value)
