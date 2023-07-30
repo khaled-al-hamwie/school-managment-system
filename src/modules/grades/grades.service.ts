@@ -6,6 +6,7 @@ import { Exam } from "../exams/entities/exam.entity";
 import { Record } from "../records/entities/record.entity";
 import { RecordsService } from "../records/records.service";
 import Student from "../students/entities/student.entity";
+import { StudentAttributes } from "../students/interfaces/student.interface";
 import { TeacherAttributes } from "../teachers/interfaces/teacher.interface";
 import { Teach } from "../teaches/entities/teach.entity";
 import { TeachAttributes } from "../teaches/interfaces/teach.interface";
@@ -49,7 +50,12 @@ export class GradesService {
             ],
         });
     }
-
+    findForStudent(student_id: StudentAttributes["student_id"]) {
+        return this.findAll({
+            where: { "$record.student_id$": student_id, checked: true },
+            include: [{ model: Record }, { model: Exam }],
+        });
+    }
     async put(
         id: GradeAttributes["grade_id"],
         putGradeDto: PutGradeDto,
