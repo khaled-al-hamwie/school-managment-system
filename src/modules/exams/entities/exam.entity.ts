@@ -8,6 +8,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Class } from "src/modules/classes/entities/class.entity";
 import { Grade } from "src/modules/grades/entities/grade.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import { Teach } from "src/modules/teaches/entities/teach.entity";
@@ -27,12 +28,12 @@ export class Exam
         type: DataType.INTEGER.UNSIGNED,
     })
     exam_id?: ExamAttributes["exam_id"];
-    @ForeignKey(() => Room)
+    @ForeignKey(() => Class)
     @Column({
         type: DataType.SMALLINT.UNSIGNED,
         allowNull: false,
     })
-    room_id: ExamAttributes["room_id"];
+    class_id: ExamAttributes["class_id"];
     @ForeignKey(() => Teach)
     @Column({
         type: DataType.MEDIUMINT.UNSIGNED,
@@ -50,8 +51,8 @@ export class Exam
         allowNull: false,
     })
     exam_link: ExamAttributes["exam_link"];
-    @BelongsTo(() => Room)
-    room: Room;
+    @BelongsTo(() => Class)
+    class: Class;
     @BelongsTo(() => Teach)
     teach: Teach;
 

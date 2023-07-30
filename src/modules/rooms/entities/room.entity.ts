@@ -9,7 +9,6 @@ import {
     Table,
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
-import { Exam } from "src/modules/exams/entities/exam.entity";
 import { Group } from "src/modules/groups/entities/group.entity";
 import { Homework } from "src/modules/homeworks/entities/homework.entity";
 import { Schedule } from "src/modules/schedules/entities/schedule.entity";
@@ -64,7 +63,4 @@ export class Room
 
     @HasMany(() => Homework)
     homeworks: Homework[];
-
-    @HasMany(() => Exam)
-    exams: Exam[];
 }
