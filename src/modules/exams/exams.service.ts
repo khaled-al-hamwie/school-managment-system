@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
+import { GradesService } from "../grades/grades.service";
 import { SubjectsService } from "../subjects/subjects.service";
 import { TeachesService } from "../teaches/teaches.service";
 import { CreateExamDto } from "./dto/create-exam.dto";
@@ -17,6 +18,7 @@ export class ExamsService {
         @InjectModel(Exam) private readonly ExamEntity: typeof Exam,
         private readonly teachService: TeachesService,
         private readonly subjectService: SubjectsService,
+        private readonly gradesService: GradesService,
     ) {}
     async create(createExamDto: CreateExamDto) {
         const teach = await this.teachService.findOne({
@@ -32,11 +34,14 @@ export class ExamsService {
             throw new ForbiddenException("subject is not taught to this room");
         delete createExamDto["subject_id"];
         delete createExamDto["teacher_id"];
-        this.ExamEntity.create({
+        const exam = await this.ExamEntity.create({
             ...createExamDto,
             teach_id: teach.teach_id,
         });
-
+        this.gradesService.create({
+            class_id: createExamDto.class_id,
+            exam_id: exam.exam_id,
+        });
         return "done";
     }
 
@@ -48,7 +53,6 @@ export class ExamsService {
             },
         });
         const teaches_id = teaches.map((teach) => teach.teach_id);
-        console.info(teaches_id);
         return this.ExamEntity.findAll({
             where: {
                 teach_id: { [Op.in]: teaches_id },
