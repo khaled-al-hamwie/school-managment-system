@@ -8,6 +8,8 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Exam } from "src/modules/exams/entities/exam.entity";
+import { Homework } from "src/modules/homeworks/entities/homework.entity";
 import { Lecture } from "src/modules/lectures/entities/lecture.entity";
 import { Subject } from "src/modules/subjects/entities/subject.entity";
 import Teacher from "src/modules/teachers/entities/teacher.entity";
@@ -50,4 +52,10 @@ export class Teach
 
     @HasMany(() => Lecture)
     lectures: Lecture[];
+
+    @HasMany(() => Homework)
+    homeworks: Homework[];
+
+    @HasMany(() => Exam)
+    exams: Exam[];
 }

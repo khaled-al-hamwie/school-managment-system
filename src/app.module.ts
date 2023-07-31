@@ -24,6 +24,9 @@ import { TeachersModule } from "./modules/teachers/teachers.module";
 import { TeachesModule } from "./modules/teaches/teaches.module";
 import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { HomeworkSubmissionsModule } from './modules/homework-submissions/homework-submissions.module';
+import { AttendancesModule } from './modules/attendances/attendances.module';
+import { ExamsModule } from './modules/exams/exams.module';
+import { GradesModule } from './modules/grades/grades.module';
 
 @Module({
     imports: [
@@ -51,6 +54,9 @@ import { HomeworkSubmissionsModule } from './modules/homework-submissions/homewo
         PrizesModule,
         PaymentsModule,
         HomeworkSubmissionsModule,
+        AttendancesModule,
+        ExamsModule,
+        GradesModule,
     ],
     providers: [
         {

@@ -10,6 +10,7 @@ import {
 } from "sequelize-typescript";
 import { Class } from "src/modules/classes/entities/class.entity";
 import { Group } from "src/modules/groups/entities/group.entity";
+import { Homework } from "src/modules/homeworks/entities/homework.entity";
 import { Schedule } from "src/modules/schedules/entities/schedule.entity";
 import Student from "src/modules/students/entities/student.entity";
 import {
@@ -59,4 +60,7 @@ export class Room
 
     @HasMany(() => Group)
     groups: Group[];
+
+    @HasMany(() => Homework)
+    homeworks: Homework[];
 }

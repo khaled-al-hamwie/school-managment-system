@@ -6,6 +6,7 @@ import {
     PrimaryKey,
     Table,
 } from "sequelize-typescript";
+import { Exam } from "src/modules/exams/entities/exam.entity";
 import { Record } from "src/modules/records/entities/record.entity";
 import { Room } from "src/modules/rooms/entities/room.entity";
 import { Subject } from "src/modules/subjects/entities/subject.entity";
@@ -40,4 +41,7 @@ export class Class
 
     @HasMany(() => Record)
     records: Record[];
+
+    @HasMany(() => Exam)
+    exams: Exam[];
 }

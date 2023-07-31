@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { WhereOptions } from "sequelize";
+import { FindOptions, WhereOptions } from "sequelize";
 import { StudentsService } from "../students/students.service";
 import { Record } from "./entities/record.entity";
 import { RecordAttributes } from "./interfaces/record.interface";
@@ -31,8 +31,8 @@ export class RecordsService {
         }
     }
 
-    findAll() {
-        return `This action returns all records`;
+    findAll(options: FindOptions<RecordAttributes>) {
+        return this.RecordEntity.findAll(options);
     }
 
     findOne(options: WhereOptions<RecordAttributes>) {
