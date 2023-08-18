@@ -20,12 +20,9 @@ export class PushNotificationService {
         const student = await this.studentsServices.findOne({
             where: { student_id },
         });
-        if (!student.fbt) {
-            console.info("the student has no fire base token ");
-        } else
-            await admin.messaging().send({
-                notification: { title: dto.title, body: dto.body },
-                token: student.fbt,
-            });
+        await admin.messaging().send({
+            notification: { title: dto.title, body: dto.body },
+            token: student.fbt,
+        });
     }
 }
