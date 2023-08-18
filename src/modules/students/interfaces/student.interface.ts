@@ -20,6 +20,7 @@ export interface StudentAttributes {
     location: string;
     registration_date?: Date | string;
     points: number;
+    fbt?: string;
 }
 
 export type StudentCreationAttributes = Optional<

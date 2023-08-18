@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { FindOptions, WhereOptions } from "sequelize";
+import { saveModel } from "src/core/common/transformers/modelSave";
 import removeCredentails from "src/core/common/transformers/removeCredentails.transform";
 import whereWrapperTransform from "src/core/common/transformers/whereWrapper.transform";
 import { AuthService } from "../auth/auth.service";
@@ -13,6 +14,7 @@ import { CredentialsService } from "../credentials/credentials.service";
 import { Credential } from "../credentials/entities/credential.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { FindAllStudentDto } from "./dto/findAll-student.dto";
+import { PutStudentDto } from "./dto/put-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
 import Student from "./entities/student.entity";
 import { StudentAttributes } from "./interfaces/student.interface";
@@ -122,5 +124,14 @@ export class StudentsService {
                 );
             }
         }
+    }
+
+    async putFireBaseToken(
+        student_id: StudentAttributes["student_id"],
+        dto: PutStudentDto,
+    ) {
+        const student = await this.findOne({ where: { student_id } });
+        student.update({ fbt: dto.token }).then(saveModel);
+        return "done";
     }
 }

@@ -9,6 +9,7 @@ import {
     ParseIntPipe,
     Patch,
     Post,
+    Put,
     Query,
     UseGuards,
 } from "@nestjs/common";
@@ -30,6 +31,7 @@ import { Record } from "../records/entities/record.entity";
 import { Room } from "../rooms/entities/room.entity";
 import { CreateStudentDto } from "./dto/create-student.dto";
 import { FindAllStudentDto } from "./dto/findAll-student.dto";
+import { PutStudentDto } from "./dto/put-student.dto";
 import { UpdateStudentDto } from "./dto/update-student.dto";
 import { StudentAttributes } from "./interfaces/student.interface";
 import { StudentsService } from "./students.service";
@@ -120,5 +122,16 @@ export class StudentsController {
         @Body() updateStudentDto: UpdateStudentDto,
     ) {
         return this.studentsService.update(+student_id, updateStudentDto);
+    }
+
+    @ApiTags(PHONE_TAG)
+    @ApiBearerAuth("Authorization")
+    @UseGuards(StudentGuard)
+    @Put()
+    putFireBaseToken(
+        @User("student_id") student_id: StudentAttributes["student_id"],
+        @Body() putStudentDto: PutStudentDto,
+    ) {
+        return this.studentsService.putFireBaseToken(student_id, putStudentDto);
     }
 }
