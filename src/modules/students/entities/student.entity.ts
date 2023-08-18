@@ -123,6 +123,12 @@ export default class Student
     })
     points: StudentAttributes["points"];
 
+    @Column({
+        type: DataType.STRING(1500),
+        allowNull: true,
+    })
+    fbt?: StudentAttributes["fbt"];
+
     @BelongsTo(() => Credential)
     credentail: Credential;
 
