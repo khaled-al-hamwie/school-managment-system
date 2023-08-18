@@ -27,6 +27,7 @@ import { HomeworkSubmissionsModule } from './modules/homework-submissions/homewo
 import { AttendancesModule } from './modules/attendances/attendances.module';
 import { ExamsModule } from './modules/exams/exams.module';
 import { GradesModule } from './modules/grades/grades.module';
+import { PushNotificationModule } from './modules/push-notification/push-notification.module';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import { GradesModule } from './modules/grades/grades.module';
         AttendancesModule,
         ExamsModule,
         GradesModule,
+        PushNotificationModule,
     ],
     providers: [
         {
