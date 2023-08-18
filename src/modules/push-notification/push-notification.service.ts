@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as admin from "firebase-admin";
 import { ServiceAccount } from "firebase-admin";
-import * as service from "../../../fire.con.json";
+import * as service from "../../../school-management-system-chat-firebase-adminsdk-rql1k-0d6dbd2f7c.json";
 import { StudentAttributes } from "../students/interfaces/student.interface";
 import { StudentsService } from "../students/students.service";
 import { PushNotificationDto } from "./dto/push-notification.dto";
