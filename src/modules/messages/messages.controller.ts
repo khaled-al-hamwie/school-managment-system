@@ -57,8 +57,8 @@ export class MessagesController {
         return this.messagesService.findAll({
             where: { group_id },
             order: [["created_at", "DESC"]],
-            offset: page * 50,
-            limit: 50,
+            offset: page * 500,
+            limit: 500,
             include: [
                 {
                     model: Teacher,

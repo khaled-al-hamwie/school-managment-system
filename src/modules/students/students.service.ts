@@ -66,8 +66,8 @@ export class StudentsService {
                 model: Credential,
                 attributes: { exclude: ["password"] },
             },
-            offset: page * 5,
-            limit: 5,
+            // offset: page * 5,
+            // limit: 5,
             order: [["first_name", "ASC"]],
         });
     }
