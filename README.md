@@ -75,10 +75,21 @@ and here is the erd of the project:
 
 here is a over view of the front
 
+### web
+
+![web pic 1](./extra/web/W1.png)
+![wep pic 2](./extra/web/W2.png)
+
 you can find the full repo at :
 
--
--
+### flutter
+
+![phone 1](./extra/phone/E1.jpg)
+![phone 2](./extra/phone/E2.jpg)
+![phone 3](./extra/phone/E3.jpg)
+![phone 4](./extra/phone/E4.jpg)
+
+you can find the full repo at :
 
 ## Installation
 
