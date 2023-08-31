@@ -129,8 +129,12 @@ backend :
 - khaled Al Hamwie
 [github](https://github.com/khaled-al-hamwie)
 [linked in](https://www.linkedin.com/in/khaled-al-hamwie-869237200/)
+[email address](khaledalhamwiecontactacccount@gmail.com)
 
 - Mohamed attal
+[github](https://github.com/neodoomer)
+[linked in](https://www.linkedin.com/in/mohamed-al-attal-959179230)
+[email address](mohmd.ed.atal@gmail.com)
 
 front in :
 
